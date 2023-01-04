@@ -276,4 +276,16 @@ class Series
 
         return $this;
     }
+
+    public function getPoster()
+    {
+        return $this->poster;
+    }
+
+    public function setPoster($poster): self
+    {
+        $this->poster = $poster;
+
+        return $this;
+    }
 }
