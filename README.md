@@ -2,11 +2,18 @@
 
 
 
-## Getting started
+## 03/01/23
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+- Réunion de planification itération 1
+- Création du Trello.
+- Séparation des US en tâches.
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+## 04/01/23
+
+
+
+
+
 
 ## Add your files
 
