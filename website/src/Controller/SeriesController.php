@@ -11,17 +11,36 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 
+
+use App\Entity\Appointments;
+
+// include de la pagination
+use Knp\Component\Pager\PaginatorInterface;
+
 class SeriesController extends AbstractController
 {
     #[Route('/', name: 'app_series_index', methods: ['GET'])]
-    public function index(EntityManagerInterface $entityManager): Response
+    public function index(Request $request, PaginatorInterface $paginator, EntityManagerInterface $entityManager): Response
     {
-        $series = $entityManager
-            ->getRepository(Series::class)
-            ->findAll();
+
+        $appointmentsRepository = $entityManager->getRepository(Series::class);
+
+        $allAppointmentsQuery = $appointmentsRepository->createQueryBuilder('p')
+        ->getQuery();
+    
+        // Paginate the results of the query
+        $appointments = $paginator->paginate(
+            // Doctrine Query, not results
+            $allAppointmentsQuery,
+            // Define the page parameter
+            $request->query->getInt('page', 1),
+            // Items per page
+            5
+        );
+
 
         return $this->render('series/index.html.twig', [
-            'series' => $series,
+            'series' => $appointments,
         ]);
     }
 

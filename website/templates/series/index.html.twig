@@ -56,6 +56,9 @@
         {% endfor %}
         </tbody>
     </table>
+    <div class="navigation">
+            {{ knp_pagination_render(series) }}
+    </div>
 
     <a href="{{ path('app_series_new') }}">Create new</a>
 {% endblock %}
