@@ -7,6 +7,7 @@
         {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
+            <link href="{{ asset('style.css') }}" rel="stylesheet" />
         {% endblock %}
 
         {% block javascripts %}
@@ -14,6 +15,35 @@
         {% endblock %}
     </head>
     <body>
+
+        <nav>
+            <ul>
+                <li><a href="{{ path('app_series_index') }}">Accueil</a></li>
+
+                {% if app.user %}
+                    [{{ app.user.name }}]
+                    <li><a href="{{ path('app_logout') }}">Déconnexion</a></li>
+                {% else %}
+                    <li><a href="{{ path('app_register') }}">Inscription</a></li>
+                    -
+                    <li><a href="{{ path('app_login') }}">Connexion</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+           
+        <main>
+        
         {% block body %}{% endblock %}
+
+        </main>
+
+        <footer>
+            <div class="footer-container">
+                <ul>
+                    <li><a href="{{ path('app_series_index') }}">Accueil</a></li>
+                </ul>
+                <p>Copyright 2021 MonSite</p>
+            </div>
+        </footer>
     </body>
 </html>
