@@ -32,17 +32,13 @@
                     <td>{{ s.title }}</td>
                     <td>{{ s.plot }}</td>
                     <td>{{ s.imdb }}</td>
-                    {% if app.user %}
-                        <td><img src="{{ path('app_series_poster', {'id': s.id}) }}"></td>
-                    {% endif %}
+                    <td><img src="{{ path('app_series_poster', {'id': s.id}) }}"></td>
                     <td>{{ s.director }}</td>
                     <td>{{ s.youtubeTrailer }}</td>
                     <td>{{ s.awards }}</td>
                     <td>{{ s.yearStart }}</td>
                     <td>{{ s.yearEnd }}</td>
-                    {% if app.user %}
                     <td><a href="{{ path('app_series_show', {'id': s.id}) }}">show</a></td>
-                    {% endif %}
                 </tr>
             {#   
             {% else %}

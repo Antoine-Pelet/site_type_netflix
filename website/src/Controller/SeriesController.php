@@ -23,13 +23,12 @@ class SeriesController extends AbstractController
     #[Route('/', name: 'app_series_index', methods: ['GET'])]
     public function index(Request $request, PaginatorInterface $paginator, EntityManagerInterface $entityManager): Response
     {
-
         $appointmentsRepository = $entityManager->getRepository(Series::class);
 
         $allAppointmentsQuery = $appointmentsRepository->createQueryBuilder('s')
         ->orderBy('s.id', 'ASC')
         ->getQuery();
-    
+
         // Paginate the results of the query
         $appointments = $paginator->paginate(
             // Doctrine Query, not results

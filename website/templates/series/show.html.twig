@@ -49,6 +49,26 @@
             </tr>
         </tbody>
     </table>
+<br>
+<br>
+
+
+    <table>
+        <tbody>
+            {% set cpt = 1 %}
+            {% for s in series.seasons %}
+                <tr>
+                    <td>Saison numéro {{ cpt }}</td>   
+                </tr>
+                <tr>
+                    {% for epi in s.episodes %}
+                        <td>{{ epi.number }} - {{ epi.title }}</td>      
+                    {% endfor %}
+                </tr>
+                {% set cpt = cpt + 1 %}
+            {% endfor %}
+        </tbody>
+    </table>
 
     <a href="{{ path('app_series_index') }}">back to list</a>
 {% endblock %}
