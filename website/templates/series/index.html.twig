@@ -26,33 +26,30 @@
             </tr>
         </thead>
         <tbody>
-        {% set a_variable = 0 %}
-        {% for series in series %}
-            {% if a_variable < 30 %}
+        {% for s in series %}
                 <tr>
-                    <td>{{ series.id }}</td>
-                    <td>{{ series.title }}</td>
-                    <td>{{ series.plot }}</td>
-                    <td>{{ series.imdb }}</td>
-                    <td><img src="{{ path('app_series_poster', {'id': series.id}) }}"></td>
-                    <td>{{ series.director }}</td>
-                    <td>{{ series.youtubeTrailer }}</td>
-                    <td>{{ series.awards }}</td>
-                    <td>{{ series.yearStart }}</td>
-                    <td>{{ series.yearEnd }}</td>
-                    <td>
-                        <a href="{{ path('app_series_show', {'id': series.id}) }}">show</a>
-                        <a href="{{ path('app_series_edit', {'id': series.id}) }}">edit</a>
-                    </td>
+                    <td>{{ s.id }}</td>
+                    <td>{{ s.title }}</td>
+                    <td>{{ s.plot }}</td>
+                    <td>{{ s.imdb }}</td>
+                    {% if app.user %}
+                        <td><img src="{{ path('app_series_poster', {'id': s.id}) }}"></td>
+                    {% endif %}
+                    <td>{{ s.director }}</td>
+                    <td>{{ s.youtubeTrailer }}</td>
+                    <td>{{ s.awards }}</td>
+                    <td>{{ s.yearStart }}</td>
+                    <td>{{ s.yearEnd }}</td>
+                    {% if app.user %}
+                    <td><a href="{{ path('app_series_show', {'id': s.id}) }}">show</a></td>
+                    {% endif %}
                 </tr>
-            {% endif %}
             {#   
             {% else %}
                 <tr>
                     <td colspan="11">no records found</td>
                 </tr>
             #}
-            {% set a_variable = a_variable + 1 %}
         {% endfor %}
         </tbody>
     </table>
@@ -60,5 +57,4 @@
             {{ knp_pagination_render(series) }}
     </div>
 
-    <a href="{{ path('app_series_new') }}">Create new</a>
 {% endblock %}
