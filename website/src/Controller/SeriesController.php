@@ -17,6 +17,7 @@ use App\Entity\Appointments;
 // include de la pagination
 use Knp\Component\Pager\PaginatorInterface;
 
+
 class SeriesController extends AbstractController
 {
     #[Route('/', name: 'app_series_index', methods: ['GET'])]
@@ -25,7 +26,8 @@ class SeriesController extends AbstractController
 
         $appointmentsRepository = $entityManager->getRepository(Series::class);
 
-        $allAppointmentsQuery = $appointmentsRepository->createQueryBuilder('p')
+        $allAppointmentsQuery = $appointmentsRepository->createQueryBuilder('s')
+        ->orderBy('s.id', 'ASC')
         ->getQuery();
     
         // Paginate the results of the query
@@ -35,32 +37,12 @@ class SeriesController extends AbstractController
             // Define the page parameter
             $request->query->getInt('page', 1),
             // Items per page
-            5
+            10
         );
 
 
         return $this->render('series/index.html.twig', [
             'series' => $appointments,
-        ]);
-    }
-
-    #[Route('/new', name: 'app_series_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $series = new Series();
-        $form = $this->createForm(SeriesType::class, $series);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($series);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_series_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->renderForm('series/new.html.twig', [
-            'series' => $series,
-            'form' => $form,
         ]);
     }
 
@@ -78,32 +60,4 @@ class SeriesController extends AbstractController
         return new Response(stream_get_contents($series->getPoster()), 200, array('Content=>Type' => 'image.jpeg'));
     }
 
-    #[Route('/{id}/edit', name: 'app_series_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Series $series, EntityManagerInterface $entityManager): Response
-    {
-        $form = $this->createForm(SeriesType::class, $series);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_series_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->renderForm('series/edit.html.twig', [
-            'series' => $series,
-            'form' => $form,
-        ]);
-    }
-
-    #[Route('/{id}', name: 'app_series_delete', methods: ['POST'])]
-    public function delete(Request $request, Series $series, EntityManagerInterface $entityManager): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$series->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($series);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('app_series_index', [], Response::HTTP_SEE_OTHER);
-    }
 }
