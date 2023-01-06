@@ -29,7 +29,7 @@ class SeriesController extends AbstractController
         $allAppointmentsQuery = $appointmentsRepository->createQueryBuilder('s')
         ->orderBy('s.id', 'ASC')
         ->getQuery();
-    
+
         // Paginate the results of the query
         $appointments = $paginator->paginate(
             // Doctrine Query, not results
