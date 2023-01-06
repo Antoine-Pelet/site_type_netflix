@@ -1,0 +1,14 @@
+.example-wrapper { 
+    display: flex;  
+    max-width: 800px; 
+    width: 50%; 
+    font: 18px/1.5 sans-serif; 
+    margin-top: 50vh;
+    margin-bottom: 50vh;
+}
+
+body { 
+    background-image : url("ressources/main.jpg"); 
+    background-size: cover; 
+    background-repeat:no-repeat; 
+}

@@ -21,7 +21,7 @@ use Knp\Component\Pager\PaginatorInterface;
 
 class SeriesController extends AbstractController
 {
-    #[Route('/', name: 'app_series_index', methods: ['GET'])]
+    #[Route('/series', name: 'app_series_index', methods: ['GET'])]
     public function index(Request $request, PaginatorInterface $paginator, EntityManagerInterface $entityManager): Response
     {
         $appointmentsRepository = $entityManager->getRepository(Series::class);
