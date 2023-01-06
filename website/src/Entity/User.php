@@ -38,7 +38,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(name: "admin", type: "boolean", nullable: false)]
     private $admin = '0';
 
-
     #[ORM\ManyToOne(targetEntity: "Country")]
     #[ORM\JoinColumn(name: "country_id", referencedColumnName: "id")]
     private $country;

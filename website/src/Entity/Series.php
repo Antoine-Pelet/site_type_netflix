@@ -57,6 +57,9 @@ class Series
     #[ORM\ManyToMany(targetEntity: "Country", mappedBy: "series")]
     private $country = array();
 
+    #[ORM\OneToMany(targetEntity: "Season", mappedBy: "series")]
+    private $seasons;
+
     /**
      * Constructor
      */
@@ -66,6 +69,7 @@ class Series
         $this->genre = new \Doctrine\Common\Collections\ArrayCollection();
         $this->actor = new \Doctrine\Common\Collections\ArrayCollection();
         $this->country = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->seasons = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     public function getId(): ?int
@@ -285,6 +289,30 @@ class Series
     public function setPoster($poster): self
     {
         $this->poster = $poster;
+
+        return $this;
+    }
+
+    public function getSeasons() : Collection
+    {
+        return $this->seasons;
+    }
+
+    public function addSeason(Season $season): self
+    {
+        if (!$this->seasons->contains($season)) {
+            $this->seasons->add($season);
+            $season->addSeries($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSeason(Season $season): self
+    {
+        if ($this->seasons->removeElement($season)) {
+            $season->removeSeries($this);
+        }
 
         return $this;
     }
