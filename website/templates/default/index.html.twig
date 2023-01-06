@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello DefaultController!{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('app') }}
+    <link href="{{ 'acceuil.css' }}" rel="stylesheet" />
+    <link href="{{ asset('style.css') }}" rel="stylesheet" />
+{% endblock %}
+
+
+{% block body %}
+
+<body>
+    <div class="example-wrapper">
+
+        WatchList est le site idéal pour tous les amateurs de séries ! 
+        Avec WatchList, vous pouvez explorer une liste complète de séries, 
+        marquer celles que vous avez déjà vues et celles qui vous intéressent. 
+        Grâce à notre interface intuitive, vous pouvez facilement suivre votre progression et découvrir de nouvelles séries passionnantes. 
+        Alors qu'attendez-vous ? Inscrivez-vous dès maintenant sur WatchList et commencez votre voyage dans le monde passionnant des séries !
+    </div>
+</body>
+{% endblock %}
