@@ -20,7 +20,7 @@ use Knp\Component\Pager\PaginatorInterface;
 
 class SeriesController extends AbstractController
 {
-    #[Route('/', name: 'app_series_index', methods: ['GET'])]
+    #[Route('/series', name: 'app_series_index', methods: ['GET'])]
     public function index(Request $request, PaginatorInterface $paginator, EntityManagerInterface $entityManager): Response
     {
         
@@ -92,10 +92,13 @@ class SeriesController extends AbstractController
     #[Route('/series', name: 'app_series_like', methods: ['POST'])]
     public function like(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $series = $entityManager->getRepository(Series::class)->find($request->request->get('id'));
-        $series->setLikes($series->getLikes() + 1);
+        $userSeries = new UserSeries();
+        $userSeries->setUserId($this->getUser()->getId());
+        $userSeries->setSerieId($request->request->get('serie_id'));
+        $entityManager->persist($userSeries);
         $entityManager->flush();
 
         return $this->redirectToRoute('app_series_index', [], Response::HTTP_SEE_OTHER);
+
     }
 }

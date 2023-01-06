@@ -45,9 +45,11 @@
                         <a href="{{ path('app_series_show', {'id': s.id}) }}">show</a>
                     </td>
                     <td>
-                        <form action="{{ path('app_series_like', {'id': s.id}) }}" method="post">
+                        {% if app.user %}
+                        <form action="{{ path('app_series_like', {'id_serie': s.id}) }}" method="get">
                             <button type="submit">Like</button>
                         </form>
+                        {% endif %}
                     </td>
                 </tr>
             {#   
@@ -56,6 +58,8 @@
                     <td colspan="11">no records found</td>
                 </tr>
             #}
+            {% endif %}
+            {% set a_variable = a_variable + 1 %}
         {% endfor %}
         </tbody>
     </table>
