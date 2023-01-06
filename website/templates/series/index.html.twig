@@ -27,15 +27,12 @@
             </tr>
         </thead>
         <tbody>
-        {% set a_variable = 0 %}
         {% for s in series %}
-            {% if a_variable < 30 %}
                 <tr>
                     <td>{{ s.id }}</td>
                     <td>{{ s.title }}</td>
                     <td>{{ s.plot }}</td>
                     <td>{{ s.imdb }}</td>
-                    <td><img src="{{ path('app_series_poster', {'id': s.id}) }}"></td>
                     <td><img src="{{ path('app_series_poster', {'id': s.id}) }}"></td>
                     <td>{{ s.director }}</td>
                     <td>{{ s.youtubeTrailer }}</td>
@@ -45,11 +42,11 @@
                     <td>
                         <a href="{{ path('app_series_show', {'id': s.id}) }}">show</a>
                     </td>
+                    {% if app.user %}
                     <td>
-                        <form action="{{ path('app_series_like', {'id': s.id}) }}" method="post">
-                            <button type="submit">Like</button>
-                        </form>
+                        <a href="{{ path('app_series_like', {'id': s.id}) }}">pds</a>
                     </td>
+                    {% endif %}
                 </tr>
             {#   
             {% else %}

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Series;
 use App\Form\SeriesType;
+use App\Entity\UserSeries;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,7 +24,6 @@ class SeriesController extends AbstractController
     #[Route('/', name: 'app_series_index', methods: ['GET'])]
     public function index(Request $request, PaginatorInterface $paginator, EntityManagerInterface $entityManager): Response
     {
-        
         $appointmentsRepository = $entityManager->getRepository(Series::class);
 
         $allAppointmentsQuery = $appointmentsRepository->createQueryBuilder('s')
@@ -89,13 +89,19 @@ class SeriesController extends AbstractController
         return $this->redirectToRoute('app_series_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/series', name: 'app_series_like', methods: ['POST'])]
+    #[Route('/{id}/follow', name: 'app_series_like', methods: ['GET'])]
     public function like(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $series = $entityManager->getRepository(Series::class)->find($request->request->get('id'));
-        $series->setLikes($series->getLikes() + 1);
+        /** @var \App\Entity\User */
+        $user = $this->getUser();
+
+        $series = $entityManager->getRepository(Series::class)->find($request->get('id'));
+
+        $user->addSeries($series);
+
         $entityManager->flush();
 
         return $this->redirectToRoute('app_series_index', [], Response::HTTP_SEE_OTHER);
+
     }
 }

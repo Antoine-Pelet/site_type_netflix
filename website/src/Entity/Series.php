@@ -261,6 +261,46 @@ class Series
     {
         return $this->country;
     }
+    /*
+  
+ 
+    public function addCountry(Country $country): self
+    {
+        if (!$this->country->contains($country)) {
+            $this->country->add($country);
+            $country->addSeries($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCountry(Country $country): self
+    {
+        if ($this->country->removeElement($country)) {
+            $country->removeSeries($this);
+        }
+
+        return $this;
+    }
+
+    */
+
+    public function getPoster()
+    {
+        return $this->poster;
+    }
+
+    public function setPoster($poster): self
+    {
+        $this->poster = $poster;
+
+        return $this;
+    }
+
+    public function getSeasons() : Collection
+    {
+        return $this->seasons;
+    }
 
     public function addCountry(Country $country): self
     {
@@ -281,28 +321,11 @@ class Series
         return $this;
     }
 
-    public function getPoster()
-    {
-        return $this->poster;
-    }
-
-    public function setPoster($poster): self
-    {
-        $this->poster = $poster;
-
-        return $this;
-    }
-
-    public function getSeasons() : Collection
-    {
-        return $this->seasons;
-    }
-
     public function addSeason(Season $season): self
     {
         if (!$this->seasons->contains($season)) {
             $this->seasons->add($season);
-            $season->addSeries($this);
+            $season->setSeries($this);
         }
 
         return $this;
@@ -311,7 +334,10 @@ class Series
     public function removeSeason(Season $season): self
     {
         if ($this->seasons->removeElement($season)) {
-            $season->removeSeries($this);
+            // set the owning side to null (unless already changed)
+            if ($season->getSeries() === $this) {
+                $season->setSeries(null);
+            }
         }
 
         return $this;
