@@ -23,26 +23,31 @@
                 <th>YearStart</th>
                 <th>YearEnd</th>
                 <th>actions</th>
+                <th>like</th>
             </tr>
         </thead>
         <tbody>
         {% set a_variable = 0 %}
-        {% for series in series %}
+        {% for s in series %}
             {% if a_variable < 30 %}
                 <tr>
-                    <td>{{ series.id }}</td>
-                    <td>{{ series.title }}</td>
-                    <td>{{ series.plot }}</td>
-                    <td>{{ series.imdb }}</td>
-                    <td><img src="{{ path('app_series_poster', {'id': series.id}) }}"></td>
-                    <td>{{ series.director }}</td>
-                    <td>{{ series.youtubeTrailer }}</td>
-                    <td>{{ series.awards }}</td>
-                    <td>{{ series.yearStart }}</td>
-                    <td>{{ series.yearEnd }}</td>
+                    <td>{{ s.id }}</td>
+                    <td>{{ s.title }}</td>
+                    <td>{{ s.plot }}</td>
+                    <td>{{ s.imdb }}</td>
+                    <td><img src="{{ path('app_series_poster', {'id': s.id}) }}"></td>
+                    <td>{{ s.director }}</td>
+                    <td>{{ s.youtubeTrailer }}</td>
+                    <td>{{ s.awards }}</td>
+                    <td>{{ s.yearStart }}</td>
+                    <td>{{ s.yearEnd }}</td>
                     <td>
-                        <a href="{{ path('app_series_show', {'id': series.id}) }}">show</a>
-                        <a href="{{ path('app_series_edit', {'id': series.id}) }}">edit</a>
+                        <a href="{{ path('app_series_show', {'id': s.id}) }}">show</a>
+                    </td>
+                    <td>
+                        <form action="{{ path('app_series_like', {'id': s.id}) }}" method="post">
+                            <button type="submit">Like</button>
+                        </form>
                     </td>
                 </tr>
             {% endif %}

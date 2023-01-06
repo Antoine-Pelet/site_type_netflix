@@ -22,10 +22,11 @@ class SeriesController extends AbstractController
     #[Route('/', name: 'app_series_index', methods: ['GET'])]
     public function index(Request $request, PaginatorInterface $paginator, EntityManagerInterface $entityManager): Response
     {
-
+        
         $appointmentsRepository = $entityManager->getRepository(Series::class);
 
-        $allAppointmentsQuery = $appointmentsRepository->createQueryBuilder('p')
+        $allAppointmentsQuery = $appointmentsRepository->createQueryBuilder('s')
+        ->orderBy('s.id', 'ASC')
         ->getQuery();
     
         // Paginate the results of the query
@@ -103,6 +104,16 @@ class SeriesController extends AbstractController
             $entityManager->remove($series);
             $entityManager->flush();
         }
+
+        return $this->redirectToRoute('app_series_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/series', name: 'app_series_like', methods: ['POST'])]
+    public function like(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $series = $entityManager->getRepository(Series::class)->find($request->request->get('id'));
+        $series->setLikes($series->getLikes() + 1);
+        $entityManager->flush();
 
         return $this->redirectToRoute('app_series_index', [], Response::HTTP_SEE_OTHER);
     }
