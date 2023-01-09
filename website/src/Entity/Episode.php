@@ -31,6 +31,7 @@ class Episode
     private $imdbrating;
 
     #[ORM\Column(name: "number", type: "integer", nullable: false)]
+    
     private $number;
 
     #[ORM\ManyToOne(targetEntity: "Season")]
