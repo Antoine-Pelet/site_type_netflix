@@ -41,7 +41,29 @@ nav {
     color: black;
   }
 
+  
+td,th {
+    padding: 10px 10px;
+}
 
+td {
+    text-align: center;
+}
+
+table{
+  display: flex;
+  width: 20%;
+}
+
+.listes{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.button {
+  cursor: pointer;
+  background-color: blue;
+}
 
 
   footer {
