@@ -37,7 +37,7 @@ class SeriesController extends AbstractController
             // Define the page parameter
             $request->query->getInt('page', 1),
             // Items per page
-            10
+            25
         );
 
 
