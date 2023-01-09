@@ -104,4 +104,23 @@ class SeriesController extends AbstractController
         return $this->redirectToRoute('app_series_index', [], Response::HTTP_SEE_OTHER);
 
     }
+
+    #[Route('/series/{app.user.name}', name: 'app_liked_series', methods: ['GET'])]
+    public function listLikedSeries(Request $request, EntityManagerInterface $entityManager): Response
+    {
+
+        $user = $this->getUser();
+
+        $likedSeries = $user->getSeries();
+
+        return $this->render('liked/index.html.twig', [
+            'series' => $likedSeries,
+        ]);
+    }
+
+    #[Route('/series/{app.user.name}', name: 'app_series_dislike', methods: ['GET'])]
+    public function dislike(Request $request, EntityManagerInterface $entityManager): Response
+    {
+    
+    }
 }
