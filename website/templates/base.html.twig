@@ -14,7 +14,8 @@
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
     </head>
-    <body>
+
+    {% block header %}
         <nav>
             <ul>
                 <li><a href="{{ path('app_default') }}"><img src="{{ 'ressources/' ~ 'logofull.png' }}"></a></li>
@@ -31,20 +32,23 @@
                 {% endif %}
             </ul>
         </nav>
-           
-        <main>
+    {% endblock %}
+
+{% block body %}
+    <body>
         
-        {% block body %}{% endblock %}
-
-        </main>
-
-                <footer>
-                    <ul class="list-inline">
-                        <li class="list-inline-item"><a href="#">Accueil</a></li>
-                        <li class="list-inline-item"><a href="#">Series</a></li>
-                        <li class="list-inline-item"><a href="#">Admin</a></li>
-                    </ul>
-                    <p class="copyright">WatchList © Copyright 2023</p>
-                </footer>
     </body>
+{% endblock %}
+
+    {% block footer %}
+        <footer>
+            <ul class="list-inline">
+                <li class="list-inline-item"><a href="{{ path('app_default') }}">Accueil</a></li>
+                <li class="list-inline-item"><a href="">Series</a></li>
+                <li class="list-inline-item"><a href="">Admin</a></li>
+            </ul>
+            <p class="copyright">WatchList © Copyright 2023</p>
+        </footer>
+    {% endblock %}
+    
 </html>
