@@ -57,6 +57,9 @@ class Series
     #[ORM\ManyToMany(targetEntity: "Country", mappedBy: "series")]
     private $country = array();
 
+    #[ORM\OneToMany(targetEntity: "Season", mappedBy: "series")]
+    private $seasons;
+
     /**
      * Constructor
      */
@@ -66,6 +69,7 @@ class Series
         $this->genre = new \Doctrine\Common\Collections\ArrayCollection();
         $this->actor = new \Doctrine\Common\Collections\ArrayCollection();
         $this->country = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->seasons = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     public function getId(): ?int
@@ -257,6 +261,46 @@ class Series
     {
         return $this->country;
     }
+    /*
+  
+ 
+    public function addCountry(Country $country): self
+    {
+        if (!$this->country->contains($country)) {
+            $this->country->add($country);
+            $country->addSeries($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCountry(Country $country): self
+    {
+        if ($this->country->removeElement($country)) {
+            $country->removeSeries($this);
+        }
+
+        return $this;
+    }
+
+    */
+
+    public function getPoster()
+    {
+        return $this->poster;
+    }
+
+    public function setPoster($poster): self
+    {
+        $this->poster = $poster;
+
+        return $this;
+    }
+
+    public function getSeasons() : Collection
+    {
+        return $this->seasons;
+    }
 
     public function addCountry(Country $country): self
     {
@@ -277,14 +321,24 @@ class Series
         return $this;
     }
 
-    public function getPoster()
+    public function addSeason(Season $season): self
     {
-        return $this->poster;
+        if (!$this->seasons->contains($season)) {
+            $this->seasons->add($season);
+            $season->setSeries($this);
+        }
+
+        return $this;
     }
 
-    public function setPoster($poster): self
+    public function removeSeason(Season $season): self
     {
-        $this->poster = $poster;
+        if ($this->seasons->removeElement($season)) {
+            // set the owning side to null (unless already changed)
+            if ($season->getSeries() === $this) {
+                $season->setSeries(null);
+            }
+        }
 
         return $this;
     }

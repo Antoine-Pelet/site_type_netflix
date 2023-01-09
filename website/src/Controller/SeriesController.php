@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Series;
 use App\Form\SeriesType;
+use App\Entity\UserSeries;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,17 +18,18 @@ use App\Entity\Appointments;
 // include de la pagination
 use Knp\Component\Pager\PaginatorInterface;
 
+
 class SeriesController extends AbstractController
 {
-    #[Route('/', name: 'app_series_index', methods: ['GET'])]
+    #[Route('/series', name: 'app_series_index', methods: ['GET'])]
     public function index(Request $request, PaginatorInterface $paginator, EntityManagerInterface $entityManager): Response
     {
-
         $appointmentsRepository = $entityManager->getRepository(Series::class);
 
-        $allAppointmentsQuery = $appointmentsRepository->createQueryBuilder('p')
+        $allAppointmentsQuery = $appointmentsRepository->createQueryBuilder('s')
+        ->orderBy('s.id', 'ASC')
         ->getQuery();
-    
+
         // Paginate the results of the query
         $appointments = $paginator->paginate(
             // Doctrine Query, not results
@@ -35,32 +37,12 @@ class SeriesController extends AbstractController
             // Define the page parameter
             $request->query->getInt('page', 1),
             // Items per page
-            5
+            10
         );
 
 
         return $this->render('series/index.html.twig', [
             'series' => $appointments,
-        ]);
-    }
-
-    #[Route('/new', name: 'app_series_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $series = new Series();
-        $form = $this->createForm(SeriesType::class, $series);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($series);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_series_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->renderForm('series/new.html.twig', [
-            'series' => $series,
-            'form' => $form,
         ]);
     }
 
@@ -105,5 +87,21 @@ class SeriesController extends AbstractController
         }
 
         return $this->redirectToRoute('app_series_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{id}/follow', name: 'app_series_like', methods: ['GET'])]
+    public function like(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        /** @var \App\Entity\User */
+        $user = $this->getUser();
+
+        $series = $entityManager->getRepository(Series::class)->find($request->get('id'));
+
+        $user->addSeries($series);
+
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_series_index', [], Response::HTTP_SEE_OTHER);
+
     }
 }
