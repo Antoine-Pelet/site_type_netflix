@@ -262,8 +262,8 @@ class Series
         return $this->country;
     }
     /*
-  
- 
+
+
     public function addCountry(Country $country): self
     {
         if (!$this->country->contains($country)) {
@@ -297,7 +297,7 @@ class Series
         return $this;
     }
 
-    public function getSeasons() : Collection
+    public function getSeasons(): Collection
     {
         return $this->seasons;
     }

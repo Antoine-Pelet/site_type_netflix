@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Series;
 use App\Form\SeriesType;
-use App\Entity\UserSeries;
+use App\Entity\Episode;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -102,6 +102,20 @@ class SeriesController extends AbstractController
         $entityManager->flush();
 
         return $this->redirectToRoute('app_series_index', [], Response::HTTP_SEE_OTHER);
+    }
 
+    #[Route('/{id}/vu', name: 'app_series_vu', methods: ['GET'])]
+    public function vu(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        /** @var \App\Entity\User */
+        $user = $this->getUser();
+
+        $episode = $entityManager->getRepository(Episode::class)->find($request->get('id'));
+
+        $user->addEpisode($episode);
+
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_series_index', [], Response::HTTP_SEE_OTHER);
     }
 }
