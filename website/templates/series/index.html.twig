@@ -9,54 +9,29 @@
 {% block body %}
     <h1>Series index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Plot</th>
-                <th>Imdb</th>
-                <th>Poster</th>
-                <th>Director</th>
-                <th>YoutubeTrailer</th>
-                <th>Awards</th>
-                <th>YearStart</th>
-                <th>YearEnd</th>
-                <th>actions</th>
-                <th>like</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for s in series %}
-                <tr>
-                    <td>{{ s.id }}</td>
-                    <td>{{ s.title }}</td>
-                    <td>{{ s.plot }}</td>
-                    <td>{{ s.imdb }}</td>
-                    <td><img src="{{ path('app_series_poster', {'id': s.id}) }}"></td>
-                    <td>{{ s.director }}</td>
-                    <td>{{ s.youtubeTrailer }}</td>
-                    <td>{{ s.awards }}</td>
-                    <td>{{ s.yearStart }}</td>
-                    <td>{{ s.yearEnd }}</td>
-                    <td>
-                        <a href="{{ path('app_series_show', {'id': s.id}) }}">show</a>
-                    </td>
-                    {% if app.user %}
-                    <td>
-                        <a href="{{ path('app_series_like', {'id': s.id}) }}">pds</a>
-                    </td>
-                    {% endif %}
-                </tr>
-            {#   
-            {% else %}
-                <tr>
-                    <td colspan="11">no records found</td>
-                </tr>
-            #}
-        {% endfor %}
-        </tbody>
-    </table>
+    
+        <div class="listes">
+            {% for s in series %}
+                <table class="table">   
+                    <th scope="rowgroup">
+                        <img src="{{ path('app_series_poster', {'id': s.id}) }}">
+                    </th>
+
+                    <tr>
+                        <td>
+                            {{ s.title }}
+                            <a href="{{ path('app_series_show', {'id': s.id}) }}">show</a>
+                            {% if app.user %}
+                                <td>
+                                    <a href="{{ path('app_series_like', {'id': s.id}) }}">pds</a>
+                                </td>
+                            {% endif %}
+                        </td>
+                    </tr>
+                </table>        
+            {% endfor %}
+        </div>
+    
     <div class="navigation">
             {{ knp_pagination_render(series) }}
     </div>
