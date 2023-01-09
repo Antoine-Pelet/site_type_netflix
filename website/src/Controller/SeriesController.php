@@ -108,9 +108,9 @@ class SeriesController extends AbstractController
     public function listLikedSeries(Request $request, EntityManagerInterface $entityManager): Response
     {
 
+        /** @var \App\Entity\User */
         $user = $this->getUser();
 
-                /** @var \App\Entity\Series */
         $likedSeries = $user->getSeries();
 
         return $this->render('liked/like.html.twig', [
@@ -122,6 +122,7 @@ class SeriesController extends AbstractController
     public function viewed(Request $request, EntityManagerInterface $entityManager): Response
     {
 
+        /** @var \App\Entity\User */
         $user = $this->getUser();
 
         $viewedEpisode = $user->getEpisode();

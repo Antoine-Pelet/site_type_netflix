@@ -11,27 +11,14 @@
         <div class="listes">
             {% for e in episodes %}
                 <table class="table">   
-                    <th scope="rowgroup">
-                        <img src="{{ path('app_series_poster', {'id': e.getSeason().id}) }}">
-                    </th>
-
                     <tr>
                         <td>
-                            {{ s.title }}
-                            <a href="{{ path('app_series_show', {'id': s.id}) }}">show</a>
-                            {% if app.user %}
-                                <td>
-                                    <a href="{{ path('app_series_like', {'id': s.id}) }}">like</a>
-                                </td>
-                            {% endif %}
+                            {{ e.title }}
+                            <a href="{{ path('app_series_show', {'id': e.getSeason().getSeries().getId()}) }}">show</a>
                         </td>
                     </tr>
                 </table>        
             {% endfor %}
         </div>
-    
-    <div class="navigation">
-            {{ knp_pagination_render(series) }}
-    </div>
 
 {% endblock %}
