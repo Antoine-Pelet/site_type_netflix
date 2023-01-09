@@ -8,7 +8,10 @@
 
 {% block body %}
     <h1>Series index</h1>
-
+    
+    <div class="navigation">
+            {{ knp_pagination_render(series) }}
+    </div>
     
         <div class="listes">
             {% for s in series %}
