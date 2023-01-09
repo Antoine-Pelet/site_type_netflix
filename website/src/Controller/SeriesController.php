@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Series;
 use App\Form\SeriesType;
-use App\Entity\UserSeries;
+use App\Entity\Episode;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,7 +37,7 @@ class SeriesController extends AbstractController
             // Define the page parameter
             $request->query->getInt('page', 1),
             // Items per page
-            10
+            25
         );
 
 
@@ -102,19 +102,32 @@ class SeriesController extends AbstractController
         $entityManager->flush();
 
         return $this->redirectToRoute('app_series_index', [], Response::HTTP_SEE_OTHER);
-
     }
 
-    #[Route('/series/{app.user.name}', name: 'app_liked_series', methods: ['GET'])]
+    #[Route('/series/like/list', name: 'app_liked_series', methods: ['GET'])]
     public function listLikedSeries(Request $request, EntityManagerInterface $entityManager): Response
     {
 
         $user = $this->getUser();
 
+                /** @var \App\Entity\Series */
         $likedSeries = $user->getSeries();
 
-        return $this->render('liked/index.html.twig', [
+        return $this->render('liked/like.html.twig', [
             'series' => $likedSeries,
+        ]);
+    }
+
+    #[Route('/series/episode/list', name: 'app_view_episodes', methods: ['GET'])]
+    public function viewed(Request $request, EntityManagerInterface $entityManager): Response
+    {
+
+        $user = $this->getUser();
+
+        $viewedEpisode = $user->getEpisode();
+
+        return $this->render('liked/view.html.twig', [
+            'episodes' => $viewedEpisode,
         ]);
     }
 
@@ -122,5 +135,20 @@ class SeriesController extends AbstractController
     public function dislike(Request $request, EntityManagerInterface $entityManager): Response
     {
     
+    }
+
+    #[Route('/{id}/vu', name: 'app_series_vu', methods: ['GET'])]
+    public function vu(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        /** @var \App\Entity\User */
+        $user = $this->getUser();
+
+        $episode = $entityManager->getRepository(Episode::class)->find($request->get('id'));
+
+        $user->addEpisode($episode);
+
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_series_index', [], Response::HTTP_SEE_OTHER);
     }
 }

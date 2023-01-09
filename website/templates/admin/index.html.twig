@@ -30,7 +30,7 @@
                     </td>
                 {% else %}
                     <td>
-                        <p>Already Admin</p>
+                        <a href="{{ path('app_admin_edit2', {'id': user.id}) }}">dépromouvoir</a>
                     </td>
                 {% endif %}
             </tr>

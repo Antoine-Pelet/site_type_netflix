@@ -1,10 +1,15 @@
 .example-wrapper { 
-    display: flex;  
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
     max-width: 800px; 
     width: 50%; 
     font: 18px/1.5 sans-serif; 
-    margin-top: 50vh;
-    margin-bottom: 50vh;
+    height: 100vh;
+}
+
+.example-wrapper p {
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 body { 
@@ -12,3 +17,29 @@ body {
     background-size: cover; 
     background-repeat:no-repeat; 
 }
+
+.button {
+    border: none;
+    border-radius: 25%;
+    color: white;
+    padding: 10% 20%;
+    text-align: center;
+    text-decoration: none;
+    display: flex;
+    font-size: 26px;
+    margin: 4px 2px;
+    cursor: pointer;
+    background-color: blue;
+  }
+
+  .acceuil{
+    display: flex;
+    justify-content: space-around;
+  }
+
+  .navi{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+  }
+

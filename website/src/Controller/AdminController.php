@@ -34,22 +34,17 @@ class AdminController extends AbstractController
         $entityManager->flush();
 
         return $this->redirectToRoute('app_admin_index', [], Response::HTTP_SEE_OTHER);
+    }
 
-        /*
-        $form = $this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
+    #[Route('/{id}/edit2', name: 'app_admin_edit2', methods: ['GET', 'POST'])]
+    public function edit2(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    {
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
+        $user->setAdmin(0);
 
-            return $this->redirectToRoute('app_admin_index', [], Response::HTTP_SEE_OTHER);
-        }
+        $entityManager->flush();
 
-        return $this->renderForm('admin/edit.html.twig', [
-            'user' => $user,
-            'form' => $form,
-        ]);
-        */
+        return $this->redirectToRoute('app_admin_index', [], Response::HTTP_SEE_OTHER);
     }
 
 }

@@ -9,10 +9,10 @@
 {% block body %}
     <h1>Series index</h1>    
         <div class="listes">
-            {% for s in series %}
+            {% for e in episodes %}
                 <table class="table">   
                     <th scope="rowgroup">
-                        <img src="{{ path('app_series_poster', {'id': s.id}) }}">
+                        <img src="{{ path('app_series_poster', {'id': e.getSeason().id}) }}">
                     </th>
 
                     <tr>
