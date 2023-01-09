@@ -17,13 +17,12 @@
             {% for s in series %}
                 <table class="table">   
                     <th scope="rowgroup">
-                        <img src="{{ path('app_series_poster', {'id': s.id}) }}">
+                         <a href="{{ path('app_series_show', {'id': s.id}) }}"><img src="{{ path('app_series_poster', {'id': s.id}) }}"></a>
                     </th>
 
                     <tr>
                         <td>
                             {{ s.title }}
-                            <a href="{{ path('app_series_show', {'id': s.id}) }}">show</a>
                             {% if app.user %}
                                 <td>
                                     <a href="{{ path('app_series_like', {'id': s.id}) }}">pds</a>
