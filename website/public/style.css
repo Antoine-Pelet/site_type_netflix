@@ -41,6 +41,30 @@ nav {
     color: black;
   }
 
+  
+td,th {
+    padding: 10px 10px;
+}
+
+td {
+    text-align: center;
+}
+
+table{
+  display: flex;
+  width: 20%;
+}
+
+.listes{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.button {
+  cursor: pointer;
+  background-color: blue;
+}
+
 
   footer {
     display: flex;
@@ -78,4 +102,59 @@ nav {
   
   footer ul a:hover {
     opacity:1;
+  }
+  
+  footer .social {
+    text-align:right;
+  }
+  
+  @media (max-width:767px) {
+    footer .item {
+      text-align:center;
+      padding-bottom:20px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    footer .social {
+      text-align:center;
+    }
+  }
+  
+  footer .social > a {
+    font-size:24px;
+    width:40px;
+    height:40px;
+    line-height:40px;
+    display:inline-block;
+    text-align:center;
+    border-radius:50%;
+    border:1px solid #ccc;
+    margin-left:10px;
+    margin-top:22px;
+    color:inherit;
+    opacity:0.75;
+  }
+  
+  footer .em.social > a:hover {
+    opacity:0.9;
+  }
+  
+  @media (max-width:991px) {
+    footer .social > a {
+      margin-top:40px;
+    }
+  }
+  
+  @media (max-width:767px) {
+    footer .social > a {
+      margin-top:10px;
+    }
+  }
+  
+  footer .copyright {
+    margin-top:14px;
+    margin-bottom:0;
+    font-size:13px;
+    opacity:0.6;
   }
