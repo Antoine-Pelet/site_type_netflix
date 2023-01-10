@@ -1,45 +1,33 @@
-.example-wrapper { 
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    max-width: 800px; 
-    width: 50%; 
-    font: 18px/1.5 sans-serif; 
-    height: 100vh;
-}
-
 .example-wrapper p {
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
-body { 
-    background-image : url("ressources/main.jpg"); 
-    background-size: cover; 
-    background-repeat:no-repeat; 
+background-color: rgba(0, 0, 0, 0.5);
 }
 
 .button {
-    border: none;
-    border-radius: 25%;
-    color: white;
-    padding: 10% 20%;
-    text-align: center;
-    text-decoration: none;
-    display: flex;
-    font-size: 26px;
-    margin: 4px 2px;
-    cursor: pointer;
-    background-color: blue;
-  }
+  border: none;
+  border-radius: 25%;
+  color: white;
+  padding: 10% 20%;
+  text-align: center;
+  text-decoration: none;
+  display: flex;
+  font-size: 26px;
+  margin: 4px 2px;
+  cursor: pointer;
+  background-color: blue;
+}
 
-  .acceuil{
-    display: flex;
-    justify-content: space-around;
-  }
+.acceuil{
+  display: flex;
+  justify-content: space-around;
+}
 
-  .navi{
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-  }
+.navi{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
 
+.button {
+  cursor: pointer;
+  background-color: blue;
+}
