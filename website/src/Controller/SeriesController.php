@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\Persistence\ManagerRegistry;
 
 
 
@@ -153,15 +154,32 @@ class SeriesController extends AbstractController
     }
 
     #[Route('/{id}/vu', name: 'app_series_vu', methods: ['GET'])]
-    public function vu(Request $request, EntityManagerInterface $entityManager): Response
+    public function vu(Request $request, EntityManagerInterface $entityManager, ManagerRegistry $doctrine): Response
     {
         /** @var \App\Entity\User */
         $user = $this->getUser();
-
-        $episode = $entityManager->getRepository(Episode::class)->find($request->get('id'));
         
+        $epi = $entityManager->getRepository(Episode::class)->find($request->get('id'));
 
-        $user->addEpisode($episode);
+        $episode = $entityManager->getRepository(Episode::class)->findBy(['season' => $epi->getSeason(), 'number' => range(1, $request->get('epi_number'))]);
+
+        foreach($episode as $e) {
+            $user->addEpisode($e);
+        }
+
+        $serie = $epi->getSeason()->getSeries();
+
+        if($request->get('season_number') != 1) {
+            foreach($serie->getSeasons() as $seas) {
+                if($seas->getNumber() < $request->get('season_number')) {
+                    $episode = $entityManager->getRepository(Episode::class)->findBy(['season' => $seas]);
+                    foreach($episode as $e) {
+                        $user->addEpisode($e);
+                    }
+                }
+            }
+        }
+
 
         $entityManager->flush();
 
