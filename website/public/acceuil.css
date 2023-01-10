@@ -1,5 +1,21 @@
+.example-wrapper { 
+  display: flex; 
+  justify-content: center;
+  flex-direction: column;
+  max-width: 800px; 
+  height: 75vh;
+  font: 18px/1.5 sans-serif; 
+}
+
 .example-wrapper p {
 background-color: rgba(0, 0, 0, 0.5);
+}
+
+body { 
+  background-image : url("/ressources/main.jpg"); 
+  background-size: cover; 
+  background-repeat:no-repeat; 
+  color: white;
 }
 
 .button {
@@ -25,9 +41,4 @@ background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   flex-direction: column;
-}
-
-.button {
-  cursor: pointer;
-  background-color: blue;
 }
