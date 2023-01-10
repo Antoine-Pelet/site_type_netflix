@@ -59,12 +59,13 @@
             {% for s in series.seasons %}
                 <tr>
 
-                    <td>Saison numéro {{ cpt }}</td>   
+                    <td>Saison numéro {{ s.number }}</td>   
                 </tr>
                 <tr>
                     {% for epi in s.episodes %}
-                        <td>{{ epi.title }}</td> 
-                        <td>{{ epi.number }}</td> 
+                        <td>TITRE :{{ epi.title }}</td> 
+                        <td>NUMERO DE L'EPISODE :{{ epi.number }}</td> 
+                        <td>ID EPISODE :{{ epi.id }}</td> 
                         <td><a href="{{ path('app_series_vu', {'id': epi.id}) }}">vu</a></td>    
                     {% endfor %}
                 </tr>
