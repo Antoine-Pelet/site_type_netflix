@@ -104,7 +104,7 @@ class SeriesController extends AbstractController
         return $this->redirectToRoute('app_series_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/series/{id}', name: 'app_series_dislike', methods: ['GET'])]
+    #[Route('/series/{id}/dislike', name: 'app_series_dislike', methods: ['GET'])]
     public function dislike(Request $request, EntityManagerInterface $entityManager): Response
     {
         /** @var \App\Entity\User */
