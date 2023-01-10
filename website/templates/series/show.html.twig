@@ -66,7 +66,7 @@
                         <td>TITRE :{{ epi.title }}</td> 
                         <td>NUMERO DE L'EPISODE :{{ epi.number }}</td> 
                         <td>ID EPISODE :{{ epi.id }}</td> 
-                        <td><a href="{{ path('app_series_vu', {'id': epi.id}) }}">vu</a></td>    
+                        <td><a href="{{ path('app_series_vu', {'id': epi.id, 'season_id': s.number, 'epi_number': epi.number}) }}">vu</a></td>    
                     {% endfor %}
                 </tr>
                 {% set cpt = cpt + 1 %}
