@@ -20,20 +20,20 @@
                 <td>{{ series.plot }}</td>
             </tr>
             <tr>
-                <th>Imdb</th>
-                <td>{{ series.imdb }}</td>
+                <th>Rate</th>
+                <td>{{ series.rate.value }}</td>
             </tr>
             <tr>
                 <th>Poster</th>
                 <td><img src="{{ path('app_series_poster', {'id': series.id}) }}"></td>
             </tr>
             <tr>
-                <th>Director</th>
-                <td>{{ series.director }}</td>
-            </tr>
-            <tr>
                 <th>YoutubeTrailer</th>
-                <td>{{ series.youtubeTrailer }}</td>
+                {% set debut = "https://www.youtube.com/embed/" %}
+                {% set id = series.youtubeTrailer|split('=') %}
+                {% set video = "%s%s" | format(debut, id[1]) %}
+                <td><iframe width="560" height="315" src="{{video}}" title="YouTube video player" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></td>
             </tr>
             <tr>
                 <th>Awards</th>
@@ -58,11 +58,13 @@
             {% set cpt = 1 %}
             {% for s in series.seasons %}
                 <tr>
+
                     <td>Saison numéro {{ cpt }}</td>   
                 </tr>
                 <tr>
                     {% for epi in s.episodes %}
                         <td>{{ epi.title }}</td> 
+                        <td>{{ epi.number }}</td> 
                         <td><a href="{{ path('app_series_vu', {'id': epi.id}) }}">vu</a></td>    
                     {% endfor %}
                 </tr>
