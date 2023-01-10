@@ -10,18 +10,29 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+use Knp\Component\Pager\PaginatorInterface;
+
 #[Route('/admin')]
 class AdminController extends AbstractController
 {
     #[Route('/', name: 'app_admin_index', methods: ['GET'])]
-    public function index(EntityManagerInterface $entityManager): Response
+    public function index(Request $request, EntityManagerInterface $entityManager, PaginatorInterface $paginator): Response
     {
         $users = $entityManager
             ->getRepository(User::class)
-            ->findAll();
+            ->findBy(array(), array('id' => 'desc'));
+        
+        $appointments = $paginator->paginate(
+            // Doctrine Query, not results
+            $users,
+            // Define the page parameter
+            $request->query->getInt('page', 1),
+            // Items per page
+            2
+        );
 
         return $this->render('admin/index.html.twig', [
-            'users' => $users,
+            'users' => $appointments,
         ]);
     }
 
@@ -41,6 +52,15 @@ class AdminController extends AbstractController
     {
 
         $user->setAdmin(0);
+
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_admin_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{id}/incarne', name: 'app_admin_incarne', methods: ['GET', 'POST'])]
+    public function incarne(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    {
 
         $entityManager->flush();
 

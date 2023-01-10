@@ -58,6 +58,7 @@ class Series
     private $country = array();
 
     #[ORM\OneToMany(targetEntity: "Season", mappedBy: "series")]
+    #[ORM\OrderBy(["number" => "ASC"])]
     private $seasons;
 
     #[ORM\OneToOne(targetEntity: "ExternalRating", mappedBy: "series")]
