@@ -8,7 +8,12 @@
 
 {% block body %}
     <h1>Series index</h1>
-    
+
+    <form method="GET">
+        <input type="text" name='title' id='title' placeholder="Search..">
+        <button type="submit">Submit</button>
+    </form>
+
     <div class="navigation">
             {{ knp_pagination_render(series) }}
     </div>

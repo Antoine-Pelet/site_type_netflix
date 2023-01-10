@@ -26,14 +26,19 @@ class SeriesController extends AbstractController
     {
         $appointmentsRepository = $entityManager->getRepository(Series::class);
 
-        $allAppointmentsQuery = $appointmentsRepository->createQueryBuilder('s')
+
+        $appointmentsRepository = $appointmentsRepository->createQueryBuilder('s')
+        ->orderBy('s.title', 'ASC')
+        ->where('s.title LIKE :search')
+        ->setParameter('search', '%' . $request->query->get('title') . '%')
         ->orderBy('s.id', 'ASC')
         ->getQuery();
+
 
         // Paginate the results of the query
         $appointments = $paginator->paginate(
             // Doctrine Query, not results
-            $allAppointmentsQuery,
+            $appointmentsRepository,
             // Define the page parameter
             $request->query->getInt('page', 1),
             // Items per page
@@ -154,6 +159,7 @@ class SeriesController extends AbstractController
         $user = $this->getUser();
 
         $episode = $entityManager->getRepository(Episode::class)->find($request->get('id'));
+        
 
         $user->addEpisode($episode);
 
