@@ -24,9 +24,11 @@
                         <td>
                             {{ s.title }}
                             {% if app.user %}
-                                <td>
+                                {% if app.user.series.contains(s) %}
+                                    <a href="{{ path('app_series_dislike', {'id': s.id}) }}">dislike</a>
+                                {% else %}
                                     <a href="{{ path('app_series_like', {'id': s.id}) }}">like</a>
-                                </td>
+                                {% endif %}
                             {% endif %}
                         </td>
                     </tr>

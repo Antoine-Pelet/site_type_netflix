@@ -104,8 +104,23 @@ class SeriesController extends AbstractController
         return $this->redirectToRoute('app_series_index', [], Response::HTTP_SEE_OTHER);
     }
 
+    #[Route('/series/{id}', name: 'app_series_dislike', methods: ['GET'])]
+    public function dislike(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        /** @var \App\Entity\User */
+        $user = $this->getUser();
+
+        $series = $entityManager->getRepository(Series::class)->find($request->get('id'));
+        
+        $user->removeSeries($series);
+        
+        $entityManager->flush();
+        
+        return $this->redirectToRoute('app_series_index', [], Response::HTTP_SEE_OTHER);
+    }
+
     #[Route('/series/like/list', name: 'app_liked_series', methods: ['GET'])]
-    public function listLikedSeries(Request $request, EntityManagerInterface $entityManager): Response
+    public function listLikedSeries(): Response
     {
 
         /** @var \App\Entity\User */
@@ -119,7 +134,7 @@ class SeriesController extends AbstractController
     }
 
     #[Route('/series/episode/list', name: 'app_view_episodes', methods: ['GET'])]
-    public function viewed(Request $request, EntityManagerInterface $entityManager): Response
+    public function viewed(): Response
     {
 
         /** @var \App\Entity\User */
@@ -130,12 +145,6 @@ class SeriesController extends AbstractController
         return $this->render('liked/view.html.twig', [
             'episodes' => $viewedEpisode,
         ]);
-    }
-
-    #[Route('/series/{app.user.name}', name: 'app_series_dislike', methods: ['GET'])]
-    public function dislike(Request $request, EntityManagerInterface $entityManager): Response
-    {
-    
     }
 
     #[Route('/{id}/vu', name: 'app_series_vu', methods: ['GET'])]
