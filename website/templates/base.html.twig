@@ -31,34 +31,34 @@
 				</li>
 
 
-                {% if app.user %}
+				{% if app.user %}
 					<li>
-					<div class="container">
-						<div class="row">
-							<div class="dropdown">
-								<a class="nav-link dropdown-toggle" href="#" role="button" id="deroulanta" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Séries</a>
-								<div class="dropdown-menu" aria-labelledby="deroulanta">
-									<a class="dropdown-item" href="{{ path('app_series_index') }}">Toutes les Series</a>
-									<a class="dropdown-item" href="{{ path('app_liked_series') }}">Séries likés</a>
-									<a class="dropdown-item" href="{{ path('app_view_episodes') }}">Séries regardées</a>
+						<div class="container">
+							<div class="row">
+								<div class="dropdown">
+									<a class="nav-link dropdown-toggle" href="#" role="button" id="deroulanta" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Séries</a>
+									<div class="dropdown-menu" aria-labelledby="deroulanta">
+										<a class="dropdown-item" href="{{ path('app_series_index') }}">Toutes les Series</a>
+										<a class="dropdown-item" href="{{ path('app_liked_series') }}">Séries likés</a>
+										<a class="dropdown-item" href="{{ path('app_view_episodes') }}">Séries regardées</a>
+									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-				</li>
-                -
-                <li>
-                <a href="{{ path('app_series_index') }}">Utilisateurs</a>
-                </li>
-                -
-                [{{ app.user.name }}]
+					</li>
+					-
+					<li>
+						<a href="{{ path('app_series_index') }}">Utilisateurs</a>
+					</li>
+					-
+																									                [{{ app.user.name }}]
 					<li>
 						<a href="{{ path('app_logout') }}">Déconnexion</a>
 					</li>
 				{% else %}
-                    <a class="dropdown-item" href="{{ path('app_series_index') }}">Toutes les Series</a>
-                    -
-                    <li>
+					<a class="dropdown-item" href="{{ path('app_series_index') }}">Toutes les Series</a>
+					-
+					<li>
 						<a href="{{ path('app_register') }}">Inscription</a>
 					</li>
 					-
@@ -73,20 +73,52 @@
 	{% block body %}{% endblock %}
 
 	{% block footer %}
-		<footer>
-			<ul class="list-inline">
-				<li class="list-inline-item">
-					<a href="{{ path('app_default') }}">Accueil</a>
-				</li>
-				<li class="list-inline-item">
-					<a href="">Series</a>
-				</li>
-				<li class="list-inline-item">
-					<a href="">Admin</a>
-				</li>
-			</ul>
-			<a href="/ressources/cguwatchlist.pdf" target="_blank">CGU</a>
-			<p class="copyright">WatchList © Copyright 2023</p>
+		<footer class="footer">
+			<div class="row">
+				<div class="footer-col">
+					<h4>WatchList</h4>
+					<ul>
+						<li><a href="#">About Us</a></li>
+						<li><a href="/ressources/cguwatchlist.pdf" target="_blank">Privacy Policy</a></li>
+					</ul>
+				</div>
+				<div class="footer-col">
+					<h4>Navigate</h4>
+					<ul>
+						<li><a href="{{ path('app_default') }}">Accueil</a></li>
+						<li><a href="{{ path('app_series_index') }}">Séries</a></li>
+						<li><a href="{{ path('app_admin_index') }}">Users</a></li>
+					</ul>
+				</div>
+				<div class="footer-col">
+					<h4>follow us</h4>
+					<div class="social-links">
+						<a href="#">
+							<i class="fab fa-facebook-f"></i>
+						</a>
+						<a href="#">
+							<i class="fab fa-twitter"></i>
+						</a>
+						<a href="#">
+							<i class="fab fa-instagram"></i>
+						</a>
+						<a href="#">
+							<i class="fab fa-linkedin-in"></i>
+						</a>
+					</div>
+				</div>
+			</div>
+			<div class="row line">
+				<div class="col-md-8 col-sm-6 col-xs-12 separated">
+					<p class="copyright-text">Copyright &copy; All Rights Reserved by
+						<a href="#">WatchList</a>.
+					</p>
+				</div>
+				<div class="col-md-8 col-sm-6 col-xs-12 separated year">
+					<p>2023
+					</p>
+				</div>
+			</div>
 		</footer>
 	{% endblock %}
 
