@@ -16,7 +16,7 @@ Utilisez __GitLab__ pour cloner le dépôt de votre application sur le serveur d
 ```bash
 # en ssh
 git clone git@gitlab-ce.iut.u-bordeaux.fr:lecopeaux/e7-dev-app.git
-# en html
+# ou en html
 git clone https://gitlab-ce.iut.u-bordeaux.fr/lecopeaux/e7-dev-app.git
 ```
 
@@ -31,6 +31,8 @@ symfony composer install
 5. Configurer l'accès à la base de données 
 
 Configurez les paramètres de connexion à la base de données de production dans le fichier __.env__ de votre application.
+comme ici:
+![](env.png)
 
 6. Mettre à jour la base de données
 
