@@ -34,28 +34,20 @@
         </nav>
     {% endblock %}
 
-                <footer>
-                    <ul class="list-inline">
-                        <li class="list-inline-item"><a href="#">Accueil</a></li>
-                        <li class="list-inline-item"><a href="#">Series</a></li>
-                        <li class="list-inline-item"><a href="#">Admin</a></li>
-                    </ul>
-                    <a href="/ressources/cguwatchlist.pdf" target="_blank">CGU</a>
-                    <p class="copyright">WatchList © Copyright 2023</p>
+{% block body %}
 
-                </footer>
-    </body>
 {% endblock %}
 
-    {% block footer %}
-        <footer>
-            <ul class="list-inline">
-                <li class="list-inline-item"><a href="{{ path('app_default') }}">Accueil</a></li>
-                <li class="list-inline-item"><a href="">Series</a></li>
-                <li class="list-inline-item"><a href="">Admin</a></li>
-            </ul>
-            <p class="copyright">WatchList © Copyright 2023</p>
-        </footer>
-    {% endblock %}
+{% block footer %}
+    <footer>
+        <ul class="list-inline">
+            <li class="list-inline-item"><a href="{{ path('app_default') }}">Accueil</a></li>
+            <li class="list-inline-item"><a href="">Series</a></li>
+            <li class="list-inline-item"><a href="">Admin</a></li>
+        </ul>
+        <a href="/ressources/cguwatchlist.pdf" target="_blank">CGU</a>
+        <p class="copyright">WatchList © Copyright 2023</p>
+    </footer>
+{% endblock %}
     
 </html>
