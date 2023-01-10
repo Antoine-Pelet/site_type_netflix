@@ -18,17 +18,23 @@ class AdminController extends AbstractController
     #[Route('/', name: 'app_admin_index', methods: ['GET'])]
     public function index(Request $request, EntityManagerInterface $entityManager, PaginatorInterface $paginator): Response
     {
-        $users = $entityManager
-            ->getRepository(User::class)
-            ->findBy(array(), array('id' => 'desc'));
-        
+        $users = $entityManager->getRepository(User::class);
+
+
+        $users = $users->createQueryBuilder('u')
+        ->orderBy('u.email', 'ASC')
+        ->where('u.email LIKE :search')
+        ->setParameter('search', '%' . $request->query->get('email') . '%')
+        ->getQuery();
+
+
         $appointments = $paginator->paginate(
             // Doctrine Query, not results
             $users,
             // Define the page parameter
             $request->query->getInt('page', 1),
             // Items per page
-            2
+            10
         );
 
         return $this->render('admin/index.html.twig', [
