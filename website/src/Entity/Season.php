@@ -25,6 +25,7 @@ class Season
     private $series;
 
     #[ORM\OneToMany(targetEntity: "Episode", mappedBy: "season")]
+    #[ORM\OrderBy(["number" => "ASC"])]
     private $episodes;
 
     /**
