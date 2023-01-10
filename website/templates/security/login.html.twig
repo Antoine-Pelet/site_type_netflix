@@ -19,51 +19,49 @@
   </div>
 {% endif %}
 
-<div class="container-fluid ps-md-0">
-  <div class="row g-0">
-    <div class="d-none d-md-flex col-md-4 col-lg-6 bg-image"></div>
-    <div class="col-md-8 col-lg-6">
-      <div class="login d-flex align-items-center py-5">
-        <div class="container">
-          <div class="row">
-            <div class="col-md-9 col-lg-8 mx-auto">
-              <h3 class="login-heading mb-4">Connectez-vous!</h3>
+  <div class="container-fluid ps-md-0">
+    <div class="row g-0">
+      <div class="d-none d-md-flex col-md-4 col-lg-6 bg-image"></div>
+      <div class="col-md-8 col-lg-6">
+        <div class="login d-flex align-items-center py-5">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-9 col-lg-8 mx-auto">
+                <h3 class="login-heading mb-4">Connectez-vous!</h3>
 
-              <!-- Sign In Form -->
-              <form>
-                <div class="form-floating mb-3">
-                  <input type="email" value="{{ last_username }}" id="floatingInput" name="email" class="form-control" autocomplete="email" required autofocus>
-                  <label for="floatingInput">Adresse Mail</label>
-                </div>
-
-                <div class="form-floating mb-3">
-                  <input type="password" name="password" id="floatingdInput" class="form-control" autocomplete="current-password" required>
-                  <label for="floatingdInput">Mot de passe</label>
-
-                </div>
-
-                <input type="hidden" name="_csrf_token"
-                value="{{ csrf_token('authenticate') }}"
-                >
-            
-                <div class="d-grid">
-                  <button class="btn btn-lg btn-primary" type="submit">
-                    Connexion
-                  </button>
-                  
-                  <div class="text-center mt-3">
-                    <a class="small" href=" {{ path('app_register') }} "> Pas encore de compte? Inscrivez-vous</a>
+                <!-- Sign In Form -->
+                <form>
+                  <div class="form-floating mb-3">
+                    <input type="email" value="{{ last_username }}" id="floatingInput" name="email" class="form-control" autocomplete="email" required autofocus>
+                    <label for="floatingInput">Adresse Mail</label>
                   </div>
-                </div>
-              </form>
+
+                  <div class="form-floating mb-3">
+                    <input type="password" name="password" id="floatingdInput" class="form-control" autocomplete="current-password" required>
+                    <label for="floatingdInput">Mot de passe</label>
+
+                  </div>
+
+                  <input type="hidden" name="_csrf_token"
+                  value="{{ csrf_token('authenticate') }}"
+                  >
+              
+                  <div class="d-grid">
+                    <button class="btn btn-lg btn-primary" type="submit">
+                      Connexion
+                    </button>
+                    
+                    <div class="text-center mt-3">
+                      <a class="small" href=" {{ path('app_register') }} "> Pas encore de compte? Inscrivez-vous</a>
+                    </div>
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
-
-
 </form>
 {% endblock %}
