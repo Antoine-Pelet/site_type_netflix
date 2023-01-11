@@ -29,6 +29,8 @@ class SeriesController extends AbstractController
 
         $appointmentsRepository = $appointmentsRepository->createQueryBuilder('s')
         ->orderBy('s.title', 'ASC')
+        ->setFirstResult(0+25*($request->query->getInt('page', 1)-1))
+        ->setMaxResults(25)
         ->where('s.title LIKE :search')
         ->setParameter('search', '%' . $request->query->get('title') . '%')
         ->orderBy('s.id', 'ASC')
