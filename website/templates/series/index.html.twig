@@ -15,7 +15,7 @@
         <button type="submit">Submit</button>
     </form>
 
-    <div class="navigation">
+    <div class="navigation d-flex justify-content-center">
             {{ knp_pagination_render(series) }}
     </div>
         <div class="listeseries">
@@ -39,7 +39,8 @@
                 </table>        
             {% endfor %}
         </div>
-    <div class="navigation">
+    
+    <div class="navigation d-flex justify-content-center">
             {{ knp_pagination_render(series) }}
     </div>
 {% endblock %}
