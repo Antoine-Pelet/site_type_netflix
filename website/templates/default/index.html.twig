@@ -14,6 +14,8 @@
 <body>
     <div class="acceuil">
         <div class="example-wrapper">
+            <span>WATCHLIST</span>
+            <span>#1 Best Streaming Website</span>
             <p>
                 WatchList est le site idéal pour tous les amateurs de séries ! 
                 Avec WatchList, vous pouvez explorer une liste complète de séries, 
@@ -21,15 +23,14 @@
                 Grâce à notre interface intuitive, vous pouvez facilement suivre votre progression et découvrir de nouvelles séries passionnantes. 
                 Alors qu'attendez-vous ? Inscrivez-vous dès maintenant sur WatchList et commencez votre voyage dans le monde passionnant des séries !
             </p>
-        </div>
-        <div class="navi">
-            {% if not app.user %}
-                <button class="button conn" onclick="location.href='{{ path('app_login') }}'">Connectez-vous</button>
-                <p class="Inscr">Pas de compte? <a href="{{ path('app_register') }}">Inscrivez-vous</a></p>
+            {% if app.user %}
+                <button class="button" onclick="location.href='{{ path('app_series_index') }}'">Voir les séries</button>
+            {% else %}
+                <button class="button" onclick="location.href='{{ path('app_login') }}'">Connectez-vous →</button>
+                <p class="Inscr">Pas de compte ?  <a href="{{ path('app_register') }}">Inscrivez-vous !</a></p>
             {% endif %}
-            <button class="button" onclick="location.href='{{ path('app_series_index') }}'">Voir les séries</button>
+
         </div>
     </div>
-
 </body>
 {% endblock %}
