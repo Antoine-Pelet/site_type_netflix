@@ -1,154 +1,25 @@
-body {
-    background-color: #1d1d1d;
-  }
-  
-  
-  nav {
-    background-color: #333;
-    color: #fff;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 20px;
-  }
-  
-  nav ul {
-    list-style: none;
-    display: flex;
-    margin: 0;
-    padding: 0;
-  }
-  
-  nav li {
-    margin: 0 10px;
-  }
-  
-  nav a {
-    color: #fff;
-    text-decoration: none;
-    font-size: 18px;
-  }
-  
-  nav a:hover {
-    color: #ccc;
-  }
-  
-  .login {
-    min-height: 100vh;
-  }
-  
-  .bg-image {
-    background-image: url('ressources/illuTV.png');
-    background-size: cover;
-    background-position: center;
-  }
-  
-  .login-heading {
-    font-weight: 300;
-  }
-  
-  .btn-login {
-    font-size: 0.9rem;
-    letter-spacing: 0.05rem;
-    padding: 0.75rem 1rem;
-  }
-  
-  .mx-auto{
-    background-color: #F4F2EC;
-    padding: 50px;
-    border-radius: 25px;
-  }
+.login {
+  min-height: 100vh;
+}
 
+.bg-image {
+  background-image: url('ressources/illuTV.png');
+  background-size: cover;
+  background-position: center;
+}
 
-  footer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    background-color: #333;
-  }
+.login-heading {
+  font-weight: 300;
+}
 
-  .copyright {
-    font-size:15px;
-    color:#aaa;
-  }
+.btn-login {
+  font-size: 0.9rem;
+  letter-spacing: 0.05rem;
+  padding: 0.75rem 1rem;
+}
 
-  footer ul {
-    padding:0;
-    list-style:none;
-    text-align:center;
-    font-size:21px;
-    line-height:1.6;
-
-  }
-  
-  footer li {
-    padding:0 10px;
-    display: inline;
-  }
-  
-  footer ul a {
-    color:inherit;
-    text-decoration:none;
-    opacity:0.8;
-    color:rgb(199, 191, 191);
-  }
-  
-  footer ul a:hover {
-    opacity:1;
-  }
-  
-  footer .social {
-    text-align:right;
-  }
-  
-  @media (max-width:767px) {
-    footer .item {
-      text-align:center;
-      padding-bottom:20px;
-    }
-  }
-  
-  @media (max-width: 768px) {
-    footer .social {
-      text-align:center;
-    }
-  }
-  
-  footer .social > a {
-    font-size:24px;
-    width:40px;
-    height:40px;
-    line-height:40px;
-    display:inline-block;
-    text-align:center;
-    border-radius:50%;
-    border:1px solid #ccc;
-    margin-left:10px;
-    margin-top:22px;
-    color:inherit;
-    opacity:0.75;
-  }
-  
-  footer .em.social > a:hover {
-    opacity:0.9;
-  }
-  
-  @media (max-width:991px) {
-    footer .social > a {
-      margin-top:40px;
-    }
-  }
-  
-  @media (max-width:767px) {
-    footer .social > a {
-      margin-top:10px;
-    }
-  }
-  
-  footer .copyright {
-    margin-top:14px;
-    margin-bottom:0;
-    font-size:13px;
-    opacity:0.6;
-  }
+.mx-auto{
+  background-color: #F4F2EC;
+  padding: 50px;
+  border-radius: 25px;
+}
