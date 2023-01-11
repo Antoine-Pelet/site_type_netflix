@@ -11,6 +11,22 @@
   .a{
     background-color: red;
   }
+
+.mx-auto{
+  background-color: #F4F2EC;
+  padding: 50px;
+  border-radius: 25px;
+}
+
+.btn-login {
+  font-size: 0.9rem;
+  letter-spacing: 0.05rem;
+  padding: 0.75rem 1rem;
+}
+
+.login-heading {
+  font-weight: 300;
+}
   
   #registration_form_name, #registration_form_email, #registration_form_plainPassword {
     display: block;
