@@ -194,11 +194,16 @@ ul {
 
 /* ----- SEARCH BAR ----- */
 
-input[type=text] {
+input[type=text], button[type=submit] {
   border: 1px solid #ccc;
   border-radius: 25px;
   background-color: transparent;
   padding: 8px 16px;
+  color: white;
+}
+
+button[type=submit] {
+  border-radius: 0px !important;
 }
 
 /* ----- END SEARCH BAR ----- */

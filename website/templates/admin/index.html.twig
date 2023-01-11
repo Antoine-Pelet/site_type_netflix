@@ -4,54 +4,69 @@
 	User index
 {% endblock %}
 
-{% block body %}
-	<h1>User index</h1>
+{% block stylesheets %}
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link href="{{ asset('style.css') }}" rel="stylesheet"/>
+	<link href="{{ asset('styleAdmin.css') }}" rel="stylesheet"/>
+{% endblock %}
 
-	<form method="GET">
-		<input type="text" name='email' id='email' placeholder="Search..">
+{% block body %}
+	<form method="GET" style="width: 25%">
+		<input type="text" name='title' id='title' placeholder="Type to search..">
 		<button type="submit">Submit</button>
 	</form>
 
-	<table class="table">
-		<tr>
-			<th>Id</th>
-			<th>Name</th>
-			<th>Email</th>
-			<th>Password</th>
-			<th>Register Date</th>
-			<th>Admin</th>
-			<th>Actions</th>
-		</tr>
-		{% for user in users %}
+<div class="test">
+	<div class="panel">
+		<table class="table">
 			<tr>
-				<td>{{ user.id }}</td>
-				<td>{{ user.name }}</td>
-				<td>{{ user.email }}</td>
-				<td>{{ user.password }}</td>
-				<td>{{ user.registerDate ? user.registerDate|date('Y-m-d H:i:s') : '' }}</td>
-				<td>{{ user.admin ? 'Yes' : 'No' }}</td>
-				{% if app.user %}
+				<th>Id</th>
+				<th>Name</th>
+				<th>Email</th>
+				<th>Password</th>
+				<th>Register Date</th>
+				<th>Admin</th>
+				<th>Actions</th>
+			</tr>
+			{% for user in users %}
+				<tr>
+					<td>{{ user.id }}</td>
+					<td>{{ user.name }}</td>
+					<td>{{ user.email }}</td>
+					<td>{{ user.password }}</td>
+					<td>{{ user.registerDate ? user.registerDate|date('Y-m-d H:i:s') : '' }}</td>
 					{% if user.admin == '0' %}
-						<td>
-							<a href="{{ path('app_admin_add', {'id': user.id}) }}">promouvoir</a>
-							<a href="?_switch_user={{user.email}}">incarne</a>
-						</td>
+						<td class="text-success">{{ user.admin ? 'Yes' : 'No' }}</td>
 					{% else %}
-						<td>
-							<a href="{{ path('app_admin_remove', {'id': user.id}) }}">dépromouvoir</a>
-							<a href="?_switch_user={{user.email}}">incarne</a>
-						</td>
+						<td class="text-danger">{{ user.admin ? 'Yes' : 'No' }}</td>
 					{% endif %}
-				{% endif %}
-			</tr>
-		{% else %}
-			<tr>
-				<td colspan="7">Aucun utilisateurs inscrit.</td>
-			</tr>
-		{% endfor %}
-		<div class="navigation d-flex justify-content-center">
-			{{ knp_pagination_render(users) }}
-		</div>
-	</table>
+					{% if app.user %}
+						{% if user.admin == '0' %}
+							<td>
+								<a href="{{ path('app_admin_edit', {'id': user.id}) }}" class="text-success">↑</a>
+								|
+								<a href="?_switch_user={{user.email}}">Embody</a>
+							</td>
+						{% else %}
+							<td>
+								<a href="{{ path('app_admin_remove', {'id': user.id}) }}" class="text-danger">↓</a>
+								|
+								<a href="?_switch_user={{user.email}}">Embody</a>
+							</td>
+						{% endif %}
+					{% endif %}
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="7">Aucun utilisateurs inscrit.</td>
+				</tr>
+			{% endfor %}
+			<div class="navigation d-flex justify-content-center">
+				{{ knp_pagination_render(users) }}
+			</div>
+		</table>
+
+	</div>
+</div>
 
 {% endblock %}
