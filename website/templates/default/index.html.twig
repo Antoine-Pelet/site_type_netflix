@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello DefaultController!{% endblock %}
+{% block title %}Accueil{% endblock %}
 
 {% block stylesheets %}
     {{ encore_entry_link_tags('app') }}    
@@ -8,7 +8,6 @@
     <link href="{{ asset('style.css') }}" rel="stylesheet"/>
     <link href="{{ 'acceuil.css' }}" rel="stylesheet" />
 {% endblock %}
-
 
 {% block body %}
 
@@ -24,10 +23,13 @@
             </p>
         </div>
         <div class="navi">
-            <button class="button" onclick="location.href='{{ path('app_login') }}'">Connectez-vous</button>
-            <p class="Inscr">Pas de compte? <a href="{{ path('app_register') }}">Inscrivez-vous</a></p>
+            {% if app.user %}
+                <button class="button conn" onclick="location.href='{{ path('app_login') }}'">Connectez-vous</button>
+                <p class="Inscr">Pas de compte? <a href="{{ path('app_register') }}">Inscrivez-vous</a></p>
+            {% endif %}
             <button class="button" onclick="location.href='{{ path('app_series_index') }}'">Voir les séries</button>
         </div>
     </div>
+
 </body>
 {% endblock %}

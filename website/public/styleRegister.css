@@ -1,67 +1,12 @@
-body {
-    background-color: #1d1d1d;
-  }
-  
-  
-  nav {
-    background-color: #333;
-    color: #fff;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 20px;
-  }
-  
-  nav ul {
-    list-style: none;
-    display: flex;
-    margin: 0;
-    padding: 0;
-  }
-  
-  nav li {
-    margin: 0 10px;
-  }
-  
-  nav a {
-    color: #fff;
-    text-decoration: none;
-    font-size: 18px;
-  }
-  
-  nav a:hover {
-    color: #ccc;
-  }
-  
-  /* */
-  
-  
-  .login {
-    min-height: 100vh;
-  }
-  
-  .bg-image {
-    background-image: url('ressources/alt.jpg');
-    background-size: cover;
-    background-position: center;
-  }
-  
-  .login-heading {
-    font-weight: 300;
-  }
-  
-  .btn-login {
-    font-size: 0.9rem;
-    letter-spacing: 0.05rem;
-    padding: 0.75rem 1rem;
-  }
-  
-  .mx-auto{
-    background-color: #F4F2EC;
-    padding: 50px;
-    border-radius: 25px;
-  }
+.login {
+  min-height: 100vh;
+}
 
+.bg-image {
+  background-image: url('ressources/alt.jpg');
+  background-size: cover;
+  background-position: center;
+}
 
   .a{
     background-color: red;
