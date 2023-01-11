@@ -1,12 +1,37 @@
-.serie{
+body {
+  background-color: #060d11;
+}
+
+.tete {
   display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  padding: 2vh 2vh;
-  margin-bottom: 3vh;
-  background-color: #24262b;
-  border-radius: 8px;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 3vh;
+  padding-right: 3vh;
+  margin-bottom: 4vh;
+}
+  
+td {
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  padding-left: 1vh;
+  padding-right: 2vh;
+  margin-top: 1vh;
+}
+
+td p {
+  font-size: 1.3rem;
+}
+
+.tableau{
   color: white;
+  margin-bottom: 4vh;
+}
+
+.tableau img {
+  width: 35vh;
+  border-radius: 13px;
 }
 
 .listeseries{
@@ -16,7 +41,7 @@
 }
 
 .svgheart{
-  width: 20px;
+  width: 30px;
 }
 
 .unliked{

@@ -128,7 +128,7 @@ class SeriesController extends AbstractController
     }
 
     #[Route('/series/like/list', name: 'app_liked_series', methods: ['GET'])]
-    public function listLikedSeries(): Response
+    public function listLikedSeries(Request $request, PaginatorInterface $paginator, EntityManagerInterface $entityManager): Response
     {
 
         /** @var \App\Entity\User */
@@ -136,8 +136,18 @@ class SeriesController extends AbstractController
 
         $likedSeries = $user->getSeries();
 
+         // Paginate the results of the query
+         $appointments = $paginator->paginate(
+            // Doctrine Query, not results
+            $likedSeries,
+            // Define the page parameter
+            $request->query->getInt('page', 1),
+            // Items per page
+            25
+        );
+
         return $this->render('liked/like.html.twig', [
-            'series' => $likedSeries,
+            'series' => $appointments,
         ]);
     }
 
