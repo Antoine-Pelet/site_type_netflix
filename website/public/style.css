@@ -1,7 +1,7 @@
 /* ----- MENU ----- */
+
 nav {
-  position: absolute;
-  width: 100%;
+  color: white;
 }
 
 nav div:nth-child(1) {
@@ -68,7 +68,8 @@ ul {
 }
 
 .footer {
-  background-color: #24262b;
+  background-color: #060d11;
+  border-top: 1px solid#2d2d2d;
   padding: 50px 50px 20px;
   display: flex;
   flex-direction: column;
@@ -127,7 +128,7 @@ ul {
   display: inline-block;
   height: 40px;
   width: 40px;
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: #091319;
   margin: 0 10px 10px 0;
   text-align: center;
   line-height: 40px;
@@ -162,12 +163,10 @@ ul {
 .pagination {
   display: flex;
   border-radius: 1.5px;
-  margin-top: 2vh;
-  margin-bottom: 2vh;
 }
 
 .pagination a, .pagination .current {
-  color: black;
+  color: white;
   float: left;
   padding: 8px 16px;
   text-decoration: none;
@@ -178,7 +177,7 @@ ul {
 }
 
 .pagination a:hover {
-  background-color: #ececec;
+  background-color: #091319;
 }
 
 .pagination .current {
@@ -187,7 +186,7 @@ ul {
 }
 
 .first a, .previous a, .next a, .last a{
-  background-color: #7e7e7e;
+  background-color: #091319;
   color: rgb(255, 255, 255);
 }
 /* ----- END PAGINATION ----- */
@@ -197,8 +196,9 @@ ul {
 
 input[type=text] {
   border: 1px solid #ccc;
-  border-radius: 3px;
-  padding: px;
+  border-radius: 25px;
+  background-color: transparent;
+  padding: 8px 16px;
 }
 
 /* ----- END SEARCH BAR ----- */

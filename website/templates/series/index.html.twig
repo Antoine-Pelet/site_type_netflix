@@ -9,15 +9,18 @@
 	<link href="{{ asset('styleSeries.css') }}" rel="stylesheet"/>
 {% endblock %}
 {% block body %}
-<h1>Series index</h1>
-<form method="GET">
-	<input type="text" name='title' id='title' placeholder="Search..">
-	<button type="submit">Submit</button>
-</form>
 
-<div class="navigation d-flex justify-content-center">
-	{{ knp_pagination_render(series) }}
+<div class="tete">
+	<form method="GET" style="width: 25%">
+		<input type="text" name='title' id='title' placeholder="Search..">
+		<button type="submit">Submit</button>
+	</form>
+	<div class="navigation d-flex justify-content-center">
+		{{ knp_pagination_render(series) }}
+	</div>
 </div>
+
+
 <div class="listeseries">
 	{% for s in series %}
 		<table class="tableau">
@@ -25,8 +28,8 @@
 				<a href="{{ path('app_series_show', {'id': s.id}) }}"><img src="{{ path('app_series_poster', {'id': s.id}) }}"></a>
 			</th>
 			<tr>
-				<td>
-					{{ s.title }}
+				<td><p>
+					{{ s.title }}</p>
 					{% if app.user %}
 						{% if app.user.series.contains(s) %}
 							<a href="{{ path('app_series_dislike', {'id': s.id}) }}">
@@ -46,4 +49,4 @@
 			</tr>
 		</td>
 	</tr>
-</table>{% endfor %}</div><div class="navigation d-flex justify-content-center">{{ knp_pagination_render(series) }}</div>{% endblock %}
+</table>{% endfor %}</div><div class="navigation d-flex justify-content-center mt-5">{{ knp_pagination_render(series) }}</div>{% endblock %}

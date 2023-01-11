@@ -1,3 +1,11 @@
+body {
+  background-image : url("/ressources/register.png");
+  background-repeat:no-repeat; 
+  background-size: cover;
+  background-position: center center;
+  height: 118vh;
+}
+
 .login {
   min-height: 100vh;
 }
@@ -12,8 +20,12 @@
     background-color: red;
   }
 
+.agree {
+  color: white;
+}
+
 .mx-auto{
-  background-color: #F4F2EC;
+  background-color: #1b1b1b;
   padding: 50px;
   border-radius: 25px;
 }
@@ -26,6 +38,7 @@
 
 .login-heading {
   font-weight: 300;
+  color: white;
 }
   
   #registration_form_name, #registration_form_email, #registration_form_plainPassword {

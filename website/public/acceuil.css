@@ -4,7 +4,7 @@
   margin-left: 15vh;
   flex-direction: column;
   max-width: 770px;
-  height: 100vh;
+  height: 85vh;
 }
 
 .example-wrapper span:nth-child(1) {
@@ -21,17 +21,14 @@
   color: rgb(219, 219, 219);
 }
 
-
 body { 
   background-image : url("/ressources/main.png");
   background-repeat:no-repeat; 
   background-size: cover;
   background-position: center center;
-  height: 100vh;
   color: white;
+  height: 115vh;
 }
-
-
 
 .button {
   background-color: transparent;
@@ -40,8 +37,8 @@ body {
   border: 1px solid #ffffff;
   font-family: Inter,sans-serif;
   font-size: 17px;
-  height: 4.5vh;
-  width: 27vh;
+  height: 6.5vh;
+  width: 32vh;
   transition: 1s;
 }
 
