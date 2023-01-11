@@ -67,6 +67,7 @@ ul {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 3vh;
 }
 
 .footer-col {
@@ -148,6 +149,36 @@ ul {
 }
 
 /* ----- END FOOTER ----- */
+
+
+/* ----- PAGINATION ----- */
+
+.pagination {
+  display: flex;
+  background-color: rgb(243, 243, 243);
+  border-radius: 1.5px;
+  margin-top: 2vh;
+  margin-bottom: 2vh;
+}
+
+.pagination a, .pagination .current {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+  border: 1px solid rgb(226, 226, 226);
+}
+
+.pagination a:hover {
+  background-color: #cacaca;
+}
+
+.pagination .current {
+  background-color: #0d6efd;
+  color: white;
+}
+
+/* ----- END PAGINATION ----- */
 
 
 /* ----- SEARCH BAR ----- */
