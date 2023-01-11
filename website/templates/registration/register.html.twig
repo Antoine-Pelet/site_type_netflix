@@ -49,8 +49,11 @@
                                     </div>
                                     <div class="d-grid">
                                         <button class="btn btn-lg btn-primary" type="submit">Register</button>
+                                        <div class="text-center mt-3">
+                                            <span class="small text-secondary">Déjà inscrit ?  </span><a class="small" href=" {{ path('app_login') }} ">Se connecter !</a>
+                                        </div>
                                     </div>
-                                {{ form_end(registrationForm) }}
+                                {{ form_end(registrationForm) }}<div class="d-grid">
                             </div>
                         </div>
                     </div>
