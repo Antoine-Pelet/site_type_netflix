@@ -3,9 +3,9 @@
 {% block title %}Series index{% endblock %}
 
 {% block stylesheets %}
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="{{ asset('style.css') }}" rel="stylesheet"/>
-<link href="{{ asset('styleSeries.css') }}" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ asset('style.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('styleSeries.css') }}" rel="stylesheet" />
 {% endblock %}
 {% block body %}
     <h1>Series index</h1>
@@ -16,30 +16,29 @@
     </form>
 
     <div class="navigation d-flex justify-content-center">
-            {{ knp_pagination_render(series) }}
+        {{ knp_pagination_render(series) }}
     </div>
-        <div class="listeseries">
-            {% for s in series %}
-                <table class="tableau">   
-                    <th scope="rowgroup">
-                         <a href="{{ path('app_series_show', {'id': s.id}) }}"><img src="{{ path('app_series_poster', {'id': s.id}) }}"></a>
-                    </th>
-                    <tr>
-                        <td>
-                            {{ s.title }}
-                            {% if app.user %}
-                                {% if app.user.series.contains(s) %}
-                                    <a href="{{ path('app_series_dislike', {'id': s.id}) }}">dislike</a>
-                                {% else %}
-                                    <a href="{{ path('app_series_like', {'id': s.id}) }}">like</a>
-                                {% endif %}
+    <div class="listeseries">
+        {% for s in series %}
+            <div class="serie">   
+                <div scope="rowgroup" class="poster">
+                    <a href="{{ path('app_series_show', {'id': s.id}) }}"><img src="{{ path('app_series_poster', {'id': s.id}) }}"></a>
+                </div>
+                <div>
+                    <div class="like">
+                        {{ s.title }}
+                        {% if app.user %}
+                            {% if app.user.series.contains(s) %}
+                                <a href="{{ path('app_series_dislike', {'id': s.id}) }}">dislike</a>
+                            {% else %}
+                                <a href="{{ path('app_series_like', {'id': s.id}) }}">like</a>
                             {% endif %}
-                        </td>
-                    </tr>
-                </table>        
-            {% endfor %}
-        </div>
-    
+                        {% endif %}
+                    </div>
+                </div>
+            </div>        
+        {% endfor %}
+    </div>
     <div class="navigation d-flex justify-content-center">
             {{ knp_pagination_render(series) }}
     </div>

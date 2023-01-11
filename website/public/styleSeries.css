@@ -1,21 +1,20 @@
-
-  
-td,th {
-    padding: 10px 10px;
-}
-
-td {
-    text-align: center;
-}
-
-.tableau{
+.serie{
   display: flex;
-  width: 20%;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 2vh 2vh;
+  margin-bottom: 3vh;
+  background-color: #24262b;
+  border-radius: 8px;
+  color: white;
 }
 
 .listeseries{
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-around;
 }
 
-
+img {
+  border-radius: 8px;
+}
