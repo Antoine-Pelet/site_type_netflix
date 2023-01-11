@@ -91,7 +91,7 @@ ul {
   position: absolute;
   left: 0;
   bottom: -10px;
-  background-color: #e91e63;
+  background-color: #0d6efd;
   height: 2px;
   box-sizing: border-box;
   width: 50px;
@@ -155,7 +155,6 @@ ul {
 
 .pagination {
   display: flex;
-  background-color: rgb(243, 243, 243);
   border-radius: 1.5px;
   margin-top: 2vh;
   margin-bottom: 2vh;
@@ -167,17 +166,24 @@ ul {
   padding: 8px 16px;
   text-decoration: none;
   border: 1px solid rgb(226, 226, 226);
+  border-radius: 3px;
+  margin-left: 4px;
+  margin-right: 4px;
 }
 
 .pagination a:hover {
-  background-color: #cacaca;
+  background-color: #ececec;
 }
 
 .pagination .current {
-  background-color: #0d6efd;
-  color: white;
+  border: 1px solid #0d6efd;
+  color: #0d6efd;
 }
 
+.first a, .previous a, .next a, .last a{
+  background-color: #7e7e7e;
+  color: rgb(255, 255, 255);
+}
 /* ----- END PAGINATION ----- */
 
 

@@ -22,7 +22,7 @@ class AdminController extends AbstractController
 
 
         $users = $users->createQueryBuilder('u')
-        ->orderBy('u.email', 'ASC')
+        ->orderBy('u.registerDate', 'DESC')
         ->where('u.email LIKE :search')
         ->setParameter('search', '%' . $request->query->get('email') . '%')
         ->getQuery();
