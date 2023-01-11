@@ -31,13 +31,13 @@
             {% if app.user %}
                 {% if user.admin == '0' %}
                     <td>
-                        <a href="{{ path('app_admin_edit', {'id': user.id}) }}">promouvoir</a>
-                        <a href="{{ path('app_admin_incarne', {'id': user.id}) }}">incarne</a>
+                        <a href="{{ path('app_admin_add', {'id': user.id}) }}">promouvoir</a>
+                        <a href="?_switch_user={{user.email}}">incarne</a>
                     </td>
                 {% else %}
                     <td>
-                        <a href="{{ path('app_admin_edit2', {'id': user.id}) }}">dépromouvoir</a>
-                        <a href="{{ path('app_admin_incarne', {'id': user.id}) }}">incarne</a>
+                        <a href="{{ path('app_admin_remove', {'id': user.id}) }}">dépromouvoir</a>
+                        <a href="?_switch_user={{user.email}}">incarne</a>
                     </td>
                 {% endif %}
             {% endif %}

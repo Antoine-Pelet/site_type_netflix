@@ -42,7 +42,7 @@ class AdminController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_admin_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/add', name: 'app_admin_add', methods: ['GET', 'POST'])]
     public function edit(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
 
@@ -53,20 +53,11 @@ class AdminController extends AbstractController
         return $this->redirectToRoute('app_admin_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/{id}/edit2', name: 'app_admin_edit2', methods: ['GET', 'POST'])]
+    #[Route('/{id}/remove', name: 'app_admin_remove', methods: ['GET', 'POST'])]
     public function edit2(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
 
         $user->setAdmin(0);
-
-        $entityManager->flush();
-
-        return $this->redirectToRoute('app_admin_index', [], Response::HTTP_SEE_OTHER);
-    }
-
-    #[Route('/{id}/incarne', name: 'app_admin_incarne', methods: ['GET', 'POST'])]
-    public function incarne(Request $request, User $user, EntityManagerInterface $entityManager): Response
-    {
 
         $entityManager->flush();
 

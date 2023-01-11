@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello DefaultController!{% endblock %}
+{% block title %}Accueil{% endblock %}
 
 {% block stylesheets %}
     {{ encore_entry_link_tags('app') }}    
@@ -29,5 +29,6 @@
             <button class="button" onclick="location.href='{{ path('app_series_index') }}'">Voir les séries</button>
         </div>
     </div>
+
 </body>
 {% endblock %}
