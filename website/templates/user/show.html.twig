@@ -2,9 +2,13 @@
 
 {% block title %}User index{% endblock %}
 
-{% block body %}
-    <h1>User index</h1>
+{% block stylesheets %}
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link href="{{ asset('style.css') }}" rel="stylesheet"/>
+	<link href="{{ asset('styleSeries.css') }}" rel="stylesheet"/>
+{% endblock %}
 
+{% block body %}
     <form method="GET">
         <input type="text" name='email' id='email' placeholder="Search..">
         <button type="submit">Submit</button>
@@ -18,6 +22,8 @@
         <tr>
             <td>{{ s.title }}</td>
         </tr>
+    {% else %}
+        <p>This user don't have any liked series.</p>
     {% endfor %}
     </table>
 

@@ -23,8 +23,19 @@ img {
     padding-top: 100px;
 }
 
+.card-header {
+    background-color: transparent;
+    margin-bottom: 7px;
+    border: 1px solid;
+    border-radius: 4px !important;
+}
+
 .card {
     background-color: transparent;
+}
+
+.collapse  {
+    margin-top: 6px;
 }
 
 .border {
@@ -32,5 +43,6 @@ img {
 }
 
 .card-header a {
-    color: rgb(0, 0, 0);
+    color: rgb(255 255 255);
+    text-decoration: none;
 }
