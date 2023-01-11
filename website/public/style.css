@@ -5,6 +5,8 @@ nav {
 }
 
 nav div:nth-child(1) {
+  background-color: #24262b;
+  color: #fff;
   display: flex;
   justify-content: space-between;
 }
