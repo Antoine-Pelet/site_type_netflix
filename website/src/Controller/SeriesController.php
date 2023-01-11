@@ -27,14 +27,12 @@ class SeriesController extends AbstractController
     {
         $appointmentsRepository = $entityManager->getRepository(Series::class);
 
-
         $appointmentsRepository = $appointmentsRepository->createQueryBuilder('s')
         ->orderBy('s.title', 'ASC')
         ->where('s.title LIKE :search')
         ->setParameter('search', '%' . $request->query->get('title') . '%')
         ->orderBy('s.id', 'ASC')
         ->getQuery();
-
 
         // Paginate the results of the query
         $appointments = $paginator->paginate(
