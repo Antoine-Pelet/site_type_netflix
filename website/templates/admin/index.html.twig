@@ -31,7 +31,7 @@
             {% if app.user %}
                 {% if user.admin == '0' %}
                     <td>
-                        <a href="{{ path('app_admin_add', {'id': user.id}) }}">promouvoir</a>
+                        <a href="{{ path('app_admin_edit', {'id': user.id}) }}">promouvoir</a>
                         <a href="?_switch_user={{user.email}}">incarne</a>
                     </td>
                 {% else %}
