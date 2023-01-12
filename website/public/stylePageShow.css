@@ -18,6 +18,21 @@ img {
     padding-left: 0;
 }
 
+
+.svgheart{
+    width: 60px;
+  }
+  
+  .unliked{
+    fill:#9e9e9e;
+    stroke-width:"0.5";
+  }
+  
+  .liked{
+    fill:#f91876;
+  }
+
+
 /**/
 .top {
     padding-top: 100px;
