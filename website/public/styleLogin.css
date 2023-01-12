@@ -10,6 +10,7 @@ body {
   background-image: url('ressources/illuTV.png');
   background-size: cover;
   background-position: center;
+  height: 75vh;
 }
 
 .login-heading {
@@ -23,7 +24,17 @@ body {
 }
 
 .mx-auto{
+  display: flex;
   background-color: #F4F2EC;
   padding: 50px;
   border-radius: 25px;
+}
+
+button {
+  color: black !important;
+}
+
+button:hover {
+  color: white !important;
+  transition: 0.1s;
 }
