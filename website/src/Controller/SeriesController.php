@@ -30,15 +30,14 @@ class SeriesController extends AbstractController
         $appointmentsRepository = $entityManager->getRepository(Series::class);
 
         $appointmentsRepository = $appointmentsRepository->createQueryBuilder('s')
-        //->join('s.rating', 'r')
-        //->groupby('s.id')
-        //->orderBy('s.title', 'ASC')
         ->setFirstResult(0+25*($request->query->getInt('page', 1)-1))
         ->setMaxResults(25)
         ->where('s.title LIKE :search')
         ->setParameter('search', '%' . $request->query->get('title') . '%')
         ->orderBy('s.id', 'ASC')
         ->getQuery();
+
+        $genres = $entityManager->getRepository(Genre::class)->findAll();
 
         // Paginate the results of the query
         $appointments = $paginator->paginate(
@@ -52,6 +51,7 @@ class SeriesController extends AbstractController
 
         return $this->render('series/index.html.twig', [
             'series' => $appointments,
+            'genres' => $genres,
         ]);
     }
 
