@@ -202,23 +202,22 @@ input[type=text], button[type=submit] {
   color: white;
 }
 
-button[type=submit] {
+.searchbtn {
   border-radius: 50% !important;
   width:42px;
 }
-
 
 .bi-search{
   fill:#ccc;
   margin-left: -3px;
 }
 
-button[type=submit]:hover {
+.searchbtn:hover {
   background-color: DodgerBlue; 
-  }
+}
   
-  button[type=submit]:hover .bi-search{
-    fill:#162832;
+.searchbtn .bi-search{
+  fill:#162832;
 }
 
 /* ----- END SEARCH BAR ----- */
