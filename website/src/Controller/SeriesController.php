@@ -17,7 +17,7 @@ use App\Controller\ArrayObject;
 
 
 use App\Entity\Appointments;
-
+use App\Entity\Genre;
 // include de la pagination
 use Knp\Component\Pager\PaginatorInterface;
 
@@ -65,9 +65,12 @@ class SeriesController extends AbstractController
         ->getQuery()
         ->getResult();
 
+        $genre = $series->getGenre();
+
         return $this->render('series/show.html.twig', [
             'series' => $series,
             'rates' => $rates,
+            'genres' => $genre,
         ]);
     }
 
