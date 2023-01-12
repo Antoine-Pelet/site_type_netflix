@@ -64,6 +64,10 @@ class Series
     #[ORM\OneToOne(targetEntity: "ExternalRating", mappedBy: "series")]
     private $rate;
 
+    #[ORM\OneToMany(targetEntity:"Rating", mappedBy:"series")]
+    #[ORM\JoinColumn(name:"series_id", referencedColumnName:"id")]
+    private $rating;
+
     /**
      * Constructor
      */
@@ -74,6 +78,7 @@ class Series
         $this->actor = new \Doctrine\Common\Collections\ArrayCollection();
         $this->country = new \Doctrine\Common\Collections\ArrayCollection();
         $this->seasons = new \Doctrine\Common\Collections\ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -265,9 +270,25 @@ class Series
     {
         return $this->country;
     }
+
+    public function getRating(): Collection
+    {
+        return $this->rating;
+    }
+
+    public function addRating($rating): self
+    {
+        $this->rating->add($rating);
+        return $this;
+    }
+
+    public function removeRating($rating): self
+    {
+        $this->rating->removeElement($rating);
+        return $this;
+    }
+
     /*
-
-
     public function addCountry(Country $country): self
     {
         if (!$this->country->contains($country)) {
