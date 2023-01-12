@@ -18,11 +18,11 @@ class DefaultController extends AbstractController
 
         $youtubeTrailer = $appointmentsRepository->createQueryBuilder('s')
         ->select('s.title, s.youtubeTrailer')
-        ->orderby('RAND()')
         ->getQuery()
         ->getResult();
 
-
+        shuffle($youtubeTrailer);
+        
         return $this->render('default/index.html.twig', [
             'controller_name' => 'DefaultController',
             'series' => $youtubeTrailer
