@@ -17,10 +17,6 @@ class AdminController extends AbstractController
     #[Route('/admin', name: 'app_admin_index', methods: ['GET'])]
     public function index(Request $request, EntityManagerInterface $entityManager, PaginatorInterface $paginator): Response
     {
-        
-        if(!$this->getUser()->isAdmin()){
-            return $this->redirectToRoute('app_default', [], Response::HTTP_SEE_OTHER);
-        }
 
         $users = $entityManager->getRepository(User::class);
 
@@ -47,7 +43,13 @@ class AdminController extends AbstractController
     #[Route('/user', name: 'app_user_index', methods: ['GET'])]
     public function user(Request $request, EntityManagerInterface $entityManager, PaginatorInterface $paginator): Response
     {
-        $users = $entityManager->getRepository(User::class)->findAll();
+        $users = $entityManager->getRepository(User::class);
+
+        $users = $users->createQueryBuilder('u')
+        ->orderBy('u.registerDate', 'DESC')
+        ->where('u.name LIKE :search')
+        ->setParameter('search', '%' . $request->query->get('name') . '%')
+        ->getQuery();
         
         $appointments = $paginator->paginate(
             // Doctrine Query, not results
