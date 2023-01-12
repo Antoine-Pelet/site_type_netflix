@@ -1,36 +1,57 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Accueil{% endblock %}
+{% block title %}Accueil
+{% endblock %}
 
 {% block stylesheets %}
-    {{ encore_entry_link_tags('app') }}    
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-    <link href="{{ asset('style.css') }}" rel="stylesheet"/>
-    <link href="{{ 'acceuil.css' }}" rel="stylesheet" />
+	{{ encore_entry_link_tags('app') }}
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+	<link href="{{ asset('style.css') }}" rel="stylesheet"/>
+	<link href="{{ 'acceuil.css' }}" rel="stylesheet"/>
 {% endblock %}
 
 {% block body %}
 
-<body>
-    <div class="acceuil">
-        <div class="example-wrapper">
-            <span>WATCHLIST</span>
-            <span>#1 Best Streaming Website</span>
-            <p>
-                WatchList est le site idéal pour tous les amateurs de séries ! 
-                Avec WatchList, vous pouvez explorer une liste complète de séries, 
-                marquer celles que vous avez déjà vues et celles qui vous intéressent. 
-                Grâce à notre interface intuitive, vous pouvez facilement suivre votre progression et découvrir de nouvelles séries passionnantes. 
-                Alors qu'attendez-vous ? Inscrivez-vous dès maintenant sur WatchList et commencez votre voyage dans le monde passionnant des séries !
-            </p>
-            {% if app.user %}
-                <button class="button" onclick="location.href='{{ path('app_series_index') }}'">Voir les séries</button>
-            {% else %}
-                <button class="button" onclick="location.href='{{ path('app_login') }}'">Connectez-vous →</button>
-                <p class="Inscr">Pas de compte ?  <a href="{{ path('app_register') }}">Inscrivez-vous !</a></p>
-            {% endif %}
+	<body>
+		<div class="acceuil">
+			<div class="example-wrapper">
+				<span>WATCHLIST</span>
+				<span>#1 Best Streaming Website</span>
+				<p>
+					WatchList est le site idéal pour tous les amateurs de séries ! 
+					Avec WatchList, vous pouvez explorer une liste complète de séries, 
+					marquer celles que vous avez déjà vues et celles qui vous intéressent. 
+					Grâce à notre interface intuitive, vous pouvez facilement suivre votre progression et découvrir de nouvelles séries passionnantes. 
+					Alors qu'attendez-vous ? Inscrivez-vous dès maintenant sur WatchList et commencez votre voyage dans le monde passionnant des séries !
+				</p>
+			
+				{% if app.user %}
+					<button class="button" onclick="location.href='{{ path('app_series_index') }}'">Voir les séries</button>
+				{% else %}
+					<button class="button" onclick="location.href='{{ path('app_login') }}'">Connectez-vous →</button>
+					<p class="Inscr">Pas de compte ?
+						<a href="{{ path('app_register') }}">Inscrivez-vous !</a>
+					</p>
+				{% endif %}
 
-        </div>
-    </div>
-</body>
+
+			</div>
+			<div class="example-wrapper2">
+				{% set cpt = 0 %}
+				{% for s in series %}
+					{% if cpt < 3%}
+						<span class="title_youtube_trailer">{{s.title}}</span>
+                        {% set debut = "https://www.youtube.com/embed/" %}
+						{% set id = s.youtubeTrailer |split('=') %}
+						{% set video = "%s%s" | format(debut, id[1]) %}
+
+						<iframe width="560" height="315" src="{{video}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+						{% set cpt = cpt + 1 %}
+					{% endif %}
+				{% endfor %}
+			</div>
+		</div>
+
+
+	</body>
 {% endblock %}
