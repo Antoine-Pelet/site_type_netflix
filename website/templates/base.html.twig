@@ -49,13 +49,18 @@
 					</li>
 					<li>
 						<div class="container">
+							
 							<div class="row">
 								<div class="dropdown">
-									<a class="nav-link dropdown-toggle" href="#" role="button" id="deroulanta" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Panels</a>
-									<div class="dropdown-menu" aria-labelledby="deroulanta">
-										<a class="dropdown-item" href="{{ path('app_user_index') }}">Liste des Users</a>
-										<a class="dropdown-item" href="{{ path('app_admin_index') }}">Admin</a>
-									</div>
+									{% if app.user.admin != '0' %}
+										<a class="nav-link dropdown-toggle" href="#" role="button" id="deroulanta" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Panels</a>
+										<div class="dropdown-menu" aria-labelledby="deroulanta">
+											<a class="dropdown-item" href="{{ path('app_user_index') }}">Liste des Users</a>
+											<a class="dropdown-item" href="{{ path('app_admin_index') }}">Admin</a>
+										</div>
+									{% else %}
+										<a class="dropdown-item decale" href="{{ path('app_user_index') }}">Liste des Users</a>
+									{% endif %}
 								</div>
 							</div>
 						</div>
@@ -105,8 +110,12 @@
 					<ul>
 						<li><a href="{{ path('app_default') }}">Accueil</a></li>
 						<li><a href="{{ path('app_series_index') }}">Séries</a></li>
-						<li><a href="{{ path('app_admin_index') }}">Panel Admin</a></li>
-						<li><a href="{{ path('app_user_index') }}">Liste des Users</a></li>
+						{% if app.user %}
+							{% if app.user.admin != '0' %}
+								<li><a href="{{ path('app_admin_index') }}">Panel Admin</a></li>
+							{% endif %}
+							<li><a href="{{ path('app_user_index') }}">Liste des Users</a></li>
+						{% endif %}
 					</ul>
 				</div>
 				<div class="footer-col">
