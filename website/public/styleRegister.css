@@ -113,15 +113,10 @@ label{
   padding-top: unset !important;
 }
 
-.text-secondary {
-  color: white !important;
-}
-
-.pays * label{
-  display: none;
-}
-
 .cont {
-  height: auto !important;
-  display: block;
+  color: white;
+}
+
+label[for="registration_form_country"] {
+  display: none;
 }
