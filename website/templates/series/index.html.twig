@@ -27,6 +27,9 @@
                     <tr>
                         <td>
                             {{ s.title }}
+                        <br>
+                            {{ s.rate.value}}
+                            {{ s.rating }}
                             {% if app.user %}
                                 {% if app.user.series.contains(s) %}
                                     <a href="{{ path('app_series_dislike', {'id': s.id}) }}">dislike</a>
