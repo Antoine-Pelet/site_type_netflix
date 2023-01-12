@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\Rating;
 use Doctrine\Persistence\ManagerRegistry;
 
 
@@ -54,10 +55,17 @@ class SeriesController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_series_show', methods: ['GET'])]
-    public function show(Series $series): Response
+    public function show(Series $series, EntityManagerInterface $entityManager): Response
     {
+
+        $rates = $entityManager->getRepository(Rating::class)->createQueryBuilder('r')
+        ->where('r.series = :series')
+        ->setParameter('series', $series->getId())
+        ->getQuery();
+
         return $this->render('series/show.html.twig', [
             'series' => $series,
+            'rates' => $rates,
         ]);
     }
 
