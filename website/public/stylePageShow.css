@@ -1,0 +1,48 @@
+h4,
+p,
+h2 {
+    margin-bottom: 0px;
+    font-family: 'Inter', sans-serif;
+    color: white;
+}
+
+body {
+    background-color: #060d11 !important;
+}
+
+img {
+    border-radius: 4%;
+}
+
+.container{
+    padding-left: 0;
+}
+
+/**/
+.top {
+    padding-top: 100px;
+}
+
+.card-header {
+    background-color: transparent;
+    margin-bottom: 7px;
+    border: 1px solid;
+    border-radius: 4px !important;
+}
+
+.card {
+    background-color: transparent;
+}
+
+.collapse  {
+    margin-top: 6px;
+}
+
+.border {
+    border: 1px solid white
+}
+
+.card-header a {
+    color: rgb(255 255 255);
+    text-decoration: none;
+}

@@ -27,7 +27,6 @@ class SeriesController extends AbstractController
     {
         $appointmentsRepository = $entityManager->getRepository(Series::class);
 
-
         $appointmentsRepository = $appointmentsRepository->createQueryBuilder('s')
         //->join('s.rating', 'r')
         //->groupby('s.id')
@@ -39,7 +38,6 @@ class SeriesController extends AbstractController
         ->orderBy('s.id', 'ASC')
         ->getQuery();
 
-        
         // Paginate the results of the query
         $appointments = $paginator->paginate(
             // Doctrine Query, not results
@@ -129,7 +127,7 @@ class SeriesController extends AbstractController
     }
 
     #[Route('/series/like/list', name: 'app_liked_series', methods: ['GET'])]
-    public function listLikedSeries(): Response
+    public function listLikedSeries(Request $request, PaginatorInterface $paginator, EntityManagerInterface $entityManager): Response
     {
 
         /** @var \App\Entity\User */
@@ -137,8 +135,18 @@ class SeriesController extends AbstractController
 
         $likedSeries = $user->getSeries();
 
+         // Paginate the results of the query
+         $appointments = $paginator->paginate(
+            // Doctrine Query, not results
+            $likedSeries,
+            // Define the page parameter
+            $request->query->getInt('page', 1),
+            // Items per page
+            25
+        );
+
         return $this->render('liked/like.html.twig', [
-            'series' => $likedSeries,
+            'series' => $appointments,
         ]);
     }
 

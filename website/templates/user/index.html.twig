@@ -2,42 +2,44 @@
 
 {% block title %}User index{% endblock %}
 
+{% block stylesheets %}
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link href="{{ asset('style.css') }}" rel="stylesheet"/>
+	<link href="{{ asset('styleAdmin.css') }}" rel="stylesheet"/>
+{% endblock %}
+
 {% block body %}
-    <h1>User index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Password</th>
-                <th>RegisterDate</th>
-                <th>Admin</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for user in users %}
-            <tr>
-                <td>{{ user.id }}</td>
-                <td>{{ user.name }}</td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.password }}</td>
-                <td>{{ user.registerDate ? user.registerDate|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ user.admin ? 'Yes' : 'No' }}</td>
-                <td>
-                    <a href="{{ path('app_user_show', {'id': user.id}) }}">show</a>
-                    <a href="{{ path('app_user_edit', {'id': user.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="7">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <form method="GET">
+        <input type="text" name='email' id='email' placeholder="Search..">
+        <button type="submit">Submit</button>
+    </form>
 
-    <a href="{{ path('app_user_new') }}">Create new</a>
+    <div class="test">
+	    <div class="panel">
+
+            <table class="table">
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                </tr>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td><a href="{{ path('app_user_show', {'id': user.id}) }}">Show His Liked Series</a></td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="7">Aucun utilisateurs inscrit.</td>
+                </tr>
+            {% endfor %}
+            <div class="navigation d-flex justify-content-center">
+                    {{ knp_pagination_render(users) }}
+            </div>
+            </table>
+        </div>
+    </div>
+
 {% endblock %}
