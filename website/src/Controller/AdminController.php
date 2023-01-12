@@ -92,16 +92,6 @@ class AdminController extends AbstractController
         return $this->redirectToRoute('app_admin_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/{id}/addRating', name: 'app_user_addRating', methods: ['GET', 'POST'])]
-    public function addRating(Request $request, User $user, EntityManagerInterface $entityManager): Response
-    {
-        $rating = $request->get('rate');
-
-        $entityManager->persist($rating);
-
-        return $this->redirectToRoute('app_admin_index', [], Response::HTTP_SEE_OTHER);
-    }
-
     #[Route('/{id}/showRating', name: 'app_user_showRating', methods: ['GET', 'POST'])]
     public function showRates(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {

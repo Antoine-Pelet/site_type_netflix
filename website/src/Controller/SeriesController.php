@@ -61,7 +61,8 @@ class SeriesController extends AbstractController
         $rates = $entityManager->getRepository(Rating::class)->createQueryBuilder('r')
         ->where('r.series = :series')
         ->setParameter('series', $series->getId())
-        ->getQuery();
+        ->getQuery()
+        ->getResult();
 
         return $this->render('series/show.html.twig', [
             'series' => $series,
@@ -170,6 +171,25 @@ class SeriesController extends AbstractController
         return $this->render('liked/view.html.twig', [
             'episodes' => $viewedEpisode,
         ]);
+    }
+
+    #[Route('/{id}/addRating', name: 'app_series_rate', methods: ['GET', 'POST'])]
+    public function addRating(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $rating = new Rating();
+
+        $series = $entityManager->getRepository(Series::class)->find($request->get('id'));
+
+        $rating->setSeries($series);
+        $rating->setUser($this->getUser());
+        $rating->setValue($request->get('rate'));
+        $rating->setComment($request->get('comment'));
+
+        $series->addRating($rating);
+        $entityManager->persist($rating);
+
+        $entityManager->flush();
+        return $this->redirectToRoute('app_series_index', [], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/{id}/vu', name: 'app_series_vu', methods: ['GET'])]
