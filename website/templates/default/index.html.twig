@@ -24,20 +24,7 @@
 					Grâce à notre interface intuitive, vous pouvez facilement suivre votre progression et découvrir de nouvelles séries passionnantes. 
 					Alors qu'attendez-vous ? Inscrivez-vous dès maintenant sur WatchList et commencez votre voyage dans le monde passionnant des séries !
 				</p>
-				{% set cpt = 0 %}
-				{% for s in series %}
-					{% if cpt < 3%}
-						<p> {{s.title}} </p>
-                        {% set debut = "https://www.youtube.com/embed/" %}
-						{% set id = s.youtubeTrailer |split('=') %}
-						{% set video = "%s%s" | format(debut, id[1]) %}
-
-						<iframe width="560" height="315" src="{{video}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-						{% set cpt = cpt + 1 %}
-					{% endif %}
-				{% endfor %}
-
-
+			
 				{% if app.user %}
 					<button class="button" onclick="location.href='{{ path('app_series_index') }}'">Voir les séries</button>
 				{% else %}
@@ -48,6 +35,20 @@
 				{% endif %}
 
 
+			</div>
+			<div class="example-wrapper2">
+				{% set cpt = 0 %}
+				{% for s in series %}
+					{% if cpt < 3%}
+						<span class="title_youtube_trailer">{{s.title}}</span>
+                        {% set debut = "https://www.youtube.com/embed/" %}
+						{% set id = s.youtubeTrailer |split('=') %}
+						{% set video = "%s%s" | format(debut, id[1]) %}
+
+						<iframe width="560" height="315" src="{{video}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+						{% set cpt = cpt + 1 %}
+					{% endif %}
+				{% endfor %}
 			</div>
 		</div>
 
