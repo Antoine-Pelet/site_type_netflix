@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Controller\ArrayObject;
 
 
 
@@ -159,8 +160,23 @@ class SeriesController extends AbstractController
 
         $viewedEpisode = $user->getEpisode();
 
+        $seasons = array();
+        for($i=0;$i<sizeof($viewedEpisode);$i++){
+            if (!in_array($viewedEpisode[$i]->getSeason(), $seasons)) {
+                $seasons[] = $viewedEpisode[$i]->getSeason();
+            } 
+        }
+        $series = array();
+        for($i=0;$i<sizeof($seasons);$i++){
+            if(!in_array($seasons[$i]->getSeries(), $series)) {
+                $series[] = $seasons[$i]->getSeries();  
+            }
+        }
+
         return $this->render('liked/view.html.twig', [
             'episodes' => $viewedEpisode,
+            'seriesView' => $series,
+            'seasons' => $seasons
         ]);
     }
 

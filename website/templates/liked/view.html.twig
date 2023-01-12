@@ -11,19 +11,43 @@
 {% endblock %}
 
 {% block body %}
+
 	<div class="listeseries">
-		{% for e in episodes %}
+		{% for s in seriesView %}
 			<table class="tableau">
 				<tr>
-					<td>
-						{{ e.title }}
-						<a href="{{ path('app_series_show', {'id': e.getSeason().getSeries().getId()}) }}">show</a>
-					</td>
+					<td><a href="{{ path('app_series_show', {'id': s.id}) }}"><img src="{{ path('app_series_poster', {'id': s.id}) }}"></a></td>
+					<td>{{ s.title }}</td>
+					{% set cpt = 1 %}
+					{% for seas in seasons %}
+						{% if seas.series.id == s.id %}
+							<td>
+							<div id="accordion">
+							<div class="card bg-transparent">
+								<div class="card-header">
+									<a class="card-link" data-toggle="collapse" href="#collapse{{cpt}}">Saison{{seas.number}}</a>
+								</div>
+								{% for epi in episodes %}
+										{% if epi.season.id == seas.id %}
+											<div id="collapse{{cpt}}" class="collapse" data-parent="#accordion">
+												<div class="card-body border">
+													<p>{{ epi.title }} ( Episode :{{ epi.number }} )
+														<a href="{{ path('app_series_vu', {'id': epi.id, 'season_number': seas.number, 'epi_number': epi.number}) }}">visionné !</a>
+													</p>
+												</div>
+											</div>
+										{% endif %}
+								{% endfor %}
+								{% set cpt = cpt + 1 %}
+								</div>
+							</div>
+							</td>
+						{% endif %}
+					{% endfor %}
 				</tr>
 			</table>
 		{% else %}
-			<p>Aucun épisode de vu</p>
+			<p>Aucune série n cours de visionnage</p>
 		{% endfor %}
 	</div>
-
 {% endblock %}

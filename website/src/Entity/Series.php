@@ -78,6 +78,7 @@ class Series
         $this->actor = new \Doctrine\Common\Collections\ArrayCollection();
         $this->country = new \Doctrine\Common\Collections\ArrayCollection();
         $this->seasons = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->rating = new ArrayCollection();
 
     }
 
