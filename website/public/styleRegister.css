@@ -96,10 +96,6 @@ label{
   transform: scale(.85) translateY(-1rem) translateX(.15rem)
 }
 
-#registration_form_country + label{
-  box-sizing: content-box;
-}
-
 .row {
   justify-content: center;
 }
@@ -115,4 +111,12 @@ label{
 
 .py-5 {
   padding-top: unset !important;
+}
+
+.cont {
+  color: white;
+}
+
+label[for="registration_form_country"] {
+  display: none;
 }
