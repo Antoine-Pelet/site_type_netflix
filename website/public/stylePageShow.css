@@ -67,3 +67,19 @@ img {
 .comm{
     color: white !important;
 }
+
+.panel_comment {
+    padding: 4vh;
+    display: flex;
+    background-color: #10171b;
+}
+
+.all_comment {
+    flex: 1;
+}
+
+.form_comment {
+    border-radius: 12px;
+    padding: 5vh;
+    flex: 1;
+}
