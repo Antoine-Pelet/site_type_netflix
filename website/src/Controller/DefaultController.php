@@ -17,12 +17,12 @@ class DefaultController extends AbstractController
         $appointmentsRepository = $entityManager->getRepository(Series::class);
 
         $youtubeTrailer = $appointmentsRepository->createQueryBuilder('s')
-        ->select('s.title, s.youtubeTrailer')
+        ->select('s.title, s.youtubeTrailer, s.id')
         ->getQuery()
         ->getResult();
 
         shuffle($youtubeTrailer);
-        
+
         return $this->render('default/index.html.twig', [
             'controller_name' => 'DefaultController',
             'series' => $youtubeTrailer

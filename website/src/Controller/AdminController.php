@@ -10,14 +10,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
 use Knp\Component\Pager\PaginatorInterface;
 
 class AdminController extends AbstractController
 {
     #[Route('/admin', name: 'app_admin_index', methods: ['GET'])]
-    public function index(Request $request, EntityManagerInterface $entityManager, PaginatorInterface $paginator): Response
-    {
+    public function index(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        PaginatorInterface $paginator
+    ): Response {
 
         $users = $entityManager->getRepository(User::class);
 
@@ -42,8 +44,11 @@ class AdminController extends AbstractController
     }
 
     #[Route('/user', name: 'app_user_index', methods: ['GET'])]
-    public function user(Request $request, EntityManagerInterface $entityManager, PaginatorInterface $paginator): Response
-    {
+    public function user(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        PaginatorInterface $paginator
+    ): Response {
         $users = $entityManager->getRepository(User::class);
 
         $users = $users->createQueryBuilder('u')
@@ -51,7 +56,7 @@ class AdminController extends AbstractController
         ->where('u.name LIKE :search')
         ->setParameter('search', '%' . $request->query->get('name') . '%')
         ->getQuery();
-        
+
         $appointments = $paginator->paginate(
             // Doctrine Query, not results
             $users,
@@ -66,9 +71,9 @@ class AdminController extends AbstractController
         ]);
     }
 
-    #[Route('/user/showSeriesLiked/{id}', name: 'app_user_show', methods: ['GET'])]
+    #[Route('/user/showSeriesViewed/{id}', name: 'app_user_show', methods: ['GET'])]
     public function show(Request $request, EntityManagerInterface $entityManager, User $user): Response
-    {    
+    {
         $series = $user->getSeries();
 
         return $this->render('user/show.html.twig', [

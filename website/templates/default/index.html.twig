@@ -40,12 +40,12 @@
 				{% set cpt = 0 %}
 				{% for s in series %}
 					{% if cpt < 3%}
-						<span class="title_youtube_trailer">{{s.title}}</span>
+						<span class="title_youtube_trailer"><a href="{{ path('app_series_show', {'id': s.id}) }}">-> {{s.title}}</a></span>
                         {% set debut = "https://www.youtube.com/embed/" %}
 						{% set id = s.youtubeTrailer |split('=') %}
 						{% set video = "%s%s" | format(debut, id[1]) %}
 
-						<iframe width="560" height="315" src="{{video}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+						<iframe width="375" height="375" src="{{video}}" title="YouTube video player"  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 						{% set cpt = cpt + 1 %}
 					{% endif %}
 				{% endfor %}
