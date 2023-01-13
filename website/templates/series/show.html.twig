@@ -59,6 +59,13 @@
 						<h4>Awards</h4>
 						<p>{{ series.awards }}</p>
 					</div>
+
+					<div class="mb-1">
+						<h4>IMBD</h4>
+						{% set debut = "https://www.imdb.com/title/" %}
+						{% set link = "%s%s" | format(debut, series.imdb) %}
+						<a href="{{link}}" class="text-white text-decoration-none">{{ series.imdb }}</a>
+					</div>
 				</div>
 			</div>
 		</div>

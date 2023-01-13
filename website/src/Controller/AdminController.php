@@ -10,16 +10,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+
 use Knp\Component\Pager\PaginatorInterface;
 
 class AdminController extends AbstractController
 {
     #[Route('/admin', name: 'app_admin_index', methods: ['GET'])]
-    public function index(
-        Request $request,
-        EntityManagerInterface $entityManager,
-        PaginatorInterface $paginator
-    ): Response {
+    public function index(Request $request, EntityManagerInterface $entityManager, PaginatorInterface $paginator): Response
+    {
 
         $users = $entityManager->getRepository(User::class);
 
@@ -44,17 +42,14 @@ class AdminController extends AbstractController
     }
 
     #[Route('/user', name: 'app_user_index', methods: ['GET'])]
-    public function user(
-        Request $request,
-        EntityManagerInterface $entityManager,
-        PaginatorInterface $paginator
-    ): Response {
+    public function user(Request $request, EntityManagerInterface $entityManager, PaginatorInterface $paginator): Response
+    {
         $users = $entityManager->getRepository(User::class);
 
         $users = $users->createQueryBuilder('u')
         ->orderBy('u.registerDate', 'DESC')
-        ->where('u.name LIKE :search')
-        ->setParameter('search', '%' . $request->query->get('name') . '%')
+        ->where('u.email LIKE :search')
+        ->setParameter('search', '%' . $request->query->get('email') . '%')
         ->getQuery();
 
         $appointments = $paginator->paginate(
@@ -71,9 +66,9 @@ class AdminController extends AbstractController
         ]);
     }
 
-    #[Route('/user/showSeriesViewed/{id}', name: 'app_user_show', methods: ['GET'])]
+    #[Route('/user/showSeriesLiked/{id}', name: 'app_user_show', methods: ['GET'])]
     public function show(Request $request, EntityManagerInterface $entityManager, User $user): Response
-    {
+    {    
         $series = $user->getSeries();
 
         return $this->render('user/show.html.twig', [
