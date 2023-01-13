@@ -216,7 +216,7 @@ input[type=text], button[type=submit] {
   background-color: DodgerBlue; 
 }
   
-.searchbtn .bi-search{
+.searchbtn:hover .bi-search{
   fill:#162832;
 }
 

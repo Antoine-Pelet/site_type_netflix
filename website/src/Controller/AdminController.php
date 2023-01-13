@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Rating;
 use App\Entity\User;
 use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -47,10 +48,10 @@ class AdminController extends AbstractController
 
         $users = $users->createQueryBuilder('u')
         ->orderBy('u.registerDate', 'DESC')
-        ->where('u.name LIKE :search')
-        ->setParameter('search', '%' . $request->query->get('name') . '%')
+        ->where('u.email LIKE :search')
+        ->setParameter('search', '%' . $request->query->get('email') . '%')
         ->getQuery();
-        
+
         $appointments = $paginator->paginate(
             // Doctrine Query, not results
             $users,
@@ -98,4 +99,19 @@ class AdminController extends AbstractController
         return $this->redirectToRoute('app_admin_index', [], Response::HTTP_SEE_OTHER);
     }
 
+    #[Route('/{id}/showRating', name: 'app_user_showRating', methods: ['GET', 'POST'])]
+    public function showRates(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    {
+        $rates = $entityManager->getRepository(Rating::class)->createQueryBuilder('r')
+        ->where('r.user = :user')
+        ->setParameter('user', $user->getId())
+        ->getQuery()
+        ->getResult();
+
+        $entityManager->flush();
+
+        return $this->render('user/comments.html.twig', [
+            'rates' => $rates,
+        ]);
+    }
 }
