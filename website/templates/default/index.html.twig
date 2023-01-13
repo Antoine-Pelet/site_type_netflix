@@ -40,7 +40,7 @@
 				{% set cpt = 0 %}
 				{% for s in series %}
 					{% if cpt < 3%}
-						<span class="title_youtube_trailer">{{s.title}}</span>
+						<span class="title_youtube_trailer"><a href="{{ path('app_series_show', {'id': s.id}) }}">-> {{s.title}}</a></span>
                         {% set debut = "https://www.youtube.com/embed/" %}
 						{% set id = s.youtubeTrailer |split('=') %}
 						{% set video = "%s%s" | format(debut, id[1]) %}

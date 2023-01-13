@@ -10,6 +10,7 @@
 .example-wrapper2 {
   background-color: #31313177;
   padding: 3vh;
+  border-radius: 10px;
 }
 
 .example-wrapper span:nth-child(1) {
@@ -19,7 +20,7 @@
 
 .title_youtube_trailer {
   color: #ffffff !important;
-  font-size: 4.6rem !important;
+  font-size: 1.6rem !important;
 }
 
 .example-wrapper span:nth-child(2) {
