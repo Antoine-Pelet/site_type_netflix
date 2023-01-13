@@ -79,7 +79,6 @@ class Series
         $this->country = new \Doctrine\Common\Collections\ArrayCollection();
         $this->seasons = new \Doctrine\Common\Collections\ArrayCollection();
         $this->rating = new ArrayCollection();
-
     }
 
     public function getId(): ?int
