@@ -107,6 +107,8 @@
 	</div>
 	{% for r in rates %}
 		{{ r.comment }}
+		| {{ r.value }}
+		| {{r.user.name}}
 	{% endfor %}
 
 	{% if app.user %}

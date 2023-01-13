@@ -17,7 +17,7 @@ class DefaultController extends AbstractController
         $appointmentsRepository = $entityManager->getRepository(Series::class);
 
         $youtubeTrailer = $appointmentsRepository->createQueryBuilder('s')
-        ->select('s.title, s.youtubeTrailer')
+        ->select('s.title, s.youtubeTrailer, s.id')
         ->getQuery()
         ->getResult();
 
