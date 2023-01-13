@@ -10,29 +10,6 @@ body {
   padding-right: 3vh;
   margin-bottom: 4vh;
 }
-  
-td {
-  text-align: center;
-  display: flex;
-  justify-content: space-between;
-  padding-left: 1vh;
-  padding-right: 2vh;
-  margin-top: 1vh;
-}
-
-td p {
-  font-size: 1.3rem;
-}
-
-.tableau{
-  color: white;
-  margin-bottom: 4vh;
-}
-
-.tableau img {
-  width: 35vh;
-  border-radius: 13px;
-}
 
 .listeseries{
   display: flex;
@@ -51,4 +28,11 @@ td p {
 
 .liked{
   fill:#f91876;
+}
+
+.col-md-1{
+  margin: 20px;
+  padding: 0px;
+  background : #101b20;
+  color: #b3b0b0;
 }
