@@ -28,3 +28,7 @@ tr {
 .table a {
     text-decoration: none;
 }
+
+.comment{
+    color: white; 
+}

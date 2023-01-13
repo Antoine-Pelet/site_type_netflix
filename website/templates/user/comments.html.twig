@@ -10,12 +10,12 @@
 
 {% block body %}
 
+    <div class="comment">
+        <h1>Comments</h1>
 
-    <h1>Comments</h1>
-
-    {% for r in rates %}
-        <p>{{ r.getComment() }}</p>
-    {% endfor %}
-
+        {% for r in rates %}
+            <p>{{ r.getComment() }}</p>
+        {% endfor %}
+    </div>
 {% endblock %}
 
