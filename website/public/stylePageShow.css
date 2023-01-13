@@ -10,6 +10,8 @@ body {
     background-color: #162832 !important;
 }
 
+.comm
+
 img {
     border-radius: 4%;
 }
@@ -63,5 +65,5 @@ img {
 }
 
 .comm{
-    color: white;
+    color: white !important;
 }
