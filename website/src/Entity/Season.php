@@ -65,7 +65,7 @@ class Season
         return $this;
     }
 
-    public function getEpisodes() : Collection
+    public function getEpisodes(): Collection
     {
         return $this->episodes;
     }

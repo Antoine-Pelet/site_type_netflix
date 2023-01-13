@@ -22,7 +22,7 @@ class DefaultController extends AbstractController
         ->getResult();
 
         shuffle($youtubeTrailer);
-        
+
         return $this->render('default/index.html.twig', [
             'controller_name' => 'DefaultController',
             'series' => $youtubeTrailer
