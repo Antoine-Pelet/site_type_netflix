@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Series;
 use App\Form\SeriesType;
 use App\Entity\Episode;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -163,12 +164,12 @@ class SeriesController extends AbstractController
         ]);
     }
 
-    #[Route('/series/episode/list', name: 'app_view_episodes', methods: ['GET'])]
-    public function viewed(): Response
+    #[Route('/series/episode/list/{id}', name: 'app_view_episodes', methods: ['GET'])]
+    public function viewed(EntityManagerInterface $entityManager, Request $request): Response
     {
 
         /** @var \App\Entity\User */
-        $user = $this->getUser();
+        $user = $entityManager->getRepository(User::class)->find($request->get('id'));
 
         $viewedEpisode = $user->getEpisode();
 
@@ -190,6 +191,7 @@ class SeriesController extends AbstractController
             'seriesView' => $series,
             'seasons' => $seasons
         ]);
+        
     }
 
     #[Route('/{id}/addRating', name: 'app_series_rate', methods: ['GET', 'POST'])]
@@ -201,7 +203,7 @@ class SeriesController extends AbstractController
 
         $rating->setSeries($series);
         $rating->setUser($this->getUser());
-        $rating->setValue($request->get('rate'));
+        $rating->setValue($request->get('rate')*2);
         $rating->setComment($request->get('comment'));
 
         $series->addRating($rating);
@@ -241,6 +243,6 @@ class SeriesController extends AbstractController
 
         $entityManager->flush();
 
-        return $this->redirectToRoute('app_series_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_series_show', array('id' => $epi->getSeason()->getSeries()->getId()), Response::HTTP_SEE_OTHER);
     }
 }

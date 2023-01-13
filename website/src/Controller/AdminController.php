@@ -66,7 +66,7 @@ class AdminController extends AbstractController
         ]);
     }
 
-    #[Route('/user/showSeriesLiked/{id}', name: 'app_user_show', methods: ['GET'])]
+    #[Route('/user/showSeriesViewed/{id}', name: 'app_user_show', methods: ['GET'])]
     public function show(Request $request, EntityManagerInterface $entityManager, User $user): Response
     {    
         $series = $user->getSeries();
