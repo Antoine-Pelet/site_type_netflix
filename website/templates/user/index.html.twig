@@ -35,7 +35,8 @@
 						<td>{{ user.email }}</td>
 						<td>
 							<a href="{{ path('app_view_episodes', {'id': user.id}) }}">Show his viewed series</a> | 
-							<a href="{{ path('app_user_showRating', {'id': user.id}) }}">Show his comments series</a>
+							<a href="{{ path('app_user_showRating', {'id': user.id}) }}">Show his comments series</a> | 
+							<a href="{{ path('app_user_change_mdp', {'id': user.id}) }}">Edit</a>
 						</td>
 					</tr>
 				{% else %}
