@@ -23,6 +23,10 @@
 								-
 								{{ series.yearEnd  }}</p>
 						</div>
+						<div class="mb-1">
+							<h4>Note</h4>
+							<p>{{ series.rate.value }}</p>
+						</div>
 						{% if app.user %}
 							{% if episodesVues|length == 0 %}
 								{% set progress =  0 %}
@@ -47,16 +51,12 @@
 							{% endif %}
 						{% endif %}
 						</div>
-						<div class="d-flex flex-row justify-content-between mb-1">
-							<div>
-								<h4>Genre</h4>
+						<div>
+							<h4>Genre</h4>
+							<div class="genre">
 								{% for g in genres%}
 									<p>{{ g.name }}</p>
 								{% endfor %}
-							</div>
-							<div class="mb-1">
-								<h4>Note</h4>
-								<p>{{ series.rate.value }}</p>
 							</div>
 						</div>
 						<div class="mb-1">
