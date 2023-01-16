@@ -29,6 +29,10 @@ tr {
     text-decoration: none;
 }
 
+h1{
+    color:white;
+}
 .comment{
-    color: white; 
+    background-color: white;
+    color: black; 
 }

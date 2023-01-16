@@ -10,12 +10,17 @@
 
 {% block body %}
 
-    <div class="comment">
+    
         <h1>Comments</h1>
 
         {% for r in rates %}
-            <p>{{ r.getComment() }}</p>
+            <div class="comment">
+            
+{%set vardiff = date("now" | date()).diff(date(r.getDate()))%}
+                <p>{{ r.getSeries().title}} - {{vardiff.days}}</p>
+                <p>{{ r.getComment() }}</p>
+            </div>
         {% endfor %}
-    </div>
+
 {% endblock %}
 
