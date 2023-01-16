@@ -24,7 +24,74 @@
 	</head>
 
 	{% block header %}
-		<nav>
+		<nav class="navbar navbar-light navbar-1 white">
+			<a class="navbar-brand img" href="{{ path('app_default') }}"></a>
+			<button class="navbar-toggler toggler-example" type="button" data-toggle="collapse" data-target="#navbarSupportedContent15"
+			aria-controls="navbarSupportedContent15" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon">
+					<i class="fas fa-bars fa-1x"></i>
+				</span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent15">
+				<ul class="all_navigate navbar-nav mr-auto">
+					{% if app.user %}
+						<li class="nav-item active">
+							<div class="container">
+								<div class="row">
+									<div class="dropdown">
+										<a class="nav-link dropdown-toggle" href="#" role="button" id="deroulanta" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Séries</a>
+										<div class="dropdown-menu" aria-labelledby="deroulanta">
+											<a class="dropdown-item nav-link" href="{{ path('app_series_index') }}">Toutes les Series</a>
+											<a class="dropdown-item nav-link" href="{{ path('app_liked_series') }}">Séries likés</a>
+											<a class="dropdown-item nav-link" href="{{ path('app_view_episodes', {'id': app.user.id}) }}">Séries regardées</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</li>
+						<li class="nav-item">
+							<div class="container">
+								<div class="row">
+									<div class="dropdown">
+										{% if app.user.admin != '0' %}
+											<a class="nav-link dropdown-toggle nav-link" href="#" role="button" id="deroulanta" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Panels</a>
+											<div class="dropdown-menu" aria-labelledby="deroulanta">
+												<a class="dropdown-item nav-link" href="{{ path('app_user_index') }}">Liste des Users</a>
+												<a class="dropdown-item nav-link" href="{{ path('app_admin_index') }}">Admin</a>
+											</div>
+										{% else %}
+											<a class="dropdown-item decale nav-link" href="{{ path('app_user_index') }}">Liste des Users</a>
+										{% endif %}
+									</div>
+								</div>
+							</div>
+						</li>
+						<li class="nav-item">
+							<span class="user_name decale">[{{ app.user.email }}]</span>
+						</li>
+						<li class="nav-item">
+							<a href="{{ path('app_logout') }}" class="nav-link">Déconnexion</a>
+						</li>
+					{% else %}
+						<a class="dropdown-item decale nav-link" href="{{ path('app_series_index') }}">Toutes les Series</a>
+						<li class="decale nav-item">
+							<a href="{{ path('app_register') }}" class="nav-link">Inscription</a>
+						</li>
+						<li class="nav-item">
+							<a href="{{ path('app_login') }}" class="nav-link">Connexion</a>
+						</li>
+					{% endif %}
+
+					{% if is_granted('IS_AUTHENTICATED_REMEMBERED') and is_granted('ROLE_PREVIOUS_ADMIN') %}
+						<li class="nav-item">
+							<a href="{{ path('app_admin_index', {'_switch_user' : '_exit' }) }}" class="nav-link">désincarner</a>
+						</li>
+					{% endif %}
+				</ul>
+			</div>
+		</nav>
+		
+		<nav class="normal">
 		<div>
 			<ul>
 				<li>
@@ -83,12 +150,13 @@
 
 				{% if is_granted('IS_AUTHENTICATED_REMEMBERED') and is_granted('ROLE_PREVIOUS_ADMIN') %}
 					<li>
-						<a href="{{ path('app_admin_index', {'_switch_user' : '_exit' }) }}">désincarner</a>
+						<a href="{{ path('app_admin_index', {'_switch_user' : '_exit' }) }}">Désincarner</a>
 					</li>
 				{% endif %}
 			</ul>
 			</div>
 		</nav>
+
 	{% endblock %}
 
 
