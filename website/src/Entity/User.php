@@ -70,6 +70,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(name: "ban", type: "boolean", nullable: false)]
     private $ban = '0';
 
+    #[ORM\Column(name: "connected", type: "boolean", nullable: false)]
+    private $connected = '0';
+
     /**
      * Constructor
      */
@@ -99,6 +102,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setBan($ban): self
     {
         $this->ban = $ban;
+        return $this;
+    }
+
+    public function getConnected(): ?bool
+    {
+        return $this->connected;
+    }
+
+    public function setConnected($connected): self
+    {
+        $this->connected = $connected;
         return $this;
     }
 
@@ -262,5 +276,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function isBan(): ?bool
     {
         return $this->ban;
+    }
+
+    public function isConnected(): ?bool
+    {
+        return $this->connected;
     }
 }
