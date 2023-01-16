@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Faker\Factory;
 
 use Knp\Component\Pager\PaginatorInterface;
 
@@ -18,14 +19,13 @@ class AdminController extends AbstractController
     #[Route('/admin', name: 'app_admin_index', methods: ['GET'])]
     public function index(Request $request, EntityManagerInterface $entityManager, PaginatorInterface $paginator): Response
     {
-
         $users = $entityManager->getRepository(User::class);
 
         $users = $users->createQueryBuilder('u')
-        ->orderBy('u.registerDate', 'DESC')
-        ->where('u.email LIKE :search')
-        ->setParameter('search', '%' . $request->query->get('email') . '%')
-        ->getQuery();
+            ->orderBy('u.registerDate', 'DESC')
+            ->where('u.email LIKE :search')
+            ->setParameter('search', '%' . $request->query->get('email') . '%')
+            ->getQuery();
 
         $appointments = $paginator->paginate(
             // Doctrine Query, not results
@@ -47,10 +47,10 @@ class AdminController extends AbstractController
         $users = $entityManager->getRepository(User::class);
 
         $users = $users->createQueryBuilder('u')
-        ->orderBy('u.registerDate', 'DESC')
-        ->where('u.email LIKE :search')
-        ->setParameter('search', '%' . $request->query->get('email') . '%')
-        ->getQuery();
+            ->orderBy('u.registerDate', 'DESC')
+            ->where('u.email LIKE :search')
+            ->setParameter('search', '%' . $request->query->get('email') . '%')
+            ->getQuery();
 
         $appointments = $paginator->paginate(
             // Doctrine Query, not results
@@ -68,7 +68,7 @@ class AdminController extends AbstractController
 
     #[Route('/user/showSeriesLiked/{id}', name: 'app_user_show', methods: ['GET'])]
     public function show(Request $request, EntityManagerInterface $entityManager, User $user): Response
-    {    
+    {
         $series = $user->getSeries();
 
         return $this->render('user/show.html.twig', [
@@ -80,7 +80,6 @@ class AdminController extends AbstractController
     #[Route('/admin/{id}/edit', name: 'app_admin_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
-
         $user->setAdmin(1);
 
         $entityManager->flush();
@@ -91,7 +90,6 @@ class AdminController extends AbstractController
     #[Route('/{id}/remove', name: 'app_admin_remove', methods: ['GET', 'POST'])]
     public function edit2(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
-
         $user->setAdmin(0);
 
         $entityManager->flush();
@@ -103,15 +101,39 @@ class AdminController extends AbstractController
     public function showRates(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
         $rates = $entityManager->getRepository(Rating::class)->createQueryBuilder('r')
-        ->where('r.user = :user')
-        ->setParameter('user', $user->getId())
-        ->getQuery()
-        ->getResult();
+            ->where('r.user = :user')
+            ->setParameter('user', $user->getId())
+            ->getQuery()
+            ->getResult();
 
         $entityManager->flush();
 
         return $this->render('user/comments.html.twig', [
             'rates' => $rates,
         ]);
+    }
+
+
+    #[Route('/faker', name: 'app_user_faker', methods: ['POST'])]
+    public function userFaker(EntityManagerInterface $entityManager)
+    {
+        $faker = Factory::create();
+        
+        $em = $entityManager;
+        if (isset($_POST['usergen'])) {
+            $numUsers = $_POST['usergen'];
+            $users = array();
+            for ($i = 0; $i < $numUsers; $i++) {
+                $user = new User();
+                $tmpname = $faker->userName;
+                $user->setName($tmpname);
+                $user->setEmail($tmpname . $i . '@testwatchlist.fr');
+                $user->setPassword($faker->password(6, 7));
+                $users[] = $user;
+                $em->persist($user);
+            }
+            $em->flush();
+        }
+        return $this->redirectToRoute('app_admin_index');
     }
 }
