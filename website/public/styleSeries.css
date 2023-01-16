@@ -15,6 +15,7 @@ body {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
+  color: white;
 }
 
 .svgheart{
@@ -37,6 +38,9 @@ body {
   color: #b3b0b0;
 }
 
+.form {
+  display: flex;
+}
 
 .card-text{
   margin-left: 3px;
