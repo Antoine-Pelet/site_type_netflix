@@ -137,6 +137,7 @@
 					</li>
 					<li>
 						<a href="{{ path('app_logout') }}">Déconnexion</a>
+						<a href="{{ path('app_user_edit', {'id': app.user.id}) }}">- Edit</a>
 					</li>
 				{% else %}
 					<a class="dropdown-item decale" href="{{ path('app_series_index') }}">Toutes les Series</a>

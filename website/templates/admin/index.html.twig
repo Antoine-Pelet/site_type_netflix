@@ -19,6 +19,10 @@
 			</svg>
 		</button>
 	</form>
+	<form action="{{ path('app_user_faker') }}" method="POST" class="form_usergen">
+		<input type="number" id="usergen" name="usergen" min="1" max="100000" step="1">
+		<button type="submit" class="btn btn-script">Generate User</button>
+	</form>
 
 <div class="test">
 	<div class="panel">
@@ -47,13 +51,15 @@
 							<td>
 								<a href="{{ path('app_admin_edit', {'id': user.id}) }}" class="text-success">↑</a>
 								|
-								<a href="?_switch_user={{user.email}}">Embody</a>
+								<a href="?_switch_user={{user.email}}">Embody</a> | 
+								<a href="{{ path('app_user_change_mdp', {'id': user.id}) }}">Edit</a>
 							</td>
 						{% else %}
 							<td>
 								<a href="{{ path('app_admin_remove', {'id': user.id}) }}" class="text-danger">↓</a>
 								|
-								<a href="?_switch_user={{user.email}}">Embody</a>
+								<a href="?_switch_user={{user.email}}">Embody</a> | 
+								<a href="{{ path('app_user_change_mdp', {'id': user.id}) }}">Edit</a>
 							</td>
 						{% endif %}
 					{% endif %}
