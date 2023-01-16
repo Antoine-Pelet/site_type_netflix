@@ -51,11 +51,6 @@ class Country
         return $this;
     }
 
-    public function __toString()
-    {
-        return $this->getName();
-    }
-
     /**
      * @return Collection<int, Series>
      */
@@ -78,5 +73,10 @@ class Country
         $this->series->removeElement($series);
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->getName();
     }
 }
