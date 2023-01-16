@@ -98,7 +98,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setBan($ban): self
     {
-        return $this->ban = $ban;
+        $this->ban = $ban;
+        return $this;
     }
 
     public function setName(string $name): self

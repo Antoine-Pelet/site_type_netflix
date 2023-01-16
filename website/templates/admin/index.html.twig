@@ -33,6 +33,7 @@
 				<th>Email</th>
 				<th>Register Date</th>
 				<th>Admin</th>
+				<th>Ban</th>
 				<th>Actions</th>
 			</tr>
 			{% for user in users %}
@@ -46,22 +47,26 @@
 					{% else %}
 						<td class="text-success">{{ user.admin ? 'Yes' : 'No' }}</td>
 					{% endif %}
+					{% if user.ban == '0' %}
+						<td class="text-danger">{{ user.ban ? 'Yes' : 'No' }}</td>
+					{% else %}
+						<td class="text-success">{{ user.ban ? 'Yes' : 'No' }}</td>
+					{% endif %}
 					{% if app.user %}
-						{% if user.admin == '0' %}
-							<td>
-								<a href="{{ path('app_admin_edit', {'id': user.id}) }}" class="text-success">↑</a>
-								|
-								<a href="?_switch_user={{user.email}}">Embody</a> | 
-								<a href="{{ path('app_user_change_mdp', {'id': user.id}) }}">Edit</a>
-							</td>
-						{% else %}
-							<td>
-								<a href="{{ path('app_admin_remove', {'id': user.id}) }}" class="text-danger">↓</a>
-								|
-								<a href="?_switch_user={{user.email}}">Embody</a> | 
-								<a href="{{ path('app_user_change_mdp', {'id': user.id}) }}">Edit</a>
-							</td>
-						{% endif %}
+						<td>
+							{% if user.admin == '0' %}
+								<a href="{{ path('app_admin_edit', {'id': user.id}) }}" class="text-success">Promouvoir</a> | 
+							{% else %}
+								<a href="{{ path('app_admin_remove', {'id': user.id}) }}" class="text-danger">Destituer</a> | 
+							{% endif %}
+							<a href="?_switch_user={{user.email}}">Embody</a> | 
+							<a href="{{ path('app_user_change_mdp', {'id': user.id}) }}">Edit</a> | 
+							{% if user.ban == '0' %}
+								<a href="{{ path('app_admin_ban', {'id': user.id}) }}" class="text-success">Bannir</a>
+							{% else %}
+								<a href="{{ path('app_admin_unban', {'id': user.id}) }}" class="text-danger">Débannir</a>
+							{% endif %}
+						</td>
 					{% endif %}
 				</tr>
 			{% else %}
