@@ -29,6 +29,10 @@ tr {
     text-decoration: none;
 }
 
+.form_usergen {
+    margin-top: 2vh;
+}
+
 h1{
     color:white;
 }

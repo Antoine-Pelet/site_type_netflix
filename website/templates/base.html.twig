@@ -72,6 +72,9 @@
 						<li class="nav-item">
 							<a href="{{ path('app_logout') }}" class="nav-link">Déconnexion</a>
 						</li>
+						<li>
+							<a href="{{ path('app_user_edit', {'id': app.user.id}) }}">Edit</a>
+						</li>
 					{% else %}
 						<a class="dropdown-item decale nav-link" href="{{ path('app_series_index') }}">Toutes les Series</a>
 						<li class="decale nav-item">
@@ -137,7 +140,9 @@
 					</li>
 					<li>
 						<a href="{{ path('app_logout') }}">Déconnexion</a>
-						<a href="{{ path('app_user_edit', {'id': app.user.id}) }}">- Edit</a>
+					</li>
+					<li>
+						<a href="{{ path('app_user_edit', {'id': app.user.id}) }}">Edit</a>
 					</li>
 				{% else %}
 					<a class="dropdown-item decale" href="{{ path('app_series_index') }}">Toutes les Series</a>

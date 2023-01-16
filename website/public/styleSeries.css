@@ -6,6 +6,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
   padding-left: 3vh;
   padding-right: 3vh;
   margin-bottom: 4vh;
@@ -40,6 +41,7 @@ body {
 
 .form {
   display: flex;
+  flex-wrap: wrap;
 }
 
 .card-text{
@@ -54,4 +56,21 @@ body {
   margin-top: 3px;
   width:20px;
   fill: gold;
+}
+
+.dropdown-menu.show {
+  background-color: #162832;
+}
+
+.navigation {
+  margin-top: 2vh;
+}
+
+.pagination {
+  flex-wrap: wrap;
+}
+
+select {
+  border-radius: 25px;
+  min-height: 6vh;
 }
