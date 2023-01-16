@@ -70,6 +70,7 @@
 					</li>
 					<li>
 						<a href="{{ path('app_logout') }}">Déconnexion</a>
+						<a href="{{ path('app_user_edit', {'id': app.user.id}) }}">- Edit</a>
 					</li>
 				{% else %}
 					<a class="dropdown-item decale" href="{{ path('app_series_index') }}">Toutes les Series</a>
@@ -83,7 +84,7 @@
 
 				{% if is_granted('IS_AUTHENTICATED_REMEMBERED') and is_granted('ROLE_PREVIOUS_ADMIN') %}
 					<li>
-						<a href="{{ path('app_admin_index', {'_switch_user' : '_exit' }) }}">désincarner</a>
+						<a href="{{ path('app_admin_index', {'_switch_user' : '_exit' }) }}">Désincarner</a>
 					</li>
 				{% endif %}
 			</ul>

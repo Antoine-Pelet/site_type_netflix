@@ -102,8 +102,27 @@ class SeriesController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_series_show', methods: ['GET'])]
-    public function show(Series $series, EntityManagerInterface $entityManager): Response
+    public function show(Series $series, EntityManagerInterface $entityManager, Request $request): Response
     {
+        $serie = $entityManager->getRepository(Series::class)->find($request->get('id'));
+
+        $seasons = $serie->getSeasons();
+
+        $cpt = 0;
+        foreach ($seasons as $s){
+            $cpt = $cpt + sizeof($s->getEpisodes());
+        }
+
+        $epi = $entityManager->getRepository(Episode::class)->createQueryBuilder('e')
+        ->leftJoin('e.user', 'us')
+        ->leftJoin('e.season', 'seas')
+        ->leftJoin('seas.series', 'ser')
+        ->where('ser.id = :series')
+        ->andWhere('us.id = :user')
+        ->setParameter('series', $series->getId())
+        ->setParameter('user', $this->getUser()->getId())
+        ->getQuery()
+        ->getResult();
 
         $rates = $entityManager->getRepository(Rating::class)->createQueryBuilder('r')
         ->where('r.series = :series')
@@ -117,6 +136,8 @@ class SeriesController extends AbstractController
             'series' => $series,
             'rates' => $rates,
             'genres' => $genre,
+            'totalEpisode' => $cpt,
+            'episodesVues' => $epi
         ]);
     }
 
@@ -239,7 +260,6 @@ class SeriesController extends AbstractController
             'seriesView' => $series,
             'seasons' => $seasons
         ]);
-        
     }
 
     #[Route('/{id}/addRating', name: 'app_series_rate', methods: ['GET', 'POST'])]
@@ -290,7 +310,6 @@ class SeriesController extends AbstractController
                 }
             }
         }
-
 
         $entityManager->flush();
 
