@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Rating;
 use App\Entity\User;
 use App\Form\UserType;
+use App\Entity\Series;
 use App\Form\UserTypeMDP;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -113,7 +114,7 @@ class AdminController extends AbstractController
 
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_admin_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('user/editMDP.html.twig', [
@@ -125,7 +126,7 @@ class AdminController extends AbstractController
     #[Route('/user/{id}', name: 'app_user_delete', methods: ['POST'])]
     public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
             $entityManager->remove($user);
             $entityManager->flush();
         }
@@ -164,6 +165,26 @@ class AdminController extends AbstractController
         return $this->redirectToRoute('app_admin_index', [], Response::HTTP_SEE_OTHER);
     }
 
+    #[Route('/admin/{id}/ban', name: 'app_admin_ban', methods: ['GET', 'POST'])]
+    public function ban(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    {
+        $user->setBan(1);
+
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_admin_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/admin/{id}/unban', name: 'app_admin_unban', methods: ['GET', 'POST'])]
+    public function unban(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    {
+        $user->setBan(0);
+
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_admin_index', [], Response::HTTP_SEE_OTHER);
+    }
+
     #[Route('/{id}/showRating', name: 'app_user_showRating', methods: ['GET', 'POST'])]
     public function showRates(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
@@ -185,7 +206,7 @@ class AdminController extends AbstractController
     public function userFaker(EntityManagerInterface $entityManager)
     {
         $faker = Factory::create();
-        
+
         $em = $entityManager;
         if (isset($_POST['usergen'])) {
             $numUsers = $_POST['usergen'];
@@ -202,5 +223,67 @@ class AdminController extends AbstractController
             $em->flush();
         }
         return $this->redirectToRoute('app_admin_index');
+    }
+
+    #[Route('/rategen', name: 'app_rate_gen', methods: ['POST'])]
+    public function rateGen(Request $request, EntityManagerInterface $entityManager)
+    {
+        $faker = Factory::create();
+        $em = $entityManager;
+        $users = $em->getRepository(User::class)->findAll();
+        $seriesIds = range(1, 234);
+        foreach ($users as $u) {
+            if (substr($u->getEmail(), -17) != '@testwatchlist.fr') {
+                continue;
+            }
+            $tempSeriesIds = $seriesIds;
+            shuffle($tempSeriesIds);
+            $tempSeriesIds = array_slice($tempSeriesIds, 0, rand(1, 10));
+            foreach ($tempSeriesIds as $id) {
+                $series = $em->getRepository(Series::class)->findOneBy(['id' => $id]);
+                if (!$series) continue;
+                $rating = new Rating();
+                $rating->setSeries($series);
+                $rating->setUser($u);
+                $rating->setValue(rand(0, 10));
+                $rating->setComment($faker->text(200));
+                $series->addRating($rating);
+                $ratings[] = $rating;
+                $em->persist($rating);
+                $u->addSeries($series);
+            }
+            $em->flush();
+        }
+        return $this->redirectToRoute('app_admin_index');
+    }
+
+    #[Route('/user/{id}/follow', name: 'app_user_like', methods: ['GET'])]
+    public function like(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        /** @var \App\Entity\User */
+        $user = $this->getUser();
+
+        $targetUser = $entityManager->getRepository(User::class)->find($request->get('id'));
+
+        $user->addUser($targetUser);
+
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/user/{id}/unfollow', name: 'app_user_dislike', methods: ['GET'])]
+    public function dislike(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        /** @var \App\Entity\User */
+        $user = $this->getUser();
+
+        $targetUser = $entityManager->getRepository(User::class)->find($request->get('id'));
+
+        $user->removeUser($targetUser);
+
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
     }
 }

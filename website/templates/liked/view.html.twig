@@ -68,11 +68,11 @@
 							<div id="accordion">
 							<div class="card bg-transparent">
 								<div class="card-header">
-									<a class="card-link" data-toggle="collapse" href="#collapse{{cpt}}">Saison{{seas.number}}</a>
+									<a class="card-link" data-toggle="collapse" href="#collapse{{cpt}}{{s.id}}">Saison{{seas.number}}</a>
 								</div>
 								{% for epi in episodes|sort((a, b) => a.number <=> b.number) %}
 										{% if epi.season.id == seas.id %}
-											<div id="collapse{{cpt}}" class="collapse" data-parent="#accordion">
+											<div id="collapse{{cpt}}{{s.id}}" class="collapse" data-parent="#accordion">
 												<div class="card-body border">
 													<p>{{ epi.title }} ( Episode :{{ epi.number }} )
 														<a href="{{ path('app_series_vu', {'id': epi.id, 'season_number': seas.number, 'epi_number': epi.number}) }}">visionné !</a>
