@@ -36,3 +36,18 @@ body {
   background : #101b20;
   color: #b3b0b0;
 }
+
+
+.card-text{
+  margin-left: 3px;
+}
+
+.ratings-cont{
+  display :flex;
+}
+
+.bi-star-half{
+  margin-top: 3px;
+  width:20px;
+  fill: gold;
+}
