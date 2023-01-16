@@ -31,33 +31,35 @@
 <div class="test">
 	<div class="panel">
 		<table class="table">
-			<tr>
-				<th>Id</th>
-				<th>Name</th>
-				<th>Email</th>
-				<th>Register Date</th>
-				<th>Admin</th>
-				<th>Ban</th>
-				<th>Actions</th>
-			</tr>
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Name</th>
+					<th>Email</th>
+					<th>Register Date</th>
+					<th>Admin</th>
+					<th>Ban</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
 			{% for user in users %}
 				<tr>
-					<td>{{ user.id }}</td>
-					<td>{{ user.name }}</td>
-					<td>{{ user.email }}</td>
-					<td>{{ user.registerDate ? user.registerDate|date('Y-m-d H:i:s') : '' }}</td>
+					<td data-title="Id">{{ user.id }}</td>
+					<td data-title="Name">{{ user.name }}</td>
+					<td data-title="Email">{{ user.email }}</td>
+					<td data-title="Register Date">{{ user.registerDate ? user.registerDate|date('Y-m-d H:i:s') : '' }}</td>
 					{% if user.admin == '0' %}
-						<td class="text-danger">{{ user.admin ? 'Yes' : 'No' }}</td>
+						<td class="text-danger" data-title="Admin">{{ user.admin ? 'Yes' : 'No' }}</td>
 					{% else %}
-						<td class="text-success">{{ user.admin ? 'Yes' : 'No' }}</td>
+						<td class="text-success" data-title="Admin">{{ user.admin ? 'Yes' : 'No' }}</td>
 					{% endif %}
 					{% if user.ban == '0' %}
-						<td class="text-danger">{{ user.ban ? 'Yes' : 'No' }}</td>
+						<td class="text-danger" data-title="Ban">{{ user.ban ? 'Yes' : 'No' }}</td>
 					{% else %}
-						<td class="text-success">{{ user.ban ? 'Yes' : 'No' }}</td>
+						<td class="text-success" data-title="Ban">{{ user.ban ? 'Yes' : 'No' }}</td>
 					{% endif %}
 					{% if app.user %}
-						<td>
+						<td data-title="Actions">
 							{% if user.admin == '0' %}
 								<a href="{{ path('app_admin_edit', {'id': user.id}) }}" class="text-success">Promouvoir</a> | 
 							{% else %}
