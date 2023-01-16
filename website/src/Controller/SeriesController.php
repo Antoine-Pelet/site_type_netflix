@@ -113,6 +113,10 @@ class SeriesController extends AbstractController
             $cpt = $cpt + sizeof($s->getEpisodes());
         }
 
+        /** @var App\Entity\User */
+        $user = $this->getUser();
+
+        if ($this->getUser() != null) {
         $epi = $entityManager->getRepository(Episode::class)->createQueryBuilder('e')
         ->leftJoin('e.user', 'us')
         ->leftJoin('e.season', 'seas')
@@ -120,9 +124,20 @@ class SeriesController extends AbstractController
         ->where('ser.id = :series')
         ->andWhere('us.id = :user')
         ->setParameter('series', $series->getId())
-        ->setParameter('user', $this->getUser()->getId())
+        ->setParameter('user', $user->getId())
         ->getQuery()
         ->getResult();
+        }
+        else{
+            $epi = $entityManager->getRepository(Episode::class)->createQueryBuilder('e')
+        ->leftJoin('e.user', 'us')
+        ->leftJoin('e.season', 'seas')
+        ->leftJoin('seas.series', 'ser')
+        ->where('ser.id = :series')
+        ->setParameter('series', $series->getId())
+        ->getQuery()
+        ->getResult();
+        }
 
         $rates = $entityManager->getRepository(Rating::class)->createQueryBuilder('r')
         ->where('r.series = :series')
