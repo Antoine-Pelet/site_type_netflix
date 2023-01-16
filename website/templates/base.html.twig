@@ -160,9 +160,11 @@
 
 	{% endblock %}
 
-
-
-	{% block body %}{% endblock %}
+		{% if is_granted('IS_AUTHENTICATED_FULLY') and not is_granted('ROLE_PREVIOUS_ADMIN') and  app.user.ban == 1 %}
+        	<div class="alert alert-danger">Vous avez été banni, vous ne pouvez pas accéder à cette page.</div>
+    	{% else %}
+			{% block body %}{% endblock %}
+		{% endif %}
 
 	{% block footer %}
 		<footer class="footer">
