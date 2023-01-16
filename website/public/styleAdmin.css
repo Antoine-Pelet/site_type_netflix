@@ -28,3 +28,7 @@ tr {
 .table a {
     text-decoration: none;
 }
+
+.form_usergen {
+    margin-top: 2vh;
+}
