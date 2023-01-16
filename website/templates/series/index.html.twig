@@ -24,23 +24,13 @@
 				</select>
 			</div>
 
-<div class="tete">
-	<form method="GET" style="width: 25%">
-		<input type="text" name='title' id='title' placeholder="Type to search..">
-
-	<select name="genre" id="genre">
-    <option value="">--Choose a genre--</option>
-    {% for genre in genres %}
-		<option value="{{ genre.id }}">{{ genre.name }}</option>
-	{% endfor %}
-	</select>
-
-	<select name="debut" id="debut">
-	<option value="">--Choose a year--</option>
-	{% for year in years %}
-		<option value="{{ year }}">{{ year }}</option>
-	{% endfor %}
-	</select>
+			<div class="annee">
+				<select name="debut" id="debut">
+					<option value="">--Choose a year--</option>
+					{% for year in years %}
+						<option value="{{ year }}">{{ year }}</option>
+					{% endfor %}
+				</select>
 
 				<select name="fin" id="fin">
 					<option value="">--Choose a year--</option>
