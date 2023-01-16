@@ -2,25 +2,41 @@
 
 namespace App\Controller;
 
-use App\Entity\Rating;
+use Faker\Factory;
 use App\Entity\User;
+use App\Entity\Rating;
 use App\Form\UserType;
 use App\Entity\Series;
 use App\Form\UserTypeMDP;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Faker\Factory;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-use Knp\Component\Pager\PaginatorInterface;
-
+/**
+ * Class AdminController
+ * @package App\Controller
+ * 
+ * This controller handle the routes for the admin panel, it handle the listing of user, edition of user and change password of a user.
+ * 
+ */
 class AdminController extends AbstractController
 {
+    /**
+     * Handle the route '/admin' to list the user
+     * @Route("/admin", name="app_admin_index", methods={"GET"})
+     * 
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @param PaginatorInterface $paginator
+     * 
+     * @return Response
+     */
     #[Route('/admin', name: 'app_admin_index', methods: ['GET'])]
-    public function index(Request $request, EntityManagerInterface $entityManager, PaginatorInterface $paginator): Response
+    public function admin_panel(Request $request, EntityManagerInterface $entityManager, PaginatorInterface $paginator): Response
     {
         $users = $entityManager->getRepository(User::class);
 
@@ -30,22 +46,25 @@ class AdminController extends AbstractController
             ->setParameter('search', '%' . $request->query->get('email') . '%')
             ->getQuery();
 
-        $appointments = $paginator->paginate(
-            // Doctrine Query, not results
-            $users,
-            // Define the page parameter
-            $request->query->getInt('page', 1),
-            // Items per page
-            10
-        );
+        $appointments = $paginator->paginate($users, $request->query->getInt('page', 1), 10);
 
         return $this->render('admin/index.html.twig', [
             'users' => $appointments,
         ]);
     }
 
+    /**
+     * Handle the route '/user' to list the user
+     * @Route("/user", name="app_user_index", methods={"GET"})
+     *
+     * @param Request $request
+     * @param EntitiesManagerInterface $entityManager
+     * @param PaginatorInterface $paginator
+     *
+     * @return Response
+     */
     #[Route('/user', name: 'app_user_index', methods: ['GET'])]
-    public function user(Request $request, EntityManagerInterface $entityManager, PaginatorInterface $paginator): Response
+    public function user_panel(Request $request, EntityManagerInterface $entityManager, PaginatorInterface $paginator): Response
     {
         $users = $entityManager->getRepository(User::class);
 
@@ -55,29 +74,20 @@ class AdminController extends AbstractController
             ->setParameter('search', '%' . $request->query->get('email') . '%')
             ->getQuery();
 
-        $appointments = $paginator->paginate(
-            // Doctrine Query, not results
-            $users,
-            // Define the page parameter
-            $request->query->getInt('page', 1),
-            // Items per page
-            10
-        );
+        $appointments = $paginator->paginate($users, $request->query->getInt('page', 1), 10);
 
         return $this->render('user/index.html.twig', [
             'users' => $appointments,
         ]);
     }
 
-    #[Route('/user/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
+    #[Route('/user/edit/{id}', name: 'app_user_edit', methods: ['GET', 'POST'])]
     public function user_edit(Request $request, User $user, EntityManagerInterface $entityManager, UserPasswordHasherInterface $userPasswordHasher): Response
     {
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-            // encode the plain password
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
                     $user,
@@ -96,15 +106,13 @@ class AdminController extends AbstractController
         ]);
     }
 
-    #[Route('/user/{id}/editmdp', name: 'app_user_change_mdp', methods: ['GET', 'POST'])]
+    #[Route('/user/editmdp/{id}', name: 'app_user_change_mdp', methods: ['GET', 'POST'])]
     public function user_edit_mdp(Request $request, User $user, EntityManagerInterface $entityManager, UserPasswordHasherInterface $userPasswordHasher): Response
     {
         $form = $this->createForm(UserTypeMDP::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-            // encode the plain password
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
                     $user,
@@ -123,30 +131,8 @@ class AdminController extends AbstractController
         ]);
     }
 
-    #[Route('/user/{id}', name: 'app_user_delete', methods: ['POST'])]
-    public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response
-    {
-        if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($user);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
-    }
-
-    #[Route('/user/showSeriesLiked/{id}', name: 'app_user_show', methods: ['GET'])]
-    public function show(Request $request, EntityManagerInterface $entityManager, User $user): Response
-    {
-        $series = $user->getSeries();
-
-        return $this->render('user/show.html.twig', [
-            'users' => $user,
-            'series' => $series
-        ]);
-    }
-
-    #[Route('/admin/{id}/edit', name: 'app_admin_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    #[Route('/admin/promouvoir/{id}', name: 'app_admin_promouvoir', methods: ['GET', 'POST'])]
+    public function promouvoirUser(User $user, EntityManagerInterface $entityManager): Response
     {
         $user->setAdmin(1);
 
@@ -155,8 +141,8 @@ class AdminController extends AbstractController
         return $this->redirectToRoute('app_admin_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/{id}/remove', name: 'app_admin_remove', methods: ['GET', 'POST'])]
-    public function edit2(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    #[Route('/admin/destituer/{id}', name: 'app_admin_destituer', methods: ['GET', 'POST'])]
+    public function destituerUser(User $user, EntityManagerInterface $entityManager): Response
     {
         $user->setAdmin(0);
 
@@ -165,8 +151,9 @@ class AdminController extends AbstractController
         return $this->redirectToRoute('app_admin_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/admin/{id}/ban', name: 'app_admin_ban', methods: ['GET', 'POST'])]
-    public function ban(Request $request, User $user, EntityManagerInterface $entityManager): Response
+
+    #[Route('/admin/ban/{id}', name: 'app_admin_ban', methods: ['GET', 'POST'])]
+    public function banUser(User $user, EntityManagerInterface $entityManager): Response
     {
         $user->setBan(1);
 
@@ -175,8 +162,8 @@ class AdminController extends AbstractController
         return $this->redirectToRoute('app_admin_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/admin/{id}/unban', name: 'app_admin_unban', methods: ['GET', 'POST'])]
-    public function unban(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    #[Route('/admin/unban/{id}', name: 'app_admin_unban', methods: ['GET', 'POST'])]
+    public function unbanUser(User $user, EntityManagerInterface $entityManager): Response
     {
         $user->setBan(0);
 
@@ -185,9 +172,11 @@ class AdminController extends AbstractController
         return $this->redirectToRoute('app_admin_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/{id}/showRating', name: 'app_user_showRating', methods: ['GET', 'POST'])]
-    public function showRates(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    #[Route('/user/profile/{id}', name: 'app_show_user_profile', methods: ['GET', 'POST'])]
+    public function showUserProfile(User $user, EntityManagerInterface $entityManager): Response
     {
+        $series = $user->getSeries();
+
         $rates = $entityManager->getRepository(Rating::class)->createQueryBuilder('r')
             ->where('r.user = :user')
             ->setParameter('user', $user->getId())
@@ -196,11 +185,41 @@ class AdminController extends AbstractController
 
         $entityManager->flush();
 
-        return $this->render('user/comments.html.twig', [
+        return $this->render('user/user_profile.html.twig', [
             'rates' => $rates,
+            'series' => $series
         ]);
     }
 
+    #[Route('/user/follow/{id}', name: 'app_user_like', methods: ['GET'])]
+    public function userLike(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        /** @var \App\Entity\User */
+        $user = $this->getUser();
+
+        $targetUser = $entityManager->getRepository(User::class)->find($request->get('id'));
+
+        $user->addUser($targetUser);
+
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/user/unfollow/{id}', name: 'app_user_dislike', methods: ['GET'])]
+    public function userDislike(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        /** @var \App\Entity\User */
+        $user = $this->getUser();
+
+        $targetUser = $entityManager->getRepository(User::class)->find($request->get('id'));
+
+        $user->removeUser($targetUser);
+
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+    }
 
     #[Route('/faker', name: 'app_user_faker', methods: ['POST'])]
     public function userFaker(EntityManagerInterface $entityManager)
@@ -255,35 +274,5 @@ class AdminController extends AbstractController
             $em->flush();
         }
         return $this->redirectToRoute('app_admin_index');
-    }
-
-    #[Route('/user/{id}/follow', name: 'app_user_like', methods: ['GET'])]
-    public function like(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        /** @var \App\Entity\User */
-        $user = $this->getUser();
-
-        $targetUser = $entityManager->getRepository(User::class)->find($request->get('id'));
-
-        $user->addUser($targetUser);
-
-        $entityManager->flush();
-
-        return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
-    }
-
-    #[Route('/user/{id}/unfollow', name: 'app_user_dislike', methods: ['GET'])]
-    public function dislike(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        /** @var \App\Entity\User */
-        $user = $this->getUser();
-
-        $targetUser = $entityManager->getRepository(User::class)->find($request->get('id'));
-
-        $user->removeUser($targetUser);
-
-        $entityManager->flush();
-
-        return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
     }
 }

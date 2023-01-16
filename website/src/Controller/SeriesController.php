@@ -2,31 +2,24 @@
 
 namespace App\Controller;
 
-use App\Entity\Series;
-use App\Form\SeriesType;
-use App\Entity\Episode;
 use App\Entity\User;
+use App\Entity\Genre;
+use App\Entity\Series;
+use App\Entity\Rating;
+use App\Entity\Episode;
+use App\Form\SeriesType;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Entity\Rating;
-use Doctrine\Persistence\ManagerRegistry;
-use App\Controller\ArrayObject;
-use App\Entity\Appointments;
-use App\Entity\Genre;
-// include de la pagination
-use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class SeriesController extends AbstractController
 {
     #[Route('/series', name: 'app_series_index', methods: ['GET'])]
-    public function index(
-        Request $request,
-        PaginatorInterface $paginator,
-        EntityManagerInterface $entityManager
-    ): Response {
+    public function index(Request $request, PaginatorInterface $paginator, EntityManagerInterface $entityManager): Response {
 
         $stringWhere = $this->stringWhere($entityManager, $request, $paginator);
 

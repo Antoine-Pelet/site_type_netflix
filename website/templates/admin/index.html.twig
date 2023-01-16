@@ -61,9 +61,9 @@
 					{% if app.user %}
 						<td data-title="Actions">
 							{% if user.admin == '0' %}
-								<a href="{{ path('app_admin_edit', {'id': user.id}) }}" class="text-success">Promouvoir</a> | 
+								<a href="{{ path('app_admin_promouvoir', {'id': user.id}) }}" class="text-success">Promouvoir</a> | 
 							{% else %}
-								<a href="{{ path('app_admin_remove', {'id': user.id}) }}" class="text-danger">Destituer</a> | 
+								<a href="{{ path('app_admin_destituer', {'id': user.id}) }}" class="text-danger">Destituer</a> | 
 							{% endif %}
 							<a href="?_switch_user={{user.email}}">Embody</a> | 
 							<a href="{{ path('app_user_change_mdp', {'id': user.id}) }}">Edit</a> | 
