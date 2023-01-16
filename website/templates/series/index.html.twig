@@ -16,7 +16,7 @@
 		<input type="text" name='title' id='title' placeholder="Type to search..">
 
 	<select name="genre" id="genre">
-    <option value="">--Choose a gender--</option>
+    <option value="">--Choose a genre--</option>
     {% for genre in genres %}
 		<option value="{{ genre.id }}">{{ genre.name }}</option>
 	{% endfor %}
