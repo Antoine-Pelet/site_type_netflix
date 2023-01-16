@@ -37,6 +37,9 @@ body {
   color: #b3b0b0;
 }
 
+.form {
+  display: flex;
+}
 
 .card-text{
   margin-left: 3px;

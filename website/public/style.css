@@ -16,12 +16,12 @@ nav ul {
 }
 
 nav a {
-  color: #fff;
+  color: #fff !important;
   text-decoration: none;
 }
 
 nav a:hover {
-  color: #ccc;
+  color: #ccc !important;
 }
 
 .all_navigate {
@@ -32,8 +32,78 @@ nav a:hover {
   color: #0d6efd;
 }
 
+.navbar.navbar-1 .navbar-toggler-icon {
+  background-image: url('https://mdbootstrap.com/img/svg/hamburger6.svg?color=000');
+}
+
+.dropdown-item:hover {
+  display: flex;
+  justify-content: center;
+}
+
+.dropdown-item {
+  background: none;
+  border-color: white !important;
+}
+
+.dropdown-menu {
+  background: none;
+  border-color: white !important;
+}
+
 .decale {
   margin-right: 1vh;
+  color: white !important;
+  display: flex;
+  justify-content: center;
+}
+
+.img {
+  background-image: url('/ressources/logofull.png');
+  background-repeat:no-repeat; 
+  background-size: cover;
+  background-position: left;
+  height: 7vh;
+  width: 55vh;
+}
+
+.navbar-nav .dropdown-menu {
+  background: none;
+  border-color: white;
+}
+
+.navbar-nav .show>.nav-link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.navbar {
+  display: none;
+}
+
+@media (max-width: 991px)
+{
+  .navbar {
+    display: flex;
+  }
+
+  .normal {
+    display: none;
+  }
+
+  .img {
+    background-image: url('/ressources/logoshort.png');
+    vertical-align: middle;
+    height: 60px;
+    width: 155px;
+    margin-top: 2vh;
+    margin-left: 4vh;
+  }
+
+  nav div:nth-child(1){
+    flex-direction: column;
+  }
 }
 
 /* ----- FIN MENU ----- */
