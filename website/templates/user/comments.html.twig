@@ -15,9 +15,11 @@
 
         {% for r in rates %}
             <div class="comment">
-            
-{%set vardiff = date("now" | date()).diff(date(r.getDate()))%}
-                <p>{{ r.getSeries().title}} - {{vardiff.days}}</p>
+         
+                {%set vardiff = date("now" | date()).diff(date(r.getDate()))%}
+                {%set note = r.getValue() / 2 %}
+                <p>{{ r.getSeries().title}} - il y a {% if vardiff.days !=0 %} {{vardiff.days}} jours 
+                    {% endif %} {{vardiff.h}} heures et {{vardiff.i}} minutes  - la notes est de {{note}}/5</p>
                 <p>{{ r.getComment() }}</p>
             </div>
         {% endfor %}
