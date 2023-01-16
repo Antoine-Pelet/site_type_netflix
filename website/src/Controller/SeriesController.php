@@ -29,13 +29,57 @@ class SeriesController extends AbstractController
     ): Response {
         $appointmentsRepository = $entityManager->getRepository(Series::class);
 
+        $title = "'%" . $request->query->get('title') . "%'";
+        
+        $genre = $request->query->get('genre');
+        $debut = $request->query->get('debut');
+        $fin = $request->query->get('fin');
+        $rateMin = $request->query->get('rateMin');
+        $rateMax = $request->query->get('rateMax');
+
+        $stringWhere = '1 = 1';
+
+        if ($title != "%''%") {
+            $stringWhere .= ' AND s.title LIKE ' . $title;
+        }
+        if ($genre != '') {
+            $stringWhere .= ' AND g.id = ' . $genre;
+        }
+        if ($debut != '') {
+            $stringWhere .= ' AND s.yearStart >= ' . $debut;
+        }
+        if ($fin != '') {
+            $stringWhere .= ' AND s.yearEnd <= ' . $fin;
+        }
+        if ($rateMin != '') {
+            $stringWhere .= ' AND r.value >= ' . $rateMin;
+        }
+        if ($rateMax != '') {
+            $stringWhere .= ' AND r.value <= ' . $rateMax;
+        }
+
         $appointmentsRepository = $appointmentsRepository->createQueryBuilder('s')
         ->setFirstResult(0 + 25 * ($request->query->getInt('page', 1) - 1))
         ->setMaxResults(25)
-        ->where('s.title LIKE :search')
-        ->setParameter('search', '%' . $request->query->get('title') . '%')
+        ->join('s.genre', 'g')
+        ->join('s.rate', 'r')
+        ->where('' . $stringWhere)
         ->orderBy('s.id', 'ASC')
         ->getQuery();
+        
+        $years = array();
+
+        for ($i = 1900; $i < 2022; $i++) 
+        {
+            $years[] = $i;
+        }
+
+        $rates = array();
+
+        for ($i = 0; $i <= 5; $i= $i + 0.5) 
+        {
+            $rates[] = $i;
+        }
 
         $genres = $entityManager->getRepository(Genre::class)->findAll();
 
@@ -52,6 +96,8 @@ class SeriesController extends AbstractController
         return $this->render('series/index.html.twig', [
             'series' => $appointments,
             'genres' => $genres,
+            'years' => $years,
+            'rates' => $rates,
         ]);
     }
 

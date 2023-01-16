@@ -14,31 +14,35 @@
 <div class="tete">
 	<form method="GET" style="width: 25%">
 		<input type="text" name='title' id='title' placeholder="Type to search..">
-		
-<label for="filtreGenre">Choose a genre</label>
 
-	<select name="genre" id="filtreGenre">
+	<select name="genre" id="genre">
     <option value="">--Choose a gender--</option>
     {% for genre in genres %}
 		<option value="{{ genre.id }}">{{ genre.name }}</option>
 	{% endfor %}
 	</select>
 
-	<select name="début" id="filtreDébut">
+	<select name="debut" id="debut">
 	<option value="">--Choose a year--</option>
 	{% for year in years %}
 		<option value="{{ year }}">{{ year }}</option>
 	{% endfor %}
 	</select>
 
-	<select name="fin" id="filtreFin">
+	<select name="fin" id="fin">
 	<option value="">--Choose a year--</option>
 	{% for year in years %}
 		<option value="{{ year }}">{{ year }}</option>
 	{% endfor %}
 	</select>
 
-	<select name="rate" id="filtreRate">
+	<select name="rateMin" id="rateMin">
+	<option value="">--Choose a rate--</option>
+	{% for rate in rates %}
+		<option value="{{ rate }}">{{ rate }}</option>
+	{% endfor %}
+	</select>
+	<select name="rateMax" id="rateMax">
 	<option value="">--Choose a rate--</option>
 	{% for rate in rates %}
 		<option value="{{ rate }}">{{ rate }}</option>
