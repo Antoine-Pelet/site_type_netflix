@@ -68,7 +68,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $users = array();
 
     #[ORM\Column(name: "ban", type: "boolean", nullable: false)]
-    private $ban;
+    private $ban = '0';
 
     /**
      * Constructor
@@ -91,7 +91,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->name;
     }
 
-    public function getBan(): ?Boolean
+    public function getBan(): ?bool
     {
         return $this->ban;
     }
