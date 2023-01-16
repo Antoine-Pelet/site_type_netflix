@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Series{% endblock %}
+
+{% block body %}
+    <h1>Create new Series</h1>
+
+    {{ include('messeries/_form.html.twig') }}
+
+    <a href="{{ path('app_messeries_index') }}">back to list</a>
+{% endblock %}

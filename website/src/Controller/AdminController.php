@@ -203,4 +203,34 @@ class AdminController extends AbstractController
         }
         return $this->redirectToRoute('app_admin_index');
     }
+
+    #[Route('/user/{id}/follow', name: 'app_user_like', methods: ['GET'])]
+    public function like(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        /** @var \App\Entity\User */
+        $user = $this->getUser();
+
+        $targetUser = $entityManager->getRepository(User::class)->find($request->get('id'));
+
+        $user->addUser($targetUser);
+
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/user/{id}/unfollow', name: 'app_user_dislike', methods: ['GET'])]
+    public function dislike(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        /** @var \App\Entity\User */
+        $user = $this->getUser();
+
+        $targetUser = $entityManager->getRepository(User::class)->find($request->get('id'));
+
+        $user->removeUser($targetUser);
+
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+    }
 }

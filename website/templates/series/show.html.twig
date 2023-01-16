@@ -10,33 +10,41 @@
 {% endblock %}
 
 {% block body %}
-	<div class="col">
-		<div class=" container d-flex flex-column">
-			<div class="d-flex">
-				<div class="d-flex flex-row mt-3">
-					<img src="{{ path('app_series_poster', {'id': series.id}) }}">
-					<div class="ms-4 d-flex flex-column justify-content-around">
-						<div class="d-flex flex-rox justify-content-between mb-1">
-							<div class="mb-1">
-								<h2>{{ series.title }}</h2>
-								<p class="text-secondary">{{ series.yearStart }}
-									-
-									{{ series.yearEnd  }}</p>
-							</div>
-							{% if app.user %}
-								{% if app.user.series.contains(series) %}
-									<a href="{{ path('app_series_dislike', {'id': series.id}) }}">
-										<svg xmlns="http://www.w3.org/2000/svg" class="bi svgheart liked bi-heart" viewbox="0 0 16 16" transform="scale(1,1)">
-											<path d="M8,15C-7.333,4.868,3.279,-3.04,7.824,1.143c.06.055.119.112.176.171.056421-.058946.115133-.115657.176-.17C12.72,-3.042,23.333,4.867,8,15Z"></path>
-										</svg>
-									</a>
-								{% else %}
-									<a href="{{ path('app_series_like', {'id': series.id}) }}">
-										<svg xmlns="http://www.w3.org/2000/svg" class="bi svgheart unliked bi-heart" viewbox="0 0 16 16" transform="scale(1,1)">
-											<path d="M8,2.748l-.717-.737C5.6,0.281,2.514,0.878,1.4,3.053c-.523,1.023-.641,2.5.314,4.385.92,1.815,2.834,3.989,6.286,6.357c3.452-2.368,5.365-4.542,6.286-6.357.955-1.886.838-3.362.314-4.385C13.486,0.878,10.4,0.28,8.717,2.01L8,2.748ZM8,15C-7.333,4.868,3.279,-3.04,7.824,1.143c.06.055.119.112.176.171.056421-.058946.115133-.115657.176-.17C12.72,-3.042,23.333,4.867,8,15Z" transform="matrix(.96626 0 0 0.96626 0.269915 0.253049)" stroke="#000" stroke-width="0.5"></path>
-										</svg>
-									</a>
-								{% endif %}
+	<div class=" container d-flex flex-column">
+		<div class="d-flex">
+			<div class="d-flex flex-row mt-3">
+				<img src="{{ path('app_series_poster', {'id': series.id}) }}">
+				<div class="ms-4 d-flex flex-column justify-content-around">
+					<div class="d-flex flex-rox justify-content-between mb-1">
+						<div class="mb-1">
+							<h2>{{ series.title }}</h2>
+							<a href="{{ path('app_series_edit', {'id': series.id}) }}">edit</a>
+							<p class="text-secondary">{{ series.yearStart }}
+								-
+								{{ series.yearEnd  }}</p>
+						</div>
+						{% if app.user %}
+							{% if episodesVues|length == 0 %}
+								{% set progress =  0 %}
+							{% elseif episodesVues|length == totalEpisode %}
+								{% set progress =  100 %}
+							{% else %}
+								{% set progress =  ((episodesVues|length / totalEpisode) * 100)|round(0, 'floor')  %} 
+							{% endif %}
+							<p> {{progress}} % </p>
+							{% if app.user.series.contains(series) %}
+								<a href="{{ path('app_series_dislike', {'id': series.id}) }}">
+									<svg xmlns="http://www.w3.org/2000/svg" class="bi svgheart liked bi-heart" viewbox="0 0 16 16" transform="scale(1,1)">
+										<path d="M8,15C-7.333,4.868,3.279,-3.04,7.824,1.143c.06.055.119.112.176.171.056421-.058946.115133-.115657.176-.17C12.72,-3.042,23.333,4.867,8,15Z"></path>
+									</svg>
+								</a>
+							{% else %}
+
+								<a href="{{ path('app_series_like', {'id': series.id}) }}">
+									<svg xmlns="http://www.w3.org/2000/svg" class="bi svgheart unliked bi-heart" viewbox="0 0 16 16" transform="scale(1,1)">
+										<path d="M8,2.748l-.717-.737C5.6,0.281,2.514,0.878,1.4,3.053c-.523,1.023-.641,2.5.314,4.385.92,1.815,2.834,3.989,6.286,6.357c3.452-2.368,5.365-4.542,6.286-6.357.955-1.886.838-3.362.314-4.385C13.486,0.878,10.4,0.28,8.717,2.01L8,2.748ZM8,15C-7.333,4.868,3.279,-3.04,7.824,1.143c.06.055.119.112.176.171.056421-.058946.115133-.115657.176-.17C12.72,-3.042,23.333,4.867,8,15Z" transform="matrix(.96626 0 0 0.96626 0.269915 0.253049)" stroke="#000" stroke-width="0.5"></path>
+									</svg>
+								</a>
 							{% endif %}
 						</div>
 						<div class="d-flex flex-row justify-content-between mb-1">
