@@ -32,3 +32,11 @@ tr {
 .form_usergen {
     margin-top: 2vh;
 }
+
+h1{
+    color:white;
+}
+.comment{
+    background-color: white;
+    color: black; 
+}

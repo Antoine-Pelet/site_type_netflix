@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -58,6 +59,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     )]
     private $episode = array();
 
+    #[ORM\ManyToMany(targetEntity: "User", inversedBy: "genre")]
+    #[ORM\JoinTable(
+        name: "user_users",
+        joinColumns: [new ORM\JoinColumn(name: "user_id", referencedColumnName: "id")],
+        inverseJoinColumns: [new ORM\JoinColumn(name: "user_id", referencedColumnName: "id")]
+    )]
+    private $users = array();
+
+    #[ORM\Column(name: "ban", type: "boolean", nullable: false)]
+    private $ban = '0';
 
     /**
      * Constructor
@@ -67,6 +78,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->registerDate = new \DateTime();
         $this->series = new \Doctrine\Common\Collections\ArrayCollection();
         $this->episode = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->users = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     public function getId(): ?int
@@ -77,6 +89,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getName(): ?string
     {
         return $this->name;
+    }
+
+    public function getBan(): ?bool
+    {
+        return $this->ban;
+    }
+
+    public function setBan($ban): self
+    {
+        $this->ban = $ban;
+        return $this;
     }
 
     public function setName(string $name): self
@@ -194,6 +217,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+        /**
+     * @return Collection<int, Series>
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        $this->users->removeElement($user);
+
+        return $this;
+    }
+
     public function getUserIdentifier(): string
     {
         return $this->getEmail();
@@ -210,5 +257,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function eraseCredentials()
     {
+    }
+
+    public function isBan(): ?bool
+    {
+        return $this->ban;
     }
 }

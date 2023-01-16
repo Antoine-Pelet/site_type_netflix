@@ -35,7 +35,22 @@
 						<td>{{ user.email }}</td>
 						<td>
 							<a href="{{ path('app_view_episodes', {'id': user.id}) }}">Show his viewed series</a> | 
-							<a href="{{ path('app_user_showRating', {'id': user.id}) }}">Show his comments series</a>
+							<a href="{{ path('app_user_showRating', {'id': user.id}) }}">Show his comments series</a> | 
+							{% if app.user %}
+								{% if app.user.users.contains(user) %}
+									<a href="{{ path('app_user_dislike', {'id': user.id}) }}">
+										<svg xmlns="http://www.w3.org/2000/svg" width="18px" class="bi svgheart liked bi-heart" viewbox="0 0 16 16" transform="scale(1,1)">
+											<path d="M8,15C-7.333,4.868,3.279,-3.04,7.824,1.143c.06.055.119.112.176.171.056421-.058946.115133-.115657.176-.17C12.72,-3.042,23.333,4.867,8,15Z"></path>
+										</svg>
+									</a>
+								{% else %}
+									<a href="{{ path('app_user_like', {'id': user.id}) }}">
+										<svg xmlns="http://www.w3.org/2000/svg" width="18px" class="bi svgheart unliked bi-heart" viewbox="0 0 16 16" transform="scale(1,1)">
+											<path d="M8,2.748l-.717-.737C5.6,0.281,2.514,0.878,1.4,3.053c-.523,1.023-.641,2.5.314,4.385.92,1.815,2.834,3.989,6.286,6.357c3.452-2.368,5.365-4.542,6.286-6.357.955-1.886.838-3.362.314-4.385C13.486,0.878,10.4,0.28,8.717,2.01L8,2.748ZM8,15C-7.333,4.868,3.279,-3.04,7.824,1.143c.06.055.119.112.176.171.056421-.058946.115133-.115657.176-.17C12.72,-3.042,23.333,4.867,8,15Z" transform="matrix(.96626 0 0 0.96626 0.269915 0.253049)" stroke="#000" stroke-width="0.5"></path>
+										</svg>
+									</a>
+								{% endif %}
+							{% endif %}
 						</td>
 					</tr>
 				{% else %}

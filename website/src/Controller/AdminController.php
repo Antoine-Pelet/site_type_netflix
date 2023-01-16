@@ -113,7 +113,7 @@ class AdminController extends AbstractController
 
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_admin_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('user/editMDP.html.twig', [
@@ -164,6 +164,26 @@ class AdminController extends AbstractController
         return $this->redirectToRoute('app_admin_index', [], Response::HTTP_SEE_OTHER);
     }
 
+    #[Route('/admin/{id}/ban', name: 'app_admin_ban', methods: ['GET', 'POST'])]
+    public function ban(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    {
+        $user->setBan(1);
+
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_admin_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/admin/{id}/unban', name: 'app_admin_unban', methods: ['GET', 'POST'])]
+    public function unban(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    {
+        $user->setBan(0);
+
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_admin_index', [], Response::HTTP_SEE_OTHER);
+    }
+
     #[Route('/{id}/showRating', name: 'app_user_showRating', methods: ['GET', 'POST'])]
     public function showRates(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
@@ -202,5 +222,35 @@ class AdminController extends AbstractController
             $em->flush();
         }
         return $this->redirectToRoute('app_admin_index');
+    }
+
+    #[Route('/user/{id}/follow', name: 'app_user_like', methods: ['GET'])]
+    public function like(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        /** @var \App\Entity\User */
+        $user = $this->getUser();
+
+        $targetUser = $entityManager->getRepository(User::class)->find($request->get('id'));
+
+        $user->addUser($targetUser);
+
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/user/{id}/unfollow', name: 'app_user_dislike', methods: ['GET'])]
+    public function dislike(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        /** @var \App\Entity\User */
+        $user = $this->getUser();
+
+        $targetUser = $entityManager->getRepository(User::class)->find($request->get('id'));
+
+        $user->removeUser($targetUser);
+
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
     }
 }
