@@ -113,7 +113,7 @@ class AdminController extends AbstractController
 
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_admin_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('user/editMDP.html.twig', [
@@ -158,6 +158,26 @@ class AdminController extends AbstractController
     public function edit2(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
         $user->setAdmin(0);
+
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_admin_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/admin/{id}/ban', name: 'app_admin_ban', methods: ['GET', 'POST'])]
+    public function ban(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    {
+        $user->setBan(1);
+
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_admin_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/admin/{id}/unban', name: 'app_admin_unban', methods: ['GET', 'POST'])]
+    public function unban(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    {
+        $user->setBan(0);
 
         $entityManager->flush();
 
