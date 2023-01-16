@@ -29,13 +29,57 @@ class SeriesController extends AbstractController
     ): Response {
         $appointmentsRepository = $entityManager->getRepository(Series::class);
 
+        $title = "'%" . $request->query->get('title') . "%'";
+        
+        $genre = $request->query->get('genre');
+        $debut = $request->query->get('debut');
+        $fin = $request->query->get('fin');
+        $rateMin = $request->query->get('rateMin');
+        $rateMax = $request->query->get('rateMax');
+
+        $stringWhere = '1 = 1';
+
+        if ($title != "%''%") {
+            $stringWhere .= ' AND s.title LIKE ' . $title;
+        }
+        if ($genre != '') {
+            $stringWhere .= ' AND g.id = ' . $genre;
+        }
+        if ($debut != '') {
+            $stringWhere .= ' AND s.yearStart >= ' . $debut;
+        }
+        if ($fin != '') {
+            $stringWhere .= ' AND s.yearEnd <= ' . $fin;
+        }
+        if ($rateMin != '') {
+            $stringWhere .= ' AND r.value >= ' . $rateMin;
+        }
+        if ($rateMax != '') {
+            $stringWhere .= ' AND r.value <= ' . $rateMax;
+        }
+
         $appointmentsRepository = $appointmentsRepository->createQueryBuilder('s')
         ->setFirstResult(0 + 25 * ($request->query->getInt('page', 1) - 1))
         ->setMaxResults(25)
-        ->where('s.title LIKE :search')
-        ->setParameter('search', '%' . $request->query->get('title') . '%')
+        ->join('s.genre', 'g')
+        ->join('s.rate', 'r')
+        ->where('' . $stringWhere)
         ->orderBy('s.id', 'ASC')
         ->getQuery();
+        
+        $years = array();
+
+        for ($i = 1900; $i < 2022; $i++) 
+        {
+            $years[] = $i;
+        }
+
+        $rates = array();
+
+        for ($i = 0; $i <= 5; $i= $i + 0.5) 
+        {
+            $rates[] = $i;
+        }
 
         $genres = $entityManager->getRepository(Genre::class)->findAll();
 
@@ -52,12 +96,33 @@ class SeriesController extends AbstractController
         return $this->render('series/index.html.twig', [
             'series' => $appointments,
             'genres' => $genres,
+            'years' => $years,
+            'rates' => $rates,
         ]);
     }
 
     #[Route('/{id}', name: 'app_series_show', methods: ['GET'])]
-    public function show(Series $series, EntityManagerInterface $entityManager): Response
+    public function show(Series $series, EntityManagerInterface $entityManager, Request $request): Response
     {
+        $serie = $entityManager->getRepository(Series::class)->find($request->get('id'));
+
+        $seasons = $serie->getSeasons();
+
+        $cpt = 0;
+        foreach ($seasons as $s){
+            $cpt = $cpt + sizeof($s->getEpisodes());
+        }
+
+        $epi = $entityManager->getRepository(Episode::class)->createQueryBuilder('e')
+        ->leftJoin('e.user', 'us')
+        ->leftJoin('e.season', 'seas')
+        ->leftJoin('seas.series', 'ser')
+        ->where('ser.id = :series')
+        ->andWhere('us.id = :user')
+        ->setParameter('series', $series->getId())
+        ->setParameter('user', $this->getUser()->getId())
+        ->getQuery()
+        ->getResult();
 
         $rates = $entityManager->getRepository(Rating::class)->createQueryBuilder('r')
         ->where('r.series = :series')
@@ -71,6 +136,8 @@ class SeriesController extends AbstractController
             'series' => $series,
             'rates' => $rates,
             'genres' => $genre,
+            'totalEpisode' => $cpt,
+            'episodesVues' => $epi
         ]);
     }
 
@@ -193,7 +260,6 @@ class SeriesController extends AbstractController
             'seriesView' => $series,
             'seasons' => $seasons
         ]);
-        
     }
 
     #[Route('/{id}/addRating', name: 'app_series_rate', methods: ['GET', 'POST'])]
@@ -244,7 +310,6 @@ class SeriesController extends AbstractController
                 }
             }
         }
-
 
         $entityManager->flush();
 
