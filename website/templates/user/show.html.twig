@@ -9,22 +9,22 @@
 {% endblock %}
 
 {% block body %}
-    <form method="GET">
-        <input type="text" name='email' id='email' placeholder="Search..">
-        <button type="submit">Submit</button>
-    </form>
+   
+        <form method="GET">
+            <input type="text" name='email' id='email' placeholder="Search..">
+            <button type="submit">Submit</button>
+        </form>
 
-    <table class="table">
-        <tr>
-            <th>Série Likés</th>
-        </tr>
-    {% for s in series %}
-        <tr>
-            <td>{{ s.title }}</td>
-        </tr>
-    {% else %}
-        <p>This user don't have any liked series.</p>
-    {% endfor %}
-    </table>
-
+        <table class="table">
+            <tr>
+                <th>Série Likés</th>
+            </tr>
+        {% for s in series %}
+            <tr>
+                <td>{{ s.title }}</td>
+            </tr>
+        {% else %}
+            <p>This user don't have any liked series.</p>
+        {% endfor %}
+        </table>
 {% endblock %}

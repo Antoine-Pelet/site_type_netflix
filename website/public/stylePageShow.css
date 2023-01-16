@@ -1,5 +1,4 @@
 h4,
-p,
 h2 {
     margin-bottom: 0px;
     font-family: 'Inter', sans-serif;
@@ -64,8 +63,13 @@ img {
     text-decoration: none;
 }
 
-.comm{
-    color: white !important;
+.col{
+    color:white;
+}
+
+.comm {
+    background-color: white;
+    color: black;
 }
 
 .panel_comment {
@@ -82,4 +86,12 @@ img {
     border-radius: 12px;
     padding: 5vh;
     flex: 1;
+}
+.col{
+    color:white;
+}
+
+.comm {
+    background-color: white;
+    color: black;
 }
