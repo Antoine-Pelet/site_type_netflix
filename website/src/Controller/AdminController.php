@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Rating;
 use App\Entity\User;
 use App\Form\UserType;
+use App\Entity\Series;
 use App\Form\UserTypeMDP;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -125,7 +126,7 @@ class AdminController extends AbstractController
     #[Route('/user/{id}', name: 'app_user_delete', methods: ['POST'])]
     public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
             $entityManager->remove($user);
             $entityManager->flush();
         }
@@ -205,7 +206,7 @@ class AdminController extends AbstractController
     public function userFaker(EntityManagerInterface $entityManager)
     {
         $faker = Factory::create();
-        
+
         $em = $entityManager;
         if (isset($_POST['usergen'])) {
             $numUsers = $_POST['usergen'];
@@ -218,6 +219,38 @@ class AdminController extends AbstractController
                 $user->setPassword($faker->password(6, 7));
                 $users[] = $user;
                 $em->persist($user);
+            }
+            $em->flush();
+        }
+        return $this->redirectToRoute('app_admin_index');
+    }
+
+    #[Route('/rategen', name: 'app_rate_gen', methods: ['POST'])]
+    public function rateGen(Request $request, EntityManagerInterface $entityManager)
+    {
+        $faker = Factory::create();
+        $em = $entityManager;
+        $users = $em->getRepository(User::class)->findAll();
+        $seriesIds = range(1, 234);
+        foreach ($users as $u) {
+            if (substr($u->getEmail(), -17) != '@testwatchlist.fr') {
+                continue;
+            }
+            $tempSeriesIds = $seriesIds;
+            shuffle($tempSeriesIds);
+            $tempSeriesIds = array_slice($tempSeriesIds, 0, rand(1, 10));
+            foreach ($tempSeriesIds as $id) {
+                $series = $em->getRepository(Series::class)->findOneBy(['id' => $id]);
+                if (!$series) continue;
+                $rating = new Rating();
+                $rating->setSeries($series);
+                $rating->setUser($u);
+                $rating->setValue(rand(0, 10));
+                $rating->setComment($faker->text(200));
+                $series->addRating($rating);
+                $ratings[] = $rating;
+                $em->persist($rating);
+                $u->addSeries($series);
             }
             $em->flush();
         }
