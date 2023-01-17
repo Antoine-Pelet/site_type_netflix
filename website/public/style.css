@@ -24,10 +24,6 @@ nav a:hover {
   margin-right: 5vh;
 }
 
-.user_name {
-  color: #0d6efd !important;
-}
-
 .navbar.navbar-1 .navbar-toggler-icon {
   background-image: url('https://mdbootstrap.com/img/svg/hamburger6.svg?color=000');
 }
@@ -60,11 +56,6 @@ nav a:hover {
   background-position: left;
   height: 7vh;
   width: 55vh;
-}
-
-.navbar-nav .dropdown-menu {
-  background: none;
-  border-color: white;
 }
 
 .navbar-nav .show>.nav-link {

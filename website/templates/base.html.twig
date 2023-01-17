@@ -29,7 +29,6 @@
 			<button class="navbar-toggler toggler-example" type="button" data-toggle="collapse" data-target="#navbarSupportedContent15"
 			aria-controls="navbarSupportedContent15" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon">
-					<i class="fas fa-bars fa-1x"></i>
 				</span>
 			</button>
 			<div class="collapse navbar-collapse" id="navbarSupportedContent15">
@@ -40,7 +39,7 @@
 								<div class="row">
 									<div class="dropdown">
 										<a class="nav-link dropdown-toggle" href="#" role="button" id="deroulanta" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Séries</a>
-										<div class="dropdown-menu" aria-labelledby="deroulanta">
+										<div class="dropdown-menu border border-white bg-gradient-primary" aria-labelledby="deroulanta">
 											<a class="dropdown-item nav-link" href="{{ path('app_series_index') }}">Toutes les Series</a>
 											<a class="dropdown-item nav-link" href="{{ path('app_liked_series') }}">Séries likés</a>
 											<a class="dropdown-item nav-link" href="{{ path('app_view_episodes', {'id': app.user.id}) }}">Séries regardées</a>
@@ -55,7 +54,7 @@
 									<div class="dropdown">
 										{% if app.user.admin != '0' %}
 											<a class="nav-link dropdown-toggle nav-link" href="#" role="button" id="deroulanta" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Panels</a>
-											<div class="dropdown-menu" aria-labelledby="deroulanta">
+											<div class="dropdown-menu border border-white bg-gradient-primary" aria-labelledby="deroulanta">
 												<a class="dropdown-item nav-link" href="{{ path('app_user_index') }}">Liste des Users</a>
 												<a class="dropdown-item nav-link" href="{{ path('app_admin_index') }}">Admin</a>
 											</div>
@@ -67,7 +66,7 @@
 							</div>
 						</li>
 						<li class="nav-item">
-							<span class="user_name decale">[{{ app.user.email }}]</span>
+							<span class="text-primary decale">[{{ app.user.email }}]</span>
 						</li>
 						<li class="nav-item">
 							<a href="{{ path('app_logout') }}" class="nav-link">Déconnexion</a>
@@ -108,7 +107,7 @@
 							<div class="row">
 								<div class="dropdown">
 									<a class="nav-link dropdown-toggle" href="#" role="button" id="deroulanta" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Séries</a>
-									<div class="dropdown-menu" aria-labelledby="deroulanta">
+									<div class="dropdown-menu border border-white bg-gradient-primary" aria-labelledby="deroulanta">
 										<a class="dropdown-item" href="{{ path('app_series_index') }}">Toutes les Series</a>
 										<a class="dropdown-item" href="{{ path('app_liked_series') }}">Séries likés</a>
 										<a class="dropdown-item" href="{{ path('app_view_episodes', {'id': app.user.id}) }}">Séries regardées</a>
@@ -119,12 +118,11 @@
 					</li>
 					<li>
 						<div class="container">
-							
 							<div class="row">
 								<div class="dropdown">
 									{% if app.user.admin != '0' %}
 										<a class="nav-link dropdown-toggle" href="#" role="button" id="deroulanta" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Panels</a>
-										<div class="dropdown-menu" aria-labelledby="deroulanta">
+										<div class="dropdown-menu border border-white bg-gradient-primary" aria-labelledby="deroulanta">
 											<a class="dropdown-item" href="{{ path('app_user_index') }}">Liste des Users</a>
 											<a class="dropdown-item" href="{{ path('app_admin_index') }}">Admin</a>
 										</div>
@@ -136,7 +134,7 @@
 						</div>
 					</li>
 					<li>
-						<span class="user_name decale">[{{ app.user.email }}]</span>
+						<span class="text-primary decale">[{{ app.user.email }}]</span>
 					</li>
 					<li>
 						<a href="{{ path('app_logout') }}">Déconnexion</a>

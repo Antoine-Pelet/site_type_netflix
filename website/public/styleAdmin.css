@@ -17,7 +17,7 @@ table{
 }        
     
 th, td{padding:8px 0} tbody tr:nth-child(even) {
-    background-color: #ddd;
+    background-color: antiquewhite;
     color: black;
 }
 
