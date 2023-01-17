@@ -25,7 +25,7 @@ class SeriesController extends AbstractController
         EntityManagerInterface $entityManager
     ): Response {
 
-        $stringWhere = $this->stringWhere($entityManager, $request, $paginator);
+        $stringWhere = self::stringWhere($entityManager, $request, $paginator);
 
         $appointmentsRepository = $entityManager->getRepository(Series::class)->createQueryBuilder('s')
         ->setFirstResult(0 + 25 * ($request->query->getInt('page', 1) - 1))
@@ -36,7 +36,7 @@ class SeriesController extends AbstractController
         ->orderBy('s.id', 'ASC')
         ->getQuery();
 
-        $res = $this->requeteFiltred($appointmentsRepository, $entityManager, $request, $paginator);
+        $res = self::requeteFiltred($appointmentsRepository, $entityManager, $request, $paginator);
 
         return $this->render('series/index.html.twig', [
             'series' => $res['series'],
@@ -46,7 +46,7 @@ class SeriesController extends AbstractController
         ]);
     }
 
-    private function stringWhere(
+    public static function stringWhere(
         EntityManagerInterface $entityManager,
         Request $request,
         PaginatorInterface $paginator
@@ -85,7 +85,7 @@ class SeriesController extends AbstractController
         return $stringWhere;
     }
 
-    private function requeteFiltred(
+    public static function requeteFiltred(
         $appointmentsRepository,
         EntityManagerInterface $entityManager,
         Request $request,
@@ -257,13 +257,13 @@ class SeriesController extends AbstractController
         EntityManagerInterface $entityManager
     ): Response {
 
-        $stringWhere = $this->stringWhere($entityManager, $request, $paginator);
+        $stringWhere = self::stringWhere($entityManager, $request, $paginator);
 
         $user = $this->getUser();
 
         $requete = $this->requeteSQL($entityManager, $user, $stringWhere);
 
-        $res = $this->requeteFiltred($requete, $entityManager, $request, $paginator);
+        $res = self::requeteFiltred($requete, $entityManager, $request, $paginator);
 
         return $this->render('liked/like.html.twig', [
             'series' => $res['series'],
@@ -280,10 +280,28 @@ class SeriesController extends AbstractController
         PaginatorInterface $paginator
     ): Response {
 
-        $stringWhere = $this->stringWhere($entityManager, $request, $paginator);
+        $stringWhere = self::stringWhere($entityManager, $request, $paginator);
         
-        /** @var \App\Entity\User */
-        $user = $this->getUser();
+        $result = self::getEpisodeVu($entityManager, $stringWhere, $this->getUser());
+
+        $res = self::requeteFiltred($result['seriesView'], $entityManager, $request, $paginator);
+
+        return $this->render('liked/view.html.twig', [
+            'series' => $res['series'],
+            'genres' => $res['genres'],
+            'years' => $res['years'],
+            'rates' => $res['rates'],
+            'episodes' => $result['episodes'],
+            'seriesView' => $result['seriesView'],
+            'seasons' => $result['seasons'],
+            ]);
+    }
+
+    public static function getEpisodeVu(
+        EntityManagerInterface $entityManager,
+        string $stringWhere,
+        User $user
+    ) {
         $viewedEpisode = $user->getEpisode();
         $seasons = array();
         for ($i = 0; $i < sizeof($viewedEpisode); $i++) {
@@ -307,17 +325,10 @@ class SeriesController extends AbstractController
             ->setParameter('series', $series)
             ->getQuery();
 
-        $res = $this->requeteFiltred($series, $entityManager, $request, $paginator);
-
-        return $this->render('liked/view.html.twig', [
-            'series' => $res['series'],
-            'genres' => $res['genres'],
-            'years' => $res['years'],
-            'rates' => $res['rates'],
-            'episodes' => $viewedEpisode,
-            'seriesView' => $series,
-            'seasons' => $seasons
-            ]);
+        $res['seriesView'] = $series;
+        $res['episodes'] = $viewedEpisode;
+        $res['seasons'] = $seasons;
+        return $res;
     }
 
     #[Route('/{id}/addRating', name: 'app_series_rate', methods: ['GET', 'POST'])]

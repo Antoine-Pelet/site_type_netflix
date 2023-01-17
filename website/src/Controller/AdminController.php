@@ -188,8 +188,13 @@ class AdminController extends AbstractController
     }
 
     #[Route('/user/profile/{id}', name: 'app_show_user_profile', methods: ['GET', 'POST'])]
-    public function showUserProfile(User $user, EntityManagerInterface $entityManager): Response{
-        $series = $user->getSeries();
+    public function showUserProfile(User $user, EntityManagerInterface $entityManager, PaginatorInterface $paginator, Request $request): Response{
+        
+        $stringWhere = SeriesController::stringWhere($entityManager, $request, $paginator);
+
+        $res = SeriesController::getEpisodeVu($entityManager, $stringWhere, $user);
+
+        $result = SeriesController::requeteFiltred($res['seriesView'], $entityManager, $request, $paginator);
 
         $rates = $entityManager->getRepository(Rating::class)->createQueryBuilder('r')
             ->where('r.user = :user')
@@ -201,7 +206,10 @@ class AdminController extends AbstractController
 
         return $this->render('user/user_profile.html.twig', [
             'rates' => $rates,
-            'series' => $series
+            'series' => $result['series'],
+            'genres' => $result['genres'],
+            'years' => $result['years'],
+            'ratesFiltre' => $result['rates'],
         ]);
     }
 
