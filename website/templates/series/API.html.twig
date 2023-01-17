@@ -14,7 +14,7 @@
 		<input type="text" name='t' id='t' placeholder="Type to search..">
 	</form>
 
-	{% if t != '' %}
+		{% if (t != '') and (response.Response == 'True') %}
 	
 	{{ response.Title }}
 	<img src="{{ response.Poster }}" alt="Poster">da</img>
