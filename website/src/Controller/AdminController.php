@@ -42,6 +42,12 @@ class AdminController extends AbstractController
         EntityManagerInterface $entityManager,
         PaginatorInterface $paginator
     ): Response {
+
+        if(!$this->getUser()->isAdmin()){
+            return $this->redirectToRoute('app_default', [], Response::HTTP_SEE_OTHER);
+        }
+
+
         $users = $entityManager->getRepository(User::class);
 
         $users = $users->createQueryBuilder('u')
