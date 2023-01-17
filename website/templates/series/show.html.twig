@@ -41,7 +41,7 @@
 									{% set progress =  ((episodesVues|length / totalEpisode) * 100)|round(0, 'floor')  %} 
 								{% endif %}
 								<p> {{progress}} % </p>
-							</div
+							</div>
 							{% if app.user.series.contains(series) %}
 								<a href="{{ path('app_series_dislike', {'id': series.id}) }}">
 									<svg xmlns="http://www.w3.org/2000/svg" class="bi svgheart liked bi-heart" viewbox="0 0 16 16" transform="scale(1,1)">
