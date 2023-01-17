@@ -143,6 +143,7 @@ class SeriesController extends AbstractController
         $rates = $entityManager->getRepository(Rating::class)->createQueryBuilder('r')
             ->join('r.series', 's')
             ->where('' . $stringWhere)
+            ->setParameter('user', $user)
             ->setParameter('series', $series->getId())
             ->getQuery();
 
