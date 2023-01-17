@@ -1,7 +1,4 @@
 .example-wrapper, .example-wrapper2 { 
-  display: flex; 
-  justify-content: center;
-  flex-direction: column;
   max-width: 770px;
   margin: 2vh;
   height: 85vh;
@@ -13,32 +10,11 @@
   border-radius: 10px;
 }
 
-.example-wrapper span:nth-child(1) {
-  color: #0d6efd;
-  font-size: 1.6rem;
-}
-
-.title_youtube_trailer a {
-  color: #ffffff !important;
-  font-size: 1.6rem !important;
-}
-
-.example-wrapper span:nth-child(2) {
-  color: #ffffff;
-  font-size: 3.6rem;
-}
-
-.example-wrapper p {
-  color: rgb(219, 219, 219);
-}
-
 body { 
-  background-color: #26343c;
   background-image : url("/ressources/main.png");
   background-repeat:no-repeat; 
   background-size: cover;
   background-position: center center;
-  color: white;
   height: 115vh;
 }
 
@@ -91,16 +67,6 @@ body {
   100% {
     background-position: 400%;
   }
-}
-
-.acceuil{
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-}
-
-.Inscr{
-  margin-top: 2vh;
 }
 
 @media (min-width: 768px) {

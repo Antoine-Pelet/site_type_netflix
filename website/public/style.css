@@ -218,6 +218,7 @@ ul {
 .pagination {
   display: flex;
   border-radius: 1.5px;
+  flex-wrap: wrap;
 }
 
 .pagination a, .pagination .current {
@@ -276,7 +277,6 @@ input[type=text], button[type=submit] {
 }
 
 /* ----- END SEARCH BAR ----- */
-
 
 .genre, .annee, .rate, select{
   background-color: transparent;

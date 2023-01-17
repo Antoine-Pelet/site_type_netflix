@@ -12,12 +12,12 @@
 
 {% block body %}
 
-	<body>
-		<div class="acceuil">
-			<div class="example-wrapper">
-				<span>WATCHLIST</span>
-				<span>#1 Best Streaming Website</span>
-				<p>
+	<body class="text-white">
+		<div class="d-flex justify-content-around flex-wrap">
+			<div class="example-wrapper d-flex flex-column justify-content-center">
+				<span class="text-primary fs-3">WATCHLIST</span>
+				<span class="text-white fs-1">#1 Best Streaming Website</span>
+				<p class="text-white">
 					WatchList est le site idéal pour tous les amateurs de séries ! 
 					Avec WatchList, vous pouvez explorer une liste complète de séries, 
 					marquer celles que vous avez déjà vues et celles qui vous intéressent. 
@@ -29,18 +29,19 @@
 					<button class="button" onclick="location.href='{{ path('app_series_index') }}'">Voir les séries</button>
 				{% else %}
 					<button class="button" onclick="location.href='{{ path('app_login') }}'">Connectez-vous →</button>
-					<p class="Inscr">Pas de compte ?
+					<p class="mt-2">Pas de compte ?
 						<a href="{{ path('app_register') }}">Inscrivez-vous !</a>
 					</p>
 				{% endif %}
-
-
 			</div>
-			<div class="example-wrapper2">
+
+			<div class="example-wrapper2 d-flex flex-column justify-content-center">
 				{% set cpt = 0 %}
 				{% for s in series %}
 					{% if cpt < 3%}
-						<span class="title_youtube_trailer"><a href="{{ path('app_series_show', {'id': s.id}) }}">-> {{s.title}}</a></span>
+						<span class="title_youtube_trailer">
+							<a class="text-white fs-4" href="{{ path('app_series_show', {'id': s.id}) }}">-> {{s.title}}</a>
+						</span>
                         {% set debut = "https://www.youtube.com/embed/" %}
 						{% set id = s.youtubeTrailer |split('=') %}
 						{% set video = "%s%s" | format(debut, id[1]) %}
@@ -51,7 +52,5 @@
 				{% endfor %}
 			</div>
 		</div>
-
-
 	</body>
 {% endblock %}

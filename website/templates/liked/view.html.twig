@@ -12,42 +12,47 @@
 
 {% block body %}
 <div class="tete">
-	<form method="GET" style="width: 25%" class="d-flex">
+	<form method="GET" class="d-flex flex-wrap">
 		<input type="text" name='title' id='title' placeholder="Type to search..">
 
-	<select name="genre" id="genre">
-    <option value="">--Choose a genre--</option>
-    {% for genre in genres %}
-		<option value="{{ genre.id }}">{{ genre.name }}</option>
-	{% endfor %}
-	</select>
+		<select name="genre" id="genre">
+			<option value="">--Choose a genre--</option>
+			{% for genre in genres %}
+				<option value="{{ genre.id }}">{{ genre.name }}</option>
+			{% endfor %}
+		</select>
 
-	<select name="debut" id="debut">
-	<option value="">--Choose a year--</option>
-	{% for year in years %}
-		<option value="{{ year }}">{{ year }}</option>
-	{% endfor %}
-	</select>
+		<div>
+			<select name="debut" id="debut">
+				<option value="">--Choose a year--</option>
+				{% for year in years %}
+					<option value="{{ year }}">{{ year }}</option>
+				{% endfor %}
+			</select>
 
-	<select name="fin" id="fin">
-	<option value="">--Choose a year--</option>
-	{% for year in years %}
-		<option value="{{ year }}">{{ year }}</option>
-	{% endfor %}
-	</select>
+			<select name="fin" id="fin">
+				<option value="">--Choose a year--</option>
+				{% for year in years %}
+					<option value="{{ year }}">{{ year }}</option>
+				{% endfor %}
+			</select>
+		</div>
 
-	<select name="rateMin" id="rateMin">
-	<option value="">--Choose a rate--</option>
-	{% for rate in rates %}
-		<option value="{{ rate }}">{{ rate }}</option>
-	{% endfor %}
-	</select>
-	<select name="rateMax" id="rateMax">
-	<option value="">--Choose a rate--</option>
-	{% for rate in rates %}
-		<option value="{{ rate }}">{{ rate }}</option>
-	{% endfor %}
-	</select>
+		<div>
+			<select name="rateMin" id="rateMin">
+				<option value="">--Choose a rate--</option>
+				{% for rate in rates %}
+					<option value="{{ rate }}">{{ rate }}</option>
+				{% endfor %}
+			</select>
+
+			<select name="rateMax" id="rateMax">
+				<option value="">--Choose a rate--</option>
+				{% for rate in rates %}
+					<option value="{{ rate }}">{{ rate }}</option>
+				{% endfor %}
+			</select>
+		</div>
 
 		<button type="submit" class="searchbtn">
 			<svg xmlns="http://www.w3.org/2000/svg" class="bi bi-search" viewbox="0 0 16 16">
@@ -62,17 +67,16 @@
 				<th>
 					<div class="listeseries">
 					<a href="{{ path('app_series_show', {'id': s.id}) }}"><img src="{{ path('app_series_poster', {'id': s.id}) }}"height="400px"></a>
-					 <p>{{ s.title }}</p>
+					<p>{{ s.title }}</p>
 					{% set cpt = 1 %}
 					{% for seas in seasons|sort((a, b) => a.number <=> b.number) %}
 						{% if seas.series.id == s.id %}
-							
 							<div id="accordion">
-							<div class="card bg-transparent">
-								<div class="card-header">
-									<a class="card-link" data-toggle="collapse" href="#collapse{{cpt}}{{s.id}}">Saison{{seas.number}}</a>
-								</div>
-								{% for epi in episodes|sort((a, b) => a.number <=> b.number) %}
+								<div class="card bg-transparent">
+									<div class="card-header">
+										<a class="card-link" data-toggle="collapse" href="#collapse{{cpt}}{{s.id}}">Saison{{seas.number}}</a>
+									</div>
+									{% for epi in episodes|sort((a, b) => a.number <=> b.number) %}
 										{% if epi.season.id == seas.id %}
 											<div id="collapse{{cpt}}{{s.id}}" class="collapse" data-parent="#accordion">
 												<div class="card-body border">
@@ -82,11 +86,10 @@
 												</div>
 											</div>
 										{% endif %}
-								{% endfor %}
+									{% endfor %}
 								{% set cpt = cpt + 1 %}
 								</div>
 							</div>
-						
 						{% endif %}
 					{% endfor %}
 					</div>
