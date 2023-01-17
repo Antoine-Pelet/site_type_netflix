@@ -133,8 +133,10 @@ class SeriesController extends AbstractController
             'http://www.omdbapi.com/?apikey=3b3d08d2&t='.$request->query->get('t')
         );
 
+        dd($response->toArray());
+
         return $this->render('series/API.html.twig', [
-            'response' => $response->toArray(),
+            'response' => $response->toArray()
         ]);
     }
 
