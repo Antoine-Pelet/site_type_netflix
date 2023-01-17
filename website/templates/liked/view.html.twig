@@ -55,16 +55,18 @@
 			</svg>
 		</button>
 	</form>
-	<div class="listeseries">
+</div>
+	<div class="glob">
 		{% for s in series %}
 			<table class="tableau">
-				<tr>
-					<td><a href="{{ path('app_series_show', {'id': s.id}) }}"><img src="{{ path('app_series_poster', {'id': s.id}) }}"></a></td>
-					<td>{{ s.title }}</td>
+				<th>
+					<div class="listeseries">
+					<a href="{{ path('app_series_show', {'id': s.id}) }}"><img src="{{ path('app_series_poster', {'id': s.id}) }}"height="400px"></a>
+					 <p>{{ s.title }}</p>
 					{% set cpt = 1 %}
 					{% for seas in seasons|sort((a, b) => a.number <=> b.number) %}
 						{% if seas.series.id == s.id %}
-							<td>
+							
 							<div id="accordion">
 							<div class="card bg-transparent">
 								<div class="card-header">
@@ -84,10 +86,11 @@
 								{% set cpt = cpt + 1 %}
 								</div>
 							</div>
-							</td>
+						
 						{% endif %}
 					{% endfor %}
-				</tr>
+					</div>
+				</th>
 			</table>
 		{% else %}
 			<p>Aucune série en cours de visionnage</p>

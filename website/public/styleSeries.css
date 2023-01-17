@@ -2,6 +2,32 @@ body {
   background-color: #162832;
 }
 
+.tete {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding-left: 3vh;
+  padding-right: 3vh;
+  margin-bottom: 4vh;
+}
+
+
+.listeseries{
+  color: white;
+  margin: 20px;
+  background : #101b20;
+  color: #b3b0b0;
+}
+
+.glob{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+
+
 .svgheart{
   width: 30px;
 }
