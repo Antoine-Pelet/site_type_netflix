@@ -25,7 +25,7 @@ class SeriesController extends AbstractController
         EntityManagerInterface $entityManager
     ): Response {
 
-        $stringWhere = self::stringWhere($entityManager, $request, $paginator);
+        $stringWhere = self::stringWhere($request);
 
         $appointmentsRepository = $entityManager->getRepository(Series::class)->createQueryBuilder('s')
         ->setFirstResult(0 + 25 * ($request->query->getInt('page', 1) - 1))
@@ -47,11 +47,8 @@ class SeriesController extends AbstractController
     }
 
     public static function stringWhere(
-        EntityManagerInterface $entityManager,
         Request $request,
-        PaginatorInterface $paginator
     ): string {
-        $appointmentsRepository = $entityManager->getRepository(Series::class);
 
         $title = "'%" . $request->query->get('title') . "%'";
 
@@ -76,10 +73,10 @@ class SeriesController extends AbstractController
             $stringWhere .= ' AND s.yearEnd <= ' . $fin;
         }
         if ($rateMin != '') {
-            $stringWhere .= ' AND r.value >= ' . $rateMin;
+            $stringWhere .= ' AND r.value/2 >= ' . $rateMin;
         }
         if ($rateMax != '') {
-            $stringWhere .= ' AND r.value <= ' . $rateMax;
+            $stringWhere .= ' AND r.value/2 <= ' . $rateMax;
         }
 
         return $stringWhere;
@@ -138,7 +135,7 @@ class SeriesController extends AbstractController
         /** @var App\Entity\User */
         $user = $this->getUser();
 
-        $stringWhere = AdminController::donneStringWhere($entityManager, $request, "r.series = :series AND ");
+        $stringWhere = AdminController::donneStringWhere($request, "r.series = :series AND ");
         
         $rates = $entityManager->getRepository(Rating::class)->createQueryBuilder('r')
             ->join('r.series', 's')
@@ -257,7 +254,7 @@ class SeriesController extends AbstractController
         EntityManagerInterface $entityManager
     ): Response {
 
-        $stringWhere = self::stringWhere($entityManager, $request, $paginator);
+        $stringWhere = self::stringWhere($request);
 
         $user = $this->getUser();
 
@@ -280,7 +277,7 @@ class SeriesController extends AbstractController
         PaginatorInterface $paginator
     ): Response {
 
-        $stringWhere = self::stringWhere($entityManager, $request, $paginator);
+        $stringWhere = self::stringWhere($request);
         
         $result = self::getEpisodeVu($entityManager, $stringWhere, $this->getUser());
 

@@ -190,14 +190,17 @@ class AdminController extends AbstractController
     #[Route('/user/profile/{id}', name: 'app_show_user_profile', methods: ['GET', 'POST'])]
     public function showUserProfile(User $user, EntityManagerInterface $entityManager, PaginatorInterface $paginator, Request $request): Response{
         
-        $stringWhere = SeriesController::stringWhere($entityManager, $request, $paginator);
+        $stringWhere = SeriesController::stringWhere($request);
 
         $res = SeriesController::getEpisodeVu($entityManager, $stringWhere, $user);
 
         $result = SeriesController::requeteFiltred($res['seriesView'], $entityManager, $request, $paginator);
 
+        $stringRates = self::donneStringWhere($request, '');
+
         $rates = $entityManager->getRepository(Rating::class)->createQueryBuilder('r')
-            ->where('r.user = :user')
+            ->join('r.series', 's')
+            ->where('' . $stringRates)
             ->setParameter('user', $user->getId())
             ->getQuery()
             ->getResult();
@@ -230,7 +233,7 @@ class AdminController extends AbstractController
         ]);
     }
 
-    public static function donneStringWhere(EntityManagerInterface $entityManager, Request $request, string $stringWhere): string
+    public static function donneStringWhere(Request $request, string $stringWhere): string
     {
         $serie = "'%" . $request->query->get('serie') . "%'";
         $date = $request->query->get('date');
@@ -260,7 +263,7 @@ class AdminController extends AbstractController
         $series = $user->getSeries();
 
 
-        $stringWhere .= self::donneStringWhere($entityManager, $request, $stringWhere);
+        $stringWhere .= self::donneStringWhere($request, $stringWhere);
 
         $rates = $entityManager->getRepository(Rating::class)->createQueryBuilder('r')
             ->join('r.series', 's')
@@ -308,7 +311,7 @@ class AdminController extends AbstractController
             // Define the page parameter
             $request->query->getInt('page', 1),
             // Items per page
-            25
+            5
         );
 
         $years = array();
