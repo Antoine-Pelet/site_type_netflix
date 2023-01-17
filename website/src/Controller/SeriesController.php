@@ -46,20 +46,11 @@ class SeriesController extends AbstractController
         ]);
     }
 
-<<<<<<< HEAD
     private function stringWhere(
         EntityManagerInterface $entityManager,
         Request $request,
         PaginatorInterface $paginator
     ): string {
-=======
-class SeriesController extends AbstractController
-{
-    #[Route('/series', name: 'app_series_index', methods: ['GET'])]
-    public function index(Request $request, PaginatorInterface $paginator, EntityManagerInterface $entityManager): Response
-    {
-        
->>>>>>> a5386dd (suivi des séries)
         $appointmentsRepository = $entityManager->getRepository(Series::class);
 
         $title = "'%" . $request->query->get('title') . "%'";
@@ -231,7 +222,6 @@ class SeriesController extends AbstractController
     #[Route('/{id}/follow', name: 'app_series_like', methods: ['GET'])]
     public function like(Request $request, EntityManagerInterface $entityManager): Response
     {
-<<<<<<< HEAD
         /** @var \App\Entity\User */
         $user = $this->getUser();
 
@@ -239,12 +229,6 @@ class SeriesController extends AbstractController
 
         $user->addSeries($series);
 
-=======
-        $userSeries = new UserSeries();
-        $userSeries->setUserId($this->getUser()->getId());
-        $userSeries->setSerieId($request->request->get('serie_id'));
-        $entityManager->persist($userSeries);
->>>>>>> a5386dd (suivi des séries)
         $entityManager->flush();
 
         return $this->redirectToRoute('app_series_index', [], Response::HTTP_SEE_OTHER);
