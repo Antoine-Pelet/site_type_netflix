@@ -128,15 +128,23 @@ class SeriesController extends AbstractController
     #[Route('/API', name: 'app_API', methods: ['GET'])]
     public function search(Request $request, EntityManagerInterface $entityManager, ManagerRegistry $doctrine, HttpClientInterface $client): Response
     {
+        $t = $request->query->get('t');
         $response = $client->request(
             'GET',
-            'http://www.omdbapi.com/?apikey=3b3d08d2&t='.$request->query->get('t')
+            'http://www.omdbapi.com/?apikey=3b3d08d2&t='.$t
         );
+<<<<<<< HEAD
 
         dd($response->toArray());
 
         return $this->render('series/API.html.twig', [
             'response' => $response->toArray()
+=======
+        //dd($response);
+        return $this->render('series/API.html.twig', [
+            'response' => $response->toArray(),
+            't' => $t
+>>>>>>> 263d03b0d4f0fdb24691141a8f8a1165df3868d2
         ]);
     }
 

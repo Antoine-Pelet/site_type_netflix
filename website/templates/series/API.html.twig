@@ -14,6 +14,9 @@
 		<input type="text" name='t' id='t' placeholder="Type to search..">
 	</form>
 
+	{% if t != '' %}
+	
+	{{ response.Title }}
 	<img src="{{ response.Poster }}" alt="Poster">da</img>
 
 <div class=" container d-flex flex-column">
@@ -55,4 +58,10 @@
 			</div>
 		</div>
 	</div>
-</div>{% endblock %}
+</div>
+{% else %}
+
+choisissez une série
+
+{% endif %}
+{% endblock %}
