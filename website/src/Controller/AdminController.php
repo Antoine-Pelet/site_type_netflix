@@ -136,15 +136,15 @@ class AdminController extends AbstractController
     #[Route('/user', name: 'app_user_index', methods: ['GET'])]
     public function userPanel(
         Request $request,
-        EntityManagerInterface $entityManager,
+        EntityManagerInterface $entityManage,
         PaginatorInterface $paginator
     ): Response {
         
         $stringWhere = self::createStringWhere($request);
 
-        $users = self::createSQLRequete($entityManager, $stringWhere, $request, $this->getUser());
+        $users = self::createSQLRequete($entityManage, $stringWhere, $request, $this->getUser());
 
-        $country = $entityManager->getRepository(Country::class)->findAll();
+        $country = $entityManage->getRepository(Country::class)->findAll();
 
         $appointments = $paginator->paginate($users, $request->query->getInt('page', 1), 10);
 
