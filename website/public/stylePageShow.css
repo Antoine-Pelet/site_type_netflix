@@ -57,10 +57,6 @@ body {
     text-decoration: none;
 }
 
-.col{
-    color:white;
-}
-
 .comm {
     background-color: white;
     color: black;
@@ -81,15 +77,26 @@ body {
     padding: 5vh;
     flex: 1;
 }
-.col{
-    color:white;
-}
-
-.comm {
-    background-color: white;
-    color: black;
-}
 
 .genre {
     display: flex;
+}
+
+.flex-rox{
+    flex-wrap: wrap;
+}
+
+@media (max-width: 1000px){
+    .avant{
+        flex-wrap: wrap;
+    }
+
+    .ms-4{
+        margin-left: 0 !important;
+        margin-top: 2vh;
+    }
+
+    .mb-1{
+        margin-right: 2vh;
+    }
 }

@@ -10,10 +10,12 @@
 {% endblock %}
 
 {% block body %}
-	<div class=" container d-flex flex-column">
+	<div class="container d-flex flex-column">
 		<div class="d-flex">
-			<div class="d-flex flex-row mt-3">
-				<img src="{{ path('app_series_poster', {'id': series.id}) }}">
+			<div class="d-flex flex-row mt-3 avant">
+				<div class="poster">
+					<img src="{{ path('app_series_poster', {'id': series.id}) }}">
+				</div>
 				<div class="ms-4 d-flex flex-column justify-content-around">
 					<div class="d-flex flex-rox justify-content-between mb-1">
 						<div class="mb-1">
@@ -28,14 +30,17 @@
 							<p>{{ series.rate.value }}</p>
 						</div>
 						{% if app.user %}
-							{% if episodesVues|length == 0 %}
-								{% set progress =  0 %}
-							{% elseif episodesVues|length == totalEpisode %}
-								{% set progress =  100 %}
-							{% else %}
-								{% set progress =  ((episodesVues|length / totalEpisode) * 100)|round(0, 'floor')  %} 
-							{% endif %}
-							<p> {{progress}} % </p>
+							<div class="mb-1">
+								<h4>Avancement</h4>
+								{% if episodesVues|length == 0 %}
+									{% set progress =  0 %}
+								{% elseif episodesVues|length == totalEpisode %}
+									{% set progress =  100 %}
+								{% else %}
+									{% set progress =  ((episodesVues|length / totalEpisode) * 100)|round(0, 'floor')  %} 
+								{% endif %}
+								<p> {{progress}} % </p>
+							</div
 							{% if app.user.series.contains(series) %}
 								<a href="{{ path('app_series_dislike', {'id': series.id}) }}">
 									<svg xmlns="http://www.w3.org/2000/svg" class="bi svgheart liked bi-heart" viewbox="0 0 16 16" transform="scale(1,1)">
