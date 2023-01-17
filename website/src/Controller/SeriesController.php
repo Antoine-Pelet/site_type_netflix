@@ -122,7 +122,7 @@ class SeriesController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_series_show', methods: ['GET'])]
-    public function show(Series $series, EntityManagerInterface $entityManager, Request $request): Response
+    public function show(Series $series, EntityManagerInterface $entityManager, Request $request, PaginatorInterface $paginator): Response
     {
         $serie = $entityManager->getRepository(Series::class)->find($request->get('id'));
 
@@ -135,6 +135,17 @@ class SeriesController extends AbstractController
 
         /** @var App\Entity\User */
         $user = $this->getUser();
+
+        $stringWhere = AdminController::donneStringWhere($entityManager, $request, "r.series = :series AND ");
+        
+        $rates = $entityManager->getRepository(Rating::class)->createQueryBuilder('r')
+            ->join('r.series', 's')
+            ->where('' . $stringWhere)
+            ->setParameter('user', $user->getId())
+            ->setParameter('series', $series->getId())
+            ->getQuery();
+
+        $res = AdminController::donneVariables($rates, $paginator, $request);
 
         if ($this->getUser() != null) {
         $epi = $entityManager->getRepository(Episode::class)->createQueryBuilder('e')
@@ -159,20 +170,16 @@ class SeriesController extends AbstractController
         ->getResult();
         }
 
-        $rates = $entityManager->getRepository(Rating::class)->createQueryBuilder('r')
-        ->where('r.series = :series')
-        ->setParameter('series', $series->getId())
-        ->getQuery()
-        ->getResult();
-
         $genre = $series->getGenre();
 
         return $this->render('series/show.html.twig', [
             'series' => $series,
-            'rates' => $rates,
             'genres' => $genre,
             'totalEpisode' => $cpt,
-            'episodesVues' => $epi
+            'episodesVues' => $epi,
+            'ratesFiltre' => $res['ratesFiltre'],
+            'years' => $res['years'],
+            'rates' => $res['rates'],
         ]);
     }
 
@@ -270,6 +277,7 @@ class SeriesController extends AbstractController
 
         $stringWhere = $this->stringWhere($entityManager, $request, $paginator);
         
+        /** @var \App\Entity\User */
         $user = $this->getUser();
         $viewedEpisode = $user->getEpisode();
         $seasons = array();

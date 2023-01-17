@@ -186,21 +186,88 @@ class AdminController extends AbstractController
     }
 
     #[Route('/{id}/showRating', name: 'app_user_showRating', methods: ['GET', 'POST'])]
-    public function showRates(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    public function showRates(Request $request, User $user, EntityManagerInterface $entityManager, PaginatorInterface $paginator): Response
     {
-        $rates = $entityManager->getRepository(Rating::class)->createQueryBuilder('r')
-            ->where('r.user = :user')
-            ->setParameter('user', $user->getId())
-            ->getQuery()
-            ->getResult();
 
-        $entityManager->flush();
+        $stringWhere = '';
+
+        $res = self::filtreRates($request, $entityManager, $paginator, $user, $stringWhere);
 
         return $this->render('user/comments.html.twig', [
-            'rates' => $rates,
+            'rates' => $res['rates'],
+            'ratesFiltre' => $res['ratesFiltre'],
+            'years' => $res['years'],
         ]);
     }
 
+    public static function donneStringWhere(EntityManagerInterface $entityManager, Request $request, string $stringWhere): string
+    {
+        $serie = "'%" . $request->query->get('serie') . "%'";
+        $date = $request->query->get('date');
+        $rateMin = $request->query->get('rateMin');
+        $rateMax = $request->query->get('rateMax');
+
+        $stringWhere .= ' r.user = :user';
+
+        if ($serie != "%''%") {
+            $stringWhere .= ' AND s.title LIKE ' . $serie;
+        }
+        if ($date != '') {
+            $stringWhere .= ' AND r.date >= ' . $date;
+        }
+        if ($rateMin != '') {
+            $stringWhere .= ' AND r.value/2 >= ' . $rateMin;
+        }
+        if ($rateMax != '') {
+            $stringWhere .= ' AND r.value/2 <= ' . $rateMax;
+        }
+
+        return $stringWhere;
+    }
+
+    public static function filtreRates(Request $request, EntityManagerInterface $entityManager, PaginatorInterface $paginator, User $user, string $stringWhere)
+    {
+
+        $stringWhere .= self::donneStringWhere($entityManager, $request, $stringWhere);
+
+        $rates = $entityManager->getRepository(Rating::class)->createQueryBuilder('r')
+            ->join('r.series', 's')
+            ->where('' . $stringWhere)
+            ->setParameter('user', $user->getId())
+            ->getQuery();
+
+        return self::donneVariables($rates, $paginator, $request);
+    }
+
+    public static function donneVariables($rates, PaginatorInterface $paginator, Request $request)
+    {
+        $appointments = $paginator->paginate(
+            // Doctrine Query, not results
+            $rates,
+            // Define the page parameter
+            $request->query->getInt('page', 1),
+            // Items per page
+            25
+        );
+
+        $years = array();
+
+        for ($i = 1900; $i < 2022; $i++) {
+            $years[] = $i;
+        }
+
+        $ratesFiltre = array();
+
+        for ($i = 0; $i <= 5; $i = $i + 0.5) {
+            $ratesFiltre[] = $i;
+        }
+
+        $res['rates'] = $appointments;
+        $res['ratesFiltre'] = $ratesFiltre;
+        $res['years'] = $years;
+
+        return $res;
+    }
 
     #[Route('/faker', name: 'app_user_faker', methods: ['POST'])]
     public function userFaker(EntityManagerInterface $entityManager)

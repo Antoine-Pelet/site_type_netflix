@@ -42,14 +42,14 @@
 
 			<div class="rate">
 				<select name="rateMin" id="rateMin">
-					<option value="">--Choose a rate--</option>
+					<option value="">--Choose a minimum rate--</option>
 					{% for rate in rates %}
 						<option value="{{ rate }}">{{ rate }}</option>
 					{% endfor %}
 				</select>
 
 				<select name="rateMax" id="rateMax">
-					<option value="">--Choose a rate--</option>
+					<option value="">--Choose a maximum rate--</option>
 					{% for rate in rates %}
 						<option value="{{ rate }}">{{ rate }}</option>
 					{% endfor %}
