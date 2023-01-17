@@ -358,7 +358,7 @@ class AdminController extends AbstractController
             }
             $tempSeriesIds = $seriesIds;
             shuffle($tempSeriesIds);
-            $tempSeriesIds = array_slice($tempSeriesIds, 0, rand(1, 10));
+            $tempSeriesIds = array_slice($tempSeriesIds, 0, rand(1, 4));
             foreach ($tempSeriesIds as $id) {
                 $series = $em->getRepository(Series::class)->findOneBy(['id' => $id]);
                 if (!$series) {

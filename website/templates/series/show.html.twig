@@ -187,8 +187,8 @@
 	</div>
 	{% for r in rates %}
 		<div class="comm">
-			{%set vardiff = date("now" | date()).diff(date(r.getDate()))%}
-			{%set note = r.getValue() / 2 %}
+			{% set vardiff = date("now" | date()).diff(date(r.getDate()))%}
+			{% set note = r.getValue() / 2 %}
 
             <p>{{ r.getUser().name}} - il y a {% if vardiff.days !=0 %} {{vardiff.days}} jours 
                 {% endif %} {{vardiff.h}} heures et {{vardiff.i}} minutes  - la notes est de {{note}}/5</p>
