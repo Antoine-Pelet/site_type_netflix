@@ -50,7 +50,10 @@ class AdminController extends AbstractController
 
         $country = $entityManager->getRepository(Country::class)->findAll();
 
-        if(!$this->getUser()->isAdmin()){
+        /** @var App\Entity\User */
+        $user = $this->getUser();
+
+        if(!$user->isAdmin()){
             return $this->redirectToRoute('app_default', [], Response::HTTP_SEE_OTHER);
         }
 
