@@ -36,8 +36,7 @@
 						<td data-title="Name">{{ user.name }}</td>
 						<td data-title="Email">{{ user.email }}</td>
 						<td data-title="Actions">
-							<a href="{{ path('app_view_episodes', {'id': user.id}) }}">Show his viewed series</a> | 
-							<a href="{{ path('app_user_showRating', {'id': user.id}) }}">Show his comments series</a> | 
+							<a href="{{ path('app_show_user_profile', {'id': user.id}) }}">Show his profile</a>
 							{% if app.user %}
 								{% if app.user.users.contains(user) %}
 									<a href="{{ path('app_user_dislike', {'id': user.id}) }}">
