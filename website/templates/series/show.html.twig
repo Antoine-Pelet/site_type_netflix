@@ -41,7 +41,7 @@
 									{% set progress =  ((episodesVues|length / totalEpisode) * 100)|round(0, 'floor')  %} 
 								{% endif %}
 								<p> {{progress}} % </p>
-							</div
+							</div>
 							{% if app.user.series.contains(series) %}
 								<a href="{{ path('app_series_dislike', {'id': series.id}) }}">
 									<svg xmlns="http://www.w3.org/2000/svg" class="bi svgheart liked bi-heart" viewbox="0 0 16 16" transform="scale(1,1)">
@@ -61,7 +61,7 @@
 							<h4>Genre</h4>
 							<div class="genre">
 								{% for g in genres%}
-									<p>{{ g.name }} - </p>
+									<p>{{ g.name }}</p>
 								{% endfor %}
 							</div>
 						</div>
@@ -190,5 +190,9 @@
             <p>{{ r.getComment() }}</p>
 		</div>
 	{% endfor %}
+
+	<div class="navigation d-flex justify-content-center">
+		{{ knp_pagination_render(rates) }}
+	</div>
 	
 {% endblock %}

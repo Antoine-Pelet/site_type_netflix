@@ -1,18 +1,60 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}User index{% endblock %}
+{% block title %}User index
+{% endblock %}
 
 {% block stylesheets %}
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link href="{{ asset('styleSeries.css') }}" rel="stylesheet"/>
+	<link href="{{ asset('styleAdmin.css') }}" rel="stylesheet"/>
 	<link href="{{ asset('style.css') }}" rel="stylesheet"/>
     <link href="{{ asset('stylePageShow.css') }}" rel="stylesheet"/>
 {% endblock %}
 
 {% block body %}
-    <form method="GET">
-        <input type="text" name='email' id='email' placeholder="Search..">
-        <button type="submit">Submit</button>
-    </form>
+    <form method="GET" style="width: 25%">
+		<input type="text" name='title' id='title' placeholder="Type to search..">
+
+		<select name="genre" id="genre">
+			<option value="">--Choose a genre--</option>
+			{% for genre in genres %}
+				<option value="{{ genre.id }}">{{ genre.name }}</option>
+			{% endfor %}
+		</select>
+
+		<select name="debut" id="debut">
+			<option value="">--Choose a year--</option>
+			{% for year in years %}
+				<option value="{{ year }}">{{ year }}</option>
+			{% endfor %}
+		</select>
+
+		<select name="fin" id="fin">
+			<option value="">--Choose a year--</option>
+			{% for year in years %}
+				<option value="{{ year }}">{{ year }}</option>
+			{% endfor %}
+		</select>
+
+		<select name="rateMin" id="rateMin">
+			<option value="">--Choose a minimum rate--</option>
+			{% for rate in ratesFiltre %}
+				<option value="{{ rate }}">{{ rate }}</option>
+			{% endfor %}
+		</select>
+		<select name="rateMax" id="rateMax">
+			<option value="">--Choose a maximum rate--</option>
+			{% for rate in ratesFiltre %}
+				<option value="{{ rate }}">{{ rate }}</option>
+			{% endfor %}
+		</select>
+
+		<button type="submit" class="searchbtn">
+			<svg xmlns="http://www.w3.org/2000/svg" class="bi bi-search" viewbox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+			</svg>
+		</button>
+	</form>
 
     <div class="navigation d-flex justify-content-center">
 		<div class="container-fluid row d-flex justify-content-center">
@@ -62,8 +104,39 @@
                 <p>This user don't have any liked series.</p>
             {% endfor %}
 		</div>
+		<div class="navigation d-flex justify-content-center">
+			{{ knp_pagination_render(series) }}
+		</div>
     </div>
     <h1>Comments</h1>
+	<form method="GET" style="width: 25%">
+		<input type="text" name='serie' id='serie' placeholder="Type to search..">
+
+		<select name="date" id="date">
+			<option value="">--Choose a year--</option>
+			{% for year in years %}
+				<option value="{{ year }}">{{ year }}</option>
+			{% endfor %}
+		</select>
+
+		<select name="rateMin" id="rateMin">
+			<option value="">--Choose a minimum rate--</option>
+			{% for rate in ratesFiltre %}
+				<option value="{{ rate }}">{{ rate }}</option>
+			{% endfor %}
+		</select>
+		<select name="rateMax" id="rateMax">
+			<option value="">--Choose a maximum rate--</option>
+			{% for rate in ratesFiltre %}
+				<option value="{{ rate }}">{{ rate }}</option>
+			{% endfor %}
+		</select>
+		<button type="submit" class="searchbtn">
+			<svg xmlns="http://www.w3.org/2000/svg" class="bi bi-search" viewbox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+			</svg>
+		</button>
+	</form>
     {% for r in rates %}
         <div class="comm">
             <h4 class="text-black">{{ r.getUser().name }}</h4>
@@ -91,4 +164,7 @@
             <p>{{ r.getComment() }}</p>
         </div>
     {% endfor %}
+	<div class="navigation d-flex justify-content-center">
+		{{ knp_pagination_render(rates) }}
+	</div>
 {% endblock %}
