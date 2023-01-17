@@ -14,6 +14,10 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Controller\ArrayObject;
+use App\Entity\Appointments;
+// include de la pagination
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class SeriesController extends AbstractController
@@ -51,6 +55,7 @@ class SeriesController extends AbstractController
     ): string {
 
         $title = "'%" . $request->query->get('title') . "%'";
+
 
         $genre = $request->query->get('genre');
         $debut = $request->query->get('debut');
@@ -118,6 +123,19 @@ class SeriesController extends AbstractController
         $res['rates'] = $rates;
 
         return $res;
+    }
+
+    #[Route('/API', name: 'app_API', methods: ['GET'])]
+    public function search(Request $request, EntityManagerInterface $entityManager, ManagerRegistry $doctrine, HttpClientInterface $client): Response
+    {
+        $response = $client->request(
+            'GET',
+            'http://www.omdbapi.com/?apikey=3b3d08d2&t='.$request->query->get('t')
+        );
+
+        return $this->render('series/API.html.twig', [
+            'response' => $response->toArray(),
+        ]);
     }
 
     #[Route('/{id}', name: 'app_series_show', methods: ['GET'])]
