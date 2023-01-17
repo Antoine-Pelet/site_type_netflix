@@ -402,26 +402,30 @@ class AdminController extends AbstractController
         return $res;
     }
 
-    #[Route('/faker', name: 'app_user_faker', methods: ['POST'])]
-    public function userFaker(EntityManagerInterface $entityManager)
+   #[Route('/faker', name: 'app_user_faker', methods: ['POST'])]
+    public function userFaker(Request $request, EntityManagerInterface $entityManager)
     {
         $faker = Factory::create();
-
         $em = $entityManager;
-        if (isset($_POST['usergen'])) {
-            $numUsers = $_POST['usergen'];
-            $users = array();
-            for ($i = 0; $i < $numUsers; $i++) {
-                $user = new User();
-                $tmpname = $faker->userName;
-                $user->setName($tmpname);
-                $user->setEmail($tmpname . $i . '@testwatchlist.fr');
-                $user->setPassword($faker->password(6, 7));
-                $users[] = $user;
-                $em->persist($user);
+        $numUsers = $request->request->get('usergen');
+
+        $users = array();
+        $batchSize = 1000; // adjust as needed
+
+        for ($i = 0; $i < $numUsers; $i++) {
+            $user = new User();
+            $tmpname = $faker->userName;
+            $user->setName($tmpname);
+            $user->setEmail($tmpname . $i . '@genwatchlist.fr');
+            $user->setPassword($faker->password(6, 7));
+            $users[] = $user;
+            $em->persist($user);
+            if (($i % $batchSize) === 0) {
+                $em->flush();
+                $em->clear();
             }
-            $em->flush();
         }
+        $em->flush();
         return $this->redirectToRoute('app_admin_index');
     }
 
@@ -430,15 +434,34 @@ class AdminController extends AbstractController
     {
         $faker = Factory::create();
         $em = $entityManager;
+
+        $users = array();
+        $batchSize = 1000; // adjust as needed
+
+        for ($i = 0; $i < 100 ; $i++) {
+            $user = new User();
+            $tmpname = $faker->userName;
+            $user->setName($tmpname);
+            $user->setEmail($tmpname . $i . '@ratewatchlist.fr');
+            $user->setPassword($faker->password(6, 7));
+            $users[] = $user;
+            $em->persist($user);
+            if (($i % $batchSize) === 0) {
+                $em->flush();
+                $em->clear();
+            }
+        }
+        $em->flush();
+
         $users = $em->getRepository(User::class)->findAll();
         $seriesIds = range(1, 234);
         foreach ($users as $u) {
-            if (substr($u->getEmail(), -17) != '@testwatchlist.fr') {
+            if (substr($u->getEmail(), -17) != '@ratewatchlist.fr') {
                 continue;
             }
             $tempSeriesIds = $seriesIds;
             shuffle($tempSeriesIds);
-            $tempSeriesIds = array_slice($tempSeriesIds, 0, rand(1, 4));
+            $tempSeriesIds = array_slice($tempSeriesIds, 0, rand(50, 150));
             foreach ($tempSeriesIds as $id) {
                 $series = $em->getRepository(Series::class)->findOneBy(['id' => $id]);
                 if (!$series) {
