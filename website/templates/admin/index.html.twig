@@ -19,7 +19,7 @@
 			</svg>
 		</button>
 	</form>
-	<form action="{{ path('app_user_faker') }}" method="POST" class="form_usergen">
+	<form action="{{ path('app_user_faker') }}" method="POST" class="mt-3">
 		<input type="number" id="usergen" name="usergen" min="1" max="100000" step="1">
 		<button type="submit" class="btn btn-script">Generate User</button>
 	</form>
@@ -28,11 +28,11 @@
 		<button type="submit" class="btn btn-script">Generate ratings</button>
 	</form>
 
-<div class="test">
-	<div class="panel">
-		<table class="table">
+<div class="d-flex justify-content-center mt-5">
+	<div class="panel p-3 rounded">
+		<table class="border-0 text-white">
 			<thead>
-				<tr>
+				<tr class="border-0 border-bottom">
 					<th>Id</th>
 					<th>Name</th>
 					<th>Email</th>
@@ -43,7 +43,7 @@
 				</tr>
 			</thead>
 			{% for user in users %}
-				<tr>
+				<tr class="border-0">
 					<td data-title="Id">{{ user.id }}</td>
 					<td data-title="Name">{{ user.name }}</td>
 					<td data-title="Email">{{ user.email }}</td>
@@ -61,22 +61,22 @@
 					{% if app.user %}
 						<td data-title="Actions">
 							{% if user.admin == '0' %}
-								<a href="{{ path('app_admin_promouvoir', {'id': user.id}) }}" class="text-success">Promouvoir</a> | 
+								<a href="{{ path('app_admin_promouvoir', {'id': user.id}) }}" class="text-success text-decoration-none">Promouvoir</a> | 
 							{% else %}
-								<a href="{{ path('app_admin_destituer', {'id': user.id}) }}" class="text-danger">Destituer</a> | 
+								<a href="{{ path('app_admin_destituer', {'id': user.id}) }}" class="text-danger text-decoration-none">Destituer</a> | 
 							{% endif %}
-							<a href="?_switch_user={{user.email}}">Embody</a> | 
-							<a href="{{ path('app_user_change_mdp', {'id': user.id}) }}">Edit</a> | 
+							<a href="?_switch_user={{user.email}}" class="text-decoration-none">Embody</a> | 
+							<a href="{{ path('app_user_change_mdp', {'id': user.id}) }}" class="text-decoration-none">Edit</a> | 
 							{% if user.ban == '0' %}
-								<a href="{{ path('app_admin_ban', {'id': user.id}) }}" class="text-success">Bannir</a>
+								<a href="{{ path('app_admin_ban', {'id': user.id}) }}" class="text-success text-decoration-none">Bannir</a>
 							{% else %}
-								<a href="{{ path('app_admin_unban', {'id': user.id}) }}" class="text-danger">Débannir</a>
+								<a href="{{ path('app_admin_unban', {'id': user.id}) }}" class="text-danger text-decoration-none">Débannir</a>
 							{% endif %}
 						</td>
 					{% endif %}
 				</tr>
 			{% else %}
-				<tr>
+				<tr class="border-0 border-bottom">
 					<td colspan="7">Aucun utilisateurs inscrit.</td>
 				</tr>
 			{% endfor %}
