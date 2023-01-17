@@ -308,11 +308,19 @@ class SeriesController extends AbstractController
 
         $res = $this->requeteFiltred($series, $entityManager, $request, $paginator);
 
+        $cpt = 0;
+        foreach ($seasons as $s) {
+            $cpt = $cpt + sizeof($s->getEpisodes());
+        }
+
+        
+        
         return $this->render('liked/view.html.twig', [
             'series' => $res['series'],
             'genres' => $res['genres'],
             'years' => $res['years'],
             'rates' => $res['rates'],
+            'totalEpisode' => $cpt,
             'episodes' => $viewedEpisode,
             'seriesView' => $series,
             'seasons' => $seasons
