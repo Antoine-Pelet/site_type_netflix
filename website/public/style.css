@@ -285,3 +285,13 @@ input[type=text], button[type=submit] {
 }
 
 /* ----- END SEARCH BAR ----- */
+
+
+.genre, .annee, .rate, select{
+  background-color: transparent;
+  color: white;
+}
+
+option {
+  color: black;
+}
