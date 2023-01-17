@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Entity\Rating;
 use App\Form\UserType;
 use App\Entity\Series;
+use App\Entity\Country;
 use App\Form\UserTypeMDP;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -42,19 +43,77 @@ class AdminController extends AbstractController
         EntityManagerInterface $entityManager,
         PaginatorInterface $paginator
     ): Response {
-        $users = $entityManager->getRepository(User::class);
+        
+        $stringWhere = self::createStringWhere($request);
 
-        $users = $users->createQueryBuilder('u')
-            ->orderBy('u.registerDate', 'DESC')
-            ->where('u.email LIKE :search')
-            ->setParameter('search', '%' . $request->query->get('email') . '%')
-            ->getQuery();
+        $users = self::createSQLRequete($entityManager, $stringWhere, $request, $this->getUser());
+
+        $country = $entityManager->getRepository(Country::class)->findAll();
 
         $appointments = $paginator->paginate($users, $request->query->getInt('page', 1), 10);
 
         return $this->render('admin/index.html.twig', [
             'users' => $appointments,
+            'countries' => $country,
         ]);
+    }
+
+    public static function createSQLRequete(EntityManagerInterface $entityManager, string $stringWhere, Request $request, User $user)
+    {
+        $users = $entityManager->getRepository(User::class);
+        
+        if ($request->query->get('follow') != '') {
+            $users = $users->createQueryBuilder('u')
+                ->join('u.users', 'us')
+                ->where($stringWhere)
+                ->setParameter('user', $user->getUsers())
+                ->getQuery();
+        } else {
+            $users = $users->createQueryBuilder('u')
+                ->where($stringWhere)
+                ->getQuery();
+        }
+        
+
+        return $users;
+    }
+
+    public static function createStringWhere(Request $request): string 
+    {
+        $stringWhere = '1 = 1';
+
+        $mail = "'%" . $request->query->get('email') . "%'";
+        $nom = "'%" . $request->query->get('nom') . "%'";
+        $ban = $request->query->get('ban');
+        $admin = $request->query->get('admin');
+        $country = $request->query->get('country');
+
+        $follow = $request->query->get('follow');
+
+        if ($mail != "'%%'") {
+            $stringWhere .= " AND u.email LIKE " . $mail;
+        }
+        if ($nom != "'%%'") {
+            $stringWhere .= " AND u.name LIKE " . $nom;
+        }
+        if ($ban != '') {
+            $stringWhere .= " AND u.ban = " . $ban;
+        }
+        if ($follow != '') {
+            if ($follow == '1') {
+                $stringWhere .= " AND u.id IN (:user)";
+            } else {
+                $stringWhere .= " AND u.id NOT IN (:user)";
+            }
+        }
+        if ($country != '') {
+            $stringWhere .= " AND u.country = " . $country;
+        }
+        if ($admin != '') {
+            $stringWhere .= " AND u.admin = " . $admin;
+        }
+
+        return $stringWhere;
     }
 
     /**
@@ -73,18 +132,18 @@ class AdminController extends AbstractController
         EntityManagerInterface $entityManager,
         PaginatorInterface $paginator
     ): Response {
-        $users = $entityManager->getRepository(User::class);
+        
+        $stringWhere = self::createStringWhere($request);
 
-        $users = $users->createQueryBuilder('u')
-            ->orderBy('u.registerDate', 'DESC')
-            ->where('u.email LIKE :search')
-            ->setParameter('search', '%' . $request->query->get('email') . '%')
-            ->getQuery();
+        $users = self::createSQLRequete($entityManager, $stringWhere, $request, $this->getUser());
+
+        $country = $entityManager->getRepository(Country::class)->findAll();
 
         $appointments = $paginator->paginate($users, $request->query->getInt('page', 1), 10);
 
         return $this->render('user/index.html.twig', [
             'users' => $appointments,
+            'countries' => $country,
         ]);
     }
 
