@@ -2,11 +2,67 @@
 
 {% block title %}Edit Series{% endblock %}
 
+{% block stylesheets %}
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link href="{{ asset('style.css') }}" rel="stylesheet"/>
+	<link href="{{ asset('styleEdit.css') }}" rel="stylesheet"/>
+{% endblock %}
+
 {% block body %}
-    <h1>Edit Series</h1>
 
-    {{ include('series/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ form_start(form) }}
+    <div class="formu">
+        <h1>Edit Series</h1>
+        <div class="form-floating mb-3">
+            {{ form_row(form.title) }}
+            {{ form_errors(form.title) }}
+        </div>
 
-    <a href="{{ path('app_series_index') }}">back to list</a>
+        <div class="form-floating mb-3">
+            {{ form_row(form.plot) }}
+            {{ form_errors(form.plot) }}
+        </div>
+
+        <div class="form-floating mb-3">
+            {{ form_row(form.director) }}
+            {{ form_errors(form.director) }}
+        </div>
+
+        <div class="form-floating mb-3">
+            {{ form_row(form.youtubeTrailer) }}
+            {{ form_errors(form.youtubeTrailer) }}
+        </div>
+
+        <div class="form-floating mb-3">
+            {{ form_row(form.awards) }}
+            {{ form_errors(form.awards) }}
+        </div>
+
+        <div class="form-floating mb-3">
+            {{ form_row(form.yearStart) }}
+            {{ form_errors(form.yearStart) }}
+        </div>
+
+        <div class="form-floating mb-3">
+            {{ form_row(form.yearEnd) }}
+            {{ form_errors(form.yearEnd) }}
+        </div>
+
+        <div class="form-floating mb-3">
+            {{ form_row(form.genre) }}
+            {{ form_errors(form.genre) }}
+        </div>
+
+        <div class="form-floating mb-3">
+            {{ form_row(form.actor) }}
+            {{ form_errors(form.actor) }}
+        </div>
+
+        <div class="form-floating mb-3">
+            {{ form_row(form.country) }}
+            {{ form_errors(form.country) }}
+        </div>
+
+        {{ include('series/_form.html.twig', {'button_label': 'Update'}) }}
 
 {% endblock %}

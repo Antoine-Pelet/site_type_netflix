@@ -72,5 +72,5 @@ body {
 
 select {
   border-radius: 25px;
-  min-height: 6vh;
+  padding: 8px 16px;
 }
