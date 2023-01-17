@@ -68,6 +68,9 @@
 			<p>This user don't have any liked series.</p>
 		{% endfor %}
 	</table>
+	<div class="navigation d-flex justify-content-center">
+				{{ knp_pagination_render(series) }}
+			</div>
 
 	<h1>Comments</h1>
 
@@ -119,4 +122,7 @@
 			<p>{{ r.getComment() }}</p>
 		</div>
 	{% endfor %}
+	<div class="navigation d-flex justify-content-center">
+				{{ knp_pagination_render(rates) }}
+			</div>
 {% endblock %}

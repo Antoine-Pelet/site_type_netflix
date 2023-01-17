@@ -380,7 +380,7 @@ class AdminController extends AbstractController
             // Define the page parameter
             $request->query->getInt('page', 1),
             // Items per page
-            5
+            8
         );
 
         $years = array();
@@ -461,7 +461,7 @@ class AdminController extends AbstractController
             }
             $tempSeriesIds = $seriesIds;
             shuffle($tempSeriesIds);
-            $tempSeriesIds = array_slice($tempSeriesIds, 0, rand(50, 150));
+            $tempSeriesIds = array_slice($tempSeriesIds, 0, rand(5, 15));
             foreach ($tempSeriesIds as $id) {
                 $series = $em->getRepository(Series::class)->findOneBy(['id' => $id]);
                 if (!$series) {
