@@ -19,25 +19,29 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 /**
  * Class AdminController
  * @package App\Controller
- * 
- * This controller handle the routes for the admin panel, it handle the listing of user, edition of user and change password of a user.
- * 
+ *
+ * This controller handle the routes for the admin panel,
+ * it handle the listing of user, edition of user and change password of a user.
+ *
  */
 class AdminController extends AbstractController
 {
     /**
      * Handle the route '/admin' to list the user
      * @Route("/admin", name="app_admin_index", methods={"GET"})
-     * 
+     *
      * @param Request $request
      * @param EntityManagerInterface $entityManager
      * @param PaginatorInterface $paginator
-     * 
+     *
      * @return Response
      */
     #[Route('/admin', name: 'app_admin_index', methods: ['GET'])]
-    public function admin_panel(Request $request, EntityManagerInterface $entityManager, PaginatorInterface $paginator): Response
-    {
+    public function adminPanel(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        PaginatorInterface $paginator
+    ): Response {
         $users = $entityManager->getRepository(User::class);
 
         $users = $users->createQueryBuilder('u')
@@ -64,8 +68,11 @@ class AdminController extends AbstractController
      * @return Response
      */
     #[Route('/user', name: 'app_user_index', methods: ['GET'])]
-    public function user_panel(Request $request, EntityManagerInterface $entityManager, PaginatorInterface $paginator): Response
-    {
+    public function userPanel(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        PaginatorInterface $paginator
+    ): Response {
         $users = $entityManager->getRepository(User::class);
 
         $users = $users->createQueryBuilder('u')
@@ -82,8 +89,12 @@ class AdminController extends AbstractController
     }
 
     #[Route('/user/edit/{id}', name: 'app_user_edit', methods: ['GET', 'POST'])]
-    public function user_edit(Request $request, User $user, EntityManagerInterface $entityManager, UserPasswordHasherInterface $userPasswordHasher): Response
-    {
+    public function userEdit(
+        Request $request,
+        User $user,
+        EntityManagerInterface $entityManager,
+        UserPasswordHasherInterface $userPasswordHasher
+    ): Response {
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
@@ -107,8 +118,12 @@ class AdminController extends AbstractController
     }
 
     #[Route('/user/editmdp/{id}', name: 'app_user_change_mdp', methods: ['GET', 'POST'])]
-    public function user_edit_mdp(Request $request, User $user, EntityManagerInterface $entityManager, UserPasswordHasherInterface $userPasswordHasher): Response
-    {
+    public function userEditMdp(
+        Request $request,
+        User $user,
+        EntityManagerInterface $entityManager,
+        UserPasswordHasherInterface $userPasswordHasher
+    ): Response {
         $form = $this->createForm(UserTypeMDP::class, $user);
         $form->handleRequest($request);
 
@@ -260,7 +275,9 @@ class AdminController extends AbstractController
             $tempSeriesIds = array_slice($tempSeriesIds, 0, rand(1, 10));
             foreach ($tempSeriesIds as $id) {
                 $series = $em->getRepository(Series::class)->findOneBy(['id' => $id]);
-                if (!$series) continue;
+                if (!$series) {
+                    continue;
+                }
                 $rating = new Rating();
                 $rating->setSeries($series);
                 $rating->setUser($u);
