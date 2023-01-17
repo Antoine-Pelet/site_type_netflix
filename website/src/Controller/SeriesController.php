@@ -153,7 +153,7 @@ class SeriesController extends AbstractController
         /** @var App\Entity\User */
         $user = $this->getUser();
 
-        $stringWhere = AdminController::donneStringWhere($request, "r.series = :series AND ");
+        $stringWhere = AdminController::donneStringWhere($request, "r.series = :series");
         
         $rates = $entityManager->getRepository(Rating::class)->createQueryBuilder('r')
             ->join('r.series', 's')

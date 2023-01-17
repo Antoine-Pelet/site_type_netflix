@@ -262,7 +262,7 @@ class AdminController extends AbstractController
 
         $result = SeriesController::requeteFiltred($res['seriesView'], $entityManager, $request, $paginator);
 
-        $stringRates = self::donneStringWhere($request, '');
+        $stringRates = self::donneStringWhere($request, 'r.user = :user');
 
         $rates = $entityManager->getRepository(Rating::class)->createQueryBuilder('r')
             ->join('r.series', 's')
@@ -301,12 +301,14 @@ class AdminController extends AbstractController
 
     public static function donneStringWhere(Request $request, string $stringWhere): string
     {
+        if ($stringWhere == '') 
+        {
+            $stringWhere .= '1=1';
+        }
         $serie = "'%" . $request->query->get('serie') . "%'";
         $date = $request->query->get('date');
         $rateMin = $request->query->get('rateMin');
         $rateMax = $request->query->get('rateMax');
-
-        $stringWhere .= ' r.user = :user';
 
         if ($serie != "%''%") {
             $stringWhere .= ' AND s.title LIKE ' . $serie;
@@ -328,6 +330,7 @@ class AdminController extends AbstractController
     {
         $series = $user->getSeries();
 
+        $stringWhere .= ' r.user = :user';
 
         $stringWhere .= self::donneStringWhere($request, $stringWhere);
 
