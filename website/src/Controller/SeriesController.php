@@ -18,6 +18,7 @@ use App\Entity\Appointments;
 use App\Entity\Genre;
 // include de la pagination
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class SeriesController extends AbstractController
 {
@@ -30,7 +31,7 @@ class SeriesController extends AbstractController
         $appointmentsRepository = $entityManager->getRepository(Series::class);
 
         $title = "'%" . $request->query->get('title') . "%'";
-        
+
         $genre = $request->query->get('genre');
         $debut = $request->query->get('debut');
         $fin = $request->query->get('fin');
@@ -98,6 +99,19 @@ class SeriesController extends AbstractController
             'genres' => $genres,
             'years' => $years,
             'rates' => $rates,
+        ]);
+    }
+
+    #[Route('/API', name: 'app_API', methods: ['GET'])]
+    public function search(Request $request, EntityManagerInterface $entityManager, ManagerRegistry $doctrine, HttpClientInterface $client): Response
+    {
+        $response = $client->request(
+            'GET',
+            'http://www.omdbapi.com/?apikey=3b3d08d2&t='.$request->query->get('t')
+        );
+
+        return $this->render('series/API.html.twig', [
+            'response' => $response->toArray(),
         ]);
     }
 
