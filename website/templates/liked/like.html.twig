@@ -10,6 +10,47 @@
 {% endblock %}
 
 {% block body %}
+	<form method="GET" style="width: 25%">
+		<input type="text" name='title' id='title' placeholder="Type to search..">
+		<select name="genre" id="genre">
+    <option value="">--Choose a genre--</option>
+    {% for genre in genres %}
+		<option value="{{ genre.id }}">{{ genre.name }}</option>
+	{% endfor %}
+	</select>
+
+	<select name="debut" id="debut">
+	<option value="">--Choose a year--</option>
+	{% for year in years %}
+		<option value="{{ year }}">{{ year }}</option>
+	{% endfor %}
+	</select>
+
+	<select name="fin" id="fin">
+	<option value="">--Choose a year--</option>
+	{% for year in years %}
+		<option value="{{ year }}">{{ year }}</option>
+	{% endfor %}
+	</select>
+
+	<select name="rateMin" id="rateMin">
+	<option value="">--Choose a mimimum rate--</option>
+	{% for rate in rates %}
+		<option value="{{ rate }}">{{ rate }}</option>
+	{% endfor %}
+	</select>
+	<select name="rateMax" id="rateMax">
+	<option value="">--Choose a maximum rate--</option>
+	{% for rate in rates %}
+		<option value="{{ rate }}">{{ rate }}</option>
+	{% endfor %}
+	</select>
+			<button type="submit" class="searchbtn">
+			<svg xmlns="http://www.w3.org/2000/svg" class="bi bi-search" viewbox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+			</svg>
+		</button>
+	</form>
 	<div class="container-fluid row d-flex justify-content-center">
 			{% for s in series %}
 				<div class="card col-md-1" style="width: 18rem;">

@@ -2,12 +2,12 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Entity\Series;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Doctrine\ORM\EntityManagerInterface;
-use App\Entity\Series;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class DefaultController extends AbstractController
 {
@@ -16,8 +16,8 @@ class DefaultController extends AbstractController
     {
         $appointmentsRepository = $entityManager->getRepository(Series::class);
 
-        $youtubeTrailer = $appointmentsRepository->createQueryBuilder('s')
-        ->select('s.title, s.youtubeTrailer, s.id')
+        $youtubeTrailer = $appointmentsRepository->createQueryBuilder('ytb')
+        ->select('ytb.title, ytb.youtubeTrailer, ytb.id')
         ->getQuery()
         ->getResult();
 
