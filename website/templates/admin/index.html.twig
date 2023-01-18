@@ -18,7 +18,9 @@
 		<input type="text" name="mail" id="mail" placeholder="Type to search an email..">
 
 		<select name="ban" id="ban">
-			<option value=""> all users (ban and not banned) </option>
+			<option value="">
+				all users (ban and not banned)
+			</option>
 			<option value="0">not banned users</option>
 			<option value="1">Banned users</option>
 		</select>
@@ -29,24 +31,40 @@
 		</select>
 
 		<select name="follow" id="follow">
-			<option value=""> all users (followed and not followed) </option>
-			<option value="0"> not followed users </option>
-			<option value="1"> followed users </option>
+			<option value="">
+				all users (followed and not followed)
+			</option>
+			<option value="0">
+				not followed users
+			</option>
+			<option value="1">
+				followed users
+			</option>
 		</select>
 
 		<select name="admin" id="admin">
-			<option value=""> all users (admin and not admin) </option>
-			<option value="0"> not admin users </option>
-			<option value="1"> admin users </option>
+			<option value="">
+				all users (admin and not admin)
+			</option>
+			<option value="0">
+				not admin users
+			</option>
+			<option value="1">
+				admin users
+			</option>
 		</select>
 
 		<select name="country" id="country">
-			<option value=""> all countries </option>
+			<option value="">
+				all countries
+			</option>
 			{% for country in countries %}
-				<option value="{{ country.id }}"> {{ country.name }} </option>
+				<option value="{{ country.id }}">
+					{{ country.name }}
+				</option>
 			{% endfor %}
 		</select>
-		
+
 		<button type="submit" class="searchbtn">
 			<svg xmlns="http://www.w3.org/2000/svg" class="bi bi-search" viewbox="0 0 16 16">
 				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
@@ -63,62 +81,66 @@
 	</form>
 	<a href="{{ path('app_comments_moderate') }}" class="btn">Moderate Comments</a>
 
-<div class="d-flex justify-content-center mt-5">
-	<div class="panel p-3 rounded">
-		<table class="border-0 text-white">
-			<thead>
-				<tr class="border-0 border-bottom">
-					<th>Id</th>
-					<th>Name</th>
-					<th>Email</th>
-					<th>Register Date</th>
-					<th>Admin</th>
-					<th>Ban</th>
-					<th>Actions</th>
-				</tr>
-			</thead>
-			{% for user in users %}
-				<tr class="border-0">
-					<td data-title="Id">{{ user.id }}</td>
-					<td data-title="Name">{{ user.name }}</td>
-					<td data-title="Email">{{ user.email }}</td>
-					<td data-title="Register Date">{{ user.registerDate ? user.registerDate|date('Y-m-d H:i:s') : '' }}</td>
-					{% if user.admin == '0' %}
-						<td class="text-danger" data-title="Admin">{{ user.admin ? 'Yes' : 'No' }}</td>
-					{% else %}
-						<td class="text-success" data-title="Admin">{{ user.admin ? 'Yes' : 'No' }}</td>
-					{% endif %}
-					{% if user.ban == '0' %}
-						<td class="text-danger" data-title="Ban">{{ user.ban ? 'Yes' : 'No' }}</td>
-					{% else %}
-						<td class="text-success" data-title="Ban">{{ user.ban ? 'Yes' : 'No' }}</td>
-					{% endif %}
-					{% if app.user %}
-						<td data-title="Actions">
-							{% if user.admin == '0' %}
-								<a href="{{ path('app_admin_promouvoir', {'id': user.id}) }}" class="text-success text-decoration-none">Promouvoir</a> | 
-							{% else %}
-								<a href="{{ path('app_admin_destituer', {'id': user.id}) }}" class="text-danger text-decoration-none">Destituer</a> | 
-							{% endif %}
-							<a href="?_switch_user={{user.email}}" class="text-decoration-none">Embody</a> | 
-							<a href="{{ path('app_user_change_mdp', {'id': user.id}) }}" class="text-decoration-none">Edit</a> | 
-							{% if user.ban == '0' %}
-								<a href="{{ path('app_admin_ban', {'id': user.id}) }}" class="text-success text-decoration-none">Bannir</a>
-							{% else %}
-								<a href="{{ path('app_admin_unban', {'id': user.id}) }}" class="text-danger text-decoration-none">Débannir</a>
-							{% endif %}
-						</td>
-					{% endif %}
-				</tr>
-			{% else %}
-				<tr class="border-0 border-bottom">
-					<td colspan="7">Aucun utilisateurs inscrit.</td>
-				</tr>
-			{% endfor %}
-			<div class="navigation d-flex justify-content-center">
-				{{ knp_pagination_render(users) }}
-			</div>
-		</table>
+	<div class="d-flex justify-content-center mt-5">
+		<div class="panel p-3 rounded">
+			<table class="border-0 text-white">
+				<thead>
+					<tr class="border-0 border-bottom">
+						<th>Id</th>
+						<th>Name</th>
+						<th>Email</th>
+						<th>Register Date</th>
+						<th>Admin</th>
+						<th>Ban</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				{% for user in users %}
+					<tr class="border-0">
+						<td data-title="Id">{{ user.id }}</td>
+						<td data-title="Name">{{ user.name }}</td>
+						<td data-title="Email">{{ user.email }}</td>
+						<td data-title="Register Date">{{ user.registerDate ? user.registerDate|date('Y-m-d H:i:s') : '' }}</td>
+						{% if user.admin == '0' %}
+							<td class="text-danger" data-title="Admin">{{ user.admin ? 'Yes' : 'No' }}</td>
+						{% else %}
+							<td class="text-success" data-title="Admin">{{ user.admin ? 'Yes' : 'No' }}</td>
+						{% endif %}
+						{% if user.ban == '0' %}
+							<td class="text-danger" data-title="Ban">{{ user.ban ? 'Yes' : 'No' }}</td>
+						{% else %}
+							<td class="text-success" data-title="Ban">{{ user.ban ? 'Yes' : 'No' }}</td>
+						{% endif %}
+						{% if app.user %}
+							<td data-title="Actions">
+								{% if user.admin == '0' %}
+									<a href="{{ path('app_admin_promouvoir', {'id': user.id}) }}" class="text-success text-decoration-none">Promouvoir</a>
+									|
+								{% else %}
+									<a href="{{ path('app_admin_destituer', {'id': user.id}) }}" class="text-danger text-decoration-none">Destituer</a>
+									|
+								{% endif %}
+								<a href="?_switch_user={{user.email}}" class="text-decoration-none">Embody</a>
+								|
+								<a href="{{ path('app_user_change_mdp', {'id': user.id}) }}" class="text-decoration-none">Edit</a>
+								|
+								{% if user.ban == '0' %}
+									<a href="{{ path('app_admin_ban', {'id': user.id}) }}" class="text-success text-decoration-none">Bannir</a>
+								{% else %}
+									<a href="{{ path('app_admin_unban', {'id': user.id}) }}" class="text-danger text-decoration-none">Débannir</a>
+								{% endif %}
+							</td>
+						{% endif %}
+					</tr>
+				{% else %}
+					<tr class="border-0 border-bottom">
+						<td colspan="7">Aucun utilisateurs inscrit.</td>
+					</tr>
+				{% endfor %}
+				<div class="navigation d-flex justify-content-center">
+					{{ knp_pagination_render(users) }}
+				</div>
+			</table>
 
 		</div>
 	</div>

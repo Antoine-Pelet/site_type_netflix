@@ -15,22 +15,22 @@
 	<h1>Comments</h1>
 
 	{% for rating in ratings.items %}
-    <div>
-	{% set realvalue = rating.value/2 %}
-        <h3>{{rating.series.title}}</h3>
-        <p>{{realvalue}}</p>
-        <p>{{rating.comment}}</p>
-		<p>{{rating.user.email}}</p>
-		<form method="post" action="{{ path('app_comments_validate', {'id': rating.id}) }}">
-          <input type="submit" value="Validate">
-      </form>
-	  <form method="post" action="{{ path('app_comments_delete', {'id': rating.id}) }}">
-          <input type="submit" value="Delete">
-      </form>
-    </div>
-{% endfor %}
-<div class="pagination">
-    {{ knp_pagination_render(ratings) }}
-</div>
+		<div>
+			{% set realvalue = rating.value/2 %}
+			<h3>{{rating.series.title}}</h3>
+			<p>{{realvalue}}</p>
+			<p>{{rating.comment}}</p>
+			<p>{{rating.user.email}}</p>
+			<form method="post" action="{{ path('app_comments_validate', {'id': rating.id}) }}">
+				<input type="submit" value="Validate">
+			</form>
+			<form method="post" action="{{ path('app_comments_delete', {'id': rating.id}) }}">
+				<input type="submit" value="Delete">
+			</form>
+		</div>
+	{% endfor %}
+	<div class="pagination">
+		{{ knp_pagination_render(ratings) }}
+	</div>
 
 {% endblock %}
