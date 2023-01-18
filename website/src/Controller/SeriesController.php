@@ -294,7 +294,7 @@ class SeriesController extends AbstractController
         EntityManagerInterface $entityManager,
         Request $request,
         PaginatorInterface $paginator
-    ): Response {        
+    ): Response {
 
         $stringWhere = self::stringWhere($request);
         
@@ -302,32 +302,13 @@ class SeriesController extends AbstractController
 
         $res = self::requeteFiltred($result['seriesView'], $entityManager, $request, $paginator);
 
-        /** @var \App\Entity\User */
-        $user = $this->getUser();
-
-        $viewedEpisode = $user->getEpisode();
-
-        $seasons = array();
-        for ($i = 0; $i < sizeof($viewedEpisode); $i++) {
-            if (!in_array($viewedEpisode[$i]->getSeason(), $seasons)) {
-                $seasons[] = $viewedEpisode[$i]->getSeason();
-            }
-        }
-        $series = array();
-        for ($i = 0; $i < sizeof($seasons); $i++) {
-            if (!in_array($seasons[$i]->getSeries(), $series)) {
-                $series[] = $seasons[$i]->getSeries();
-            }
-        }
-
         return $this->render('liked/view.html.twig', [
-            'series' => $res['series'],
+            'seriesView' => $res['series'],
             'genres' => $res['genres'],
             'years' => $res['years'],
             'rates' => $res['rates'],
-            'episodes' => $viewedEpisode,
-            'seriesView' => $series,
-            'seasons' => $seasons
+            'episodes' => $result['episodes'],
+            'seasons' => $result['seasons'],
             ]);
     }
 
@@ -337,6 +318,7 @@ class SeriesController extends AbstractController
         User $user
     ) {
         $viewedEpisode = $user->getEpisode();
+
         $seasons = array();
         for ($i = 0; $i < sizeof($viewedEpisode); $i++) {
             if (!in_array($viewedEpisode[$i]->getSeason(), $seasons)) {
@@ -350,16 +332,15 @@ class SeriesController extends AbstractController
             }
         }
 
-        $series = $entityManager->getRepository(Series::class)->createQueryBuilder('s')
+        $seriesView = $entityManager->getRepository(Series::class)->createQueryBuilder('s')
             ->join('s.user', 'u')
             ->join('s.genre', 'g')
             ->join('s.rate', 'r')
-            ->where('u.id = :user AND s.id IN (:series) AND ' . $stringWhere)
-            ->setParameter('user', $user->getId())
+            ->where('s.id IN (:series) AND ' . $stringWhere)
             ->setParameter('series', $series)
             ->getQuery();
 
-        $res['seriesView'] = $series;
+        $res['seriesView'] = $seriesView;
         $res['episodes'] = $viewedEpisode;
         $res['seasons'] = $seasons;
         return $res;
