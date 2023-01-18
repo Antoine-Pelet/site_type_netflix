@@ -46,7 +46,7 @@
 						{% set id = s.youtubeTrailer |split('=') %}
 						{% set video = "%s%s" | format(debut, id[1]) %}
 
-						<iframe width="375" height="375" src="{{video}}" title="YouTube video player"  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+						<iframe width="575" height="575" src="{{video}}" title="YouTube video player"  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 						{% set cpt = cpt + 1 %}
 					{% endif %}
 				{% endfor %}
