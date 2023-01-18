@@ -41,10 +41,12 @@ class SeriesController extends AbstractController
         ->orderBy('s.id', 'ASC')
         ->getQuery();
 
-        $moyRatesUser = $entityManager->getRepository(Rating::class)->createQueryBuilder('r')
-        ->select('AVG(r.value)')
+        $nbRates = $entityManager->getRepository(Rating::class)->createQueryBuilder('r')
+        ->select('AVG(r.value/2) as moyenne')
         ->join('r.series', 's')
+        ->where('' . $stringWhere)
         ->groupby('s.id')
+        ->orderby('s.id', 'ASC')
         ->getQuery()
         ->getResult();
 
@@ -55,7 +57,7 @@ class SeriesController extends AbstractController
             'genres' => $res['genres'],
             'years' => $res['years'],
             'rates' => $res['rates'],
-            'moyRatesUser' => $moyRatesUser,
+            'nbRates' => $nbRates,
         ]);
     }
 
