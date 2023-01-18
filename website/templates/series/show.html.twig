@@ -73,7 +73,7 @@
 								{% set realNote = realNote + note %}
 							{% endfor %}
 							{% set realNote = (realNote / rates|length)|round(1,'ceil') %}
-							<p>{{ realNote }}</p>
+							<p>{{ realNote }}  ({{rates|length }} évaluations)</p>
 							{% for i in 1..5 %}
 								{% if (realNote >= 1 ) %}
 									<svg fill="#ffc800" width="18px" height="18px" viewbox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" stroke="#ffc800">
