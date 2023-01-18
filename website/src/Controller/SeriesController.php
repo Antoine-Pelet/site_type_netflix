@@ -177,8 +177,6 @@ class SeriesController extends AbstractController
 
         $nbRes = $rates->getResult();
 
-        
-
         $res = AdminController::donneVariables($rates, $paginator, $request, 3);
 
         if ($this->getUser() != null) {
@@ -202,6 +200,8 @@ class SeriesController extends AbstractController
             ->getQuery()
             ->getResult();
         }
+
+        $res['rates']->setTotalItemCount(sizeof($nbRes));
 
         $genre = $series->getGenre();
 
