@@ -6,9 +6,9 @@ body {
     background-color: #F4F2EC;
     color: black;
     border-radius: 25px;
-    width: 100vh;
     display: flex;
     flex-direction: column;
+    width: 80%;
 }
 
 input[type=text], button[type=submit] {
@@ -23,7 +23,7 @@ h1 {
 #user_name, #user_plainPassword, #user_country,
 #series_title, #series_plot, #series_director, #series_youtubeTrailer,
 #series_awards, #series_yearStart, #series_yearEnd, #series_genre,
-#series_actor, #series_country {
+#series_actor, #series_country, #user_type_mdp_plainPassword {
     display: block;
     width: 100%;
     padding: 0.375rem 0.75rem;
@@ -45,9 +45,6 @@ h1 {
 
 div > label {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
     margin: 1rem .75rem !important;
     overflow: hidden;
     text-align: start;
@@ -79,6 +76,7 @@ form {
     background-color: white;
     border-color: black;
     margin-top: 2vh;
+    width: fit-content;
 }
 
 .btn:hover {
