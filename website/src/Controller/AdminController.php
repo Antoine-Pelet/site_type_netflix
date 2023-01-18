@@ -43,7 +43,7 @@ class AdminController extends AbstractController
         EntityManagerInterface $entityManager,
         PaginatorInterface $paginator
     ): Response {
-        
+
         $stringWhere = self::createStringWhere($request);
 
         $users = self::createSQLRequete($entityManager, $stringWhere, $request, $this->getUser());
@@ -53,7 +53,7 @@ class AdminController extends AbstractController
         /** @var App\Entity\User */
         $user = $this->getUser();
 
-        if(!$user->isAdmin()){
+        if (!$user->isAdmin()) {
             return $this->redirectToRoute('app_default', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -68,7 +68,7 @@ class AdminController extends AbstractController
     public static function createSQLRequete(EntityManagerInterface $entityManager, string $stringWhere, Request $request, User $user)
     {
         $users = $entityManager->getRepository(User::class);
-        
+
         if ($request->query->get('follow') != '') {
             $users = $users->createQueryBuilder('u')
                 ->join('u.users', 'us')
@@ -80,12 +80,12 @@ class AdminController extends AbstractController
                 ->where($stringWhere)
                 ->getQuery();
         }
-        
+
 
         return $users;
     }
 
-    public static function createStringWhere(Request $request): string 
+    public static function createStringWhere(Request $request): string
     {
         $stringWhere = '1 = 1';
 
@@ -139,7 +139,7 @@ class AdminController extends AbstractController
         EntityManagerInterface $entityManage,
         PaginatorInterface $paginator
     ): Response {
-        
+
         $stringWhere = self::createStringWhere($request);
 
         $users = self::createSQLRequete($entityManage, $stringWhere, $request, $this->getUser());
@@ -254,8 +254,9 @@ class AdminController extends AbstractController
     }
 
     #[Route('/user/profile/{id}', name: 'app_show_user_profile', methods: ['GET', 'POST'])]
-    public function showUserProfile(User $user, EntityManagerInterface $entityManager, PaginatorInterface $paginator, Request $request): Response{
-        
+    public function showUserProfile(User $user, EntityManagerInterface $entityManager, PaginatorInterface $paginator, Request $request): Response
+    {
+
         $stringWhere = SeriesController::stringWhere($request);
 
         $res = SeriesController::getEpisodeVu($entityManager, $stringWhere, $user);
@@ -302,8 +303,7 @@ class AdminController extends AbstractController
 
     public static function donneStringWhere(Request $request, string $stringWhere): string
     {
-        if ($stringWhere == '') 
-        {
+        if ($stringWhere == '') {
             $stringWhere .= '1=1';
         }
         $serie = "'%" . $request->query->get('serie') . "%'";
@@ -403,7 +403,7 @@ class AdminController extends AbstractController
         return $res;
     }
 
-   #[Route('/faker', name: 'app_user_faker', methods: ['POST'])]
+    #[Route('/faker', name: 'app_user_faker', methods: ['POST'])]
     public function userFaker(Request $request, EntityManagerInterface $entityManager)
     {
         $faker = Factory::create();
@@ -439,7 +439,7 @@ class AdminController extends AbstractController
         $users = array();
         $batchSize = 1000; // adjust as needed
 
-        for ($i = 0; $i < 100 ; $i++) {
+        for ($i = 0; $i < 100; $i++) {
             $user = new User();
             $tmpname = $faker->userName;
             $user->setName($tmpname);
@@ -473,6 +473,7 @@ class AdminController extends AbstractController
                 $rating->setUser($u);
                 $rating->setValue(rand(0, 10));
                 $rating->setComment($faker->text(200));
+                $rating->setValide(1);
                 $series->addRating($rating);
                 $ratings[] = $rating;
                 $em->persist($rating);
@@ -481,5 +482,34 @@ class AdminController extends AbstractController
             $em->flush();
         }
         return $this->redirectToRoute('app_admin_index');
+    }
+
+
+    #[Route('/comments', name: 'app_comments_moderate', methods: ['GET', 'POST'])]
+    public function moderateComments(Request $request, EntityManagerInterface $entityManager, PaginatorInterface $paginator): Response
+    {
+        $query = $entityManager->createQuery("SELECT r FROM App\Entity\Rating r WHERE r.valide = 0 ORDER BY r.id DESC");
+        $pagination = $paginator->paginate($query, $request->query->getInt('page', 1), 15);
+        return $this->render('admin/comments.html.twig', [
+            'ratings' => $pagination,
+        ]);
+    }
+
+    #[Route('/comments/validate/{id}', name: 'app_comments_validate', methods: ['POST'])]
+    public function validateComment(int $id, EntityManagerInterface $entityManager): Response
+    {
+        $rating = $entityManager->getRepository(Rating::class)->find($id);
+        $rating->setValide(1);
+        $entityManager->flush();
+        return $this->redirectToRoute('app_comments_moderate');
+    }
+
+#[Route('/comments/delete/{id}', name: 'app_comments_delete', methods: ['POST'])]
+    public function deleteComment(int $id, EntityManagerInterface $entityManager): Response
+    {
+        $rating = $entityManager->getRepository(Rating::class)->find($id);
+        $entityManager->remove($rating);
+        $entityManager->flush();
+        return $this->redirectToRoute('app_comments_moderate');
     }
 }

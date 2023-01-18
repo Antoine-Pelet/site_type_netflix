@@ -48,7 +48,7 @@ div > label {
     top: 0;
     left: 0;
     width: 100%;
-    padding: 1rem .75rem;
+    margin: 1rem .75rem !important;
     overflow: hidden;
     text-align: start;
     text-overflow: ellipsis;
@@ -57,10 +57,11 @@ div > label {
     border: var(--bs-border-width) solid transparent;
     transform-origin: 0 0;
     transition: opacity .1s ease-in-out,transform .1s ease-in-out;
+    background-color: white !important;
 }
 
 label{
-    opacity: .65;
+    color: gray !important;
     transform: scale(.85) translateY(-1rem) translateX(.15rem)
 }
 

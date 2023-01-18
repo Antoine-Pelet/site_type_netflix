@@ -78,10 +78,6 @@ body {
     flex: 1;
 }
 
-.genre {
-    display: flex;
-}
-
 .genre p {
     background-color: darkslategray;
     border-radius: 10px;
