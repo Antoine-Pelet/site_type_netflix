@@ -73,7 +73,11 @@
 						<div>
 							<h5 class="card-title">{{ s.title }}</h5>
 							<div class="d-flex">
+								{% if s.rating|length < 1 %}
 								{% set rate = s.rate.value|round(1, 'ceil') %}
+								{% else %}
+								{% set rate = moyRatesUser|round(1, 'ceil') %}
+								{% endif %}
 								{% set finalRate = ((rate / 2)|round(1, 'floor') * 2)|round(0, 'common') / 2 %}
 								{% set cpt = finalRate %}
 								{% for i in 1..5 %}

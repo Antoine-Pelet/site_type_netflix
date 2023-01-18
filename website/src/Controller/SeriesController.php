@@ -37,10 +37,16 @@ class SeriesController extends AbstractController
         ->setMaxResults(25)
         ->join('s.genre', 'g')
         ->join('s.rate', 'r')
-        ->join('s.rating', 'ra')
         ->where('' . $stringWhere)
         ->orderBy('s.id', 'ASC')
         ->getQuery();
+
+        $moyRatesUser = $entityManager->getRepository(Rating::class)->createQueryBuilder('r')
+        ->select('AVG(r.value)')
+        ->join('r.series', 's')
+        ->groupby('s.id')
+        ->getQuery()
+        ->getResult();
 
         $res = self::requeteFiltred($appointmentsRepository, $entityManager, $request, $paginator);
 
@@ -49,6 +55,7 @@ class SeriesController extends AbstractController
             'genres' => $res['genres'],
             'years' => $res['years'],
             'rates' => $res['rates'],
+            'moyRatesUser' => $moyRatesUser,
         ]);
     }
 
