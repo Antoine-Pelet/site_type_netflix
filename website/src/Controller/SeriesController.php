@@ -294,7 +294,7 @@ class SeriesController extends AbstractController
         EntityManagerInterface $entityManager,
         Request $request,
         PaginatorInterface $paginator
-    ): Response {
+    ): Response {        
 
         $stringWhere = self::stringWhere($request);
         
@@ -302,14 +302,32 @@ class SeriesController extends AbstractController
 
         $res = self::requeteFiltred($result['seriesView'], $entityManager, $request, $paginator);
 
+        /** @var \App\Entity\User */
+        $user = $this->getUser();
+
+        $viewedEpisode = $user->getEpisode();
+
+        $seasons = array();
+        for ($i = 0; $i < sizeof($viewedEpisode); $i++) {
+            if (!in_array($viewedEpisode[$i]->getSeason(), $seasons)) {
+                $seasons[] = $viewedEpisode[$i]->getSeason();
+            }
+        }
+        $series = array();
+        for ($i = 0; $i < sizeof($seasons); $i++) {
+            if (!in_array($seasons[$i]->getSeries(), $series)) {
+                $series[] = $seasons[$i]->getSeries();
+            }
+        }
+
         return $this->render('liked/view.html.twig', [
             'series' => $res['series'],
             'genres' => $res['genres'],
             'years' => $res['years'],
             'rates' => $res['rates'],
-            'episodes' => $result['episodes'],
-            'seriesView' => $result['seriesView'],
-            'seasons' => $result['seasons'],
+            'episodes' => $viewedEpisode,
+            'seriesView' => $series,
+            'seasons' => $seasons
             ]);
     }
 
