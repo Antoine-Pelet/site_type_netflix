@@ -261,7 +261,7 @@ class AdminController extends AbstractController
 
         $res = SeriesController::getEpisodeVu($entityManager, $stringWhere, $user);
 
-        $result = SeriesController::requeteFiltred($res['seriesView'], $entityManager, $request, $paginator);
+        $result = SeriesController::requeteFiltred($res['seriesView'], $entityManager, $request, $paginator, 15);
 
         $stringRates = self::donneStringWhere($request, 'r.user = :user');
 
@@ -341,7 +341,7 @@ class AdminController extends AbstractController
             ->setParameter('user', $user->getId())
             ->getQuery();
 
-        return self::donneVariables($rates, $paginator, $request);
+        return self::donneVariables($rates, $paginator, $request, 8);
     }
 
     #[Route('/user/follow/{id}', name: 'app_user_like', methods: ['GET'])]
@@ -373,7 +373,7 @@ class AdminController extends AbstractController
 
         return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
     }
-    public static function donneVariables($rates, PaginatorInterface $paginator, Request $request)
+    public static function donneVariables($rates, PaginatorInterface $paginator, Request $request, int $nb)
     {
         $appointments = $paginator->paginate(
             // Doctrine Query, not results
@@ -381,7 +381,7 @@ class AdminController extends AbstractController
             // Define the page parameter
             $request->query->getInt('page', 1),
             // Items per page
-            8
+            $nb
         );
 
         $years = array();

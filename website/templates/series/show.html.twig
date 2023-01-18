@@ -111,8 +111,10 @@
 								{% endfor %}
 							{% else %}
 
-								<p> Aucune critique pour cette série pour le moment </p>
-							
+								<p>
+									Aucune critique pour cette série pour le moment
+								</p>
+
 							{% endif %}
 						</div>
 						{% if app.user %}
@@ -296,7 +298,11 @@
 							<p>{{ r.getComment() }}</p>
 						</div>
 					{% endfor %}
+					<div class="navigation d-flex justify-content-center mt-5">
+						{{ knp_pagination_render(rates) }}
+					</div>
 				</div>
+
 				<form action="{{ path('app_series_rate', {'id': series.id}) }}" method="post" class="form_comment">
 					<h2>Comments</h2>
 					<div class="form-group">
@@ -311,6 +317,8 @@
 				</form>
 			</div>
 		</div>
+
+
 	{% endif %}
-</div></div><div class="navigation d-flex justify-content-center">
-{{ knp_pagination_render(rates) }}</div>{% endblock %}
+
+{% endblock %}

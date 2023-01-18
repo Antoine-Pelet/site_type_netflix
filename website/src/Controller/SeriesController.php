@@ -50,7 +50,7 @@ class SeriesController extends AbstractController
         ->getQuery()
         ->getResult();
 
-        $res = self::requeteFiltred($appointmentsRepository, $entityManager, $request, $paginator);
+        $res = self::requeteFiltred($appointmentsRepository, $entityManager, $request, $paginator, 25);
 
         return $this->render('series/index.html.twig', [
             'series' => $res['series'],
@@ -102,7 +102,8 @@ class SeriesController extends AbstractController
         $appointmentsRepository,
         EntityManagerInterface $entityManager,
         Request $request,
-        PaginatorInterface $paginator
+        PaginatorInterface $paginator,
+        int $nb
     ): array {
         $years = array();
 
@@ -125,7 +126,7 @@ class SeriesController extends AbstractController
             // Define the page parameter
             $request->query->getInt('page', 1),
             // Items per page
-            25
+            $nb
         );
         $res = array();
         $res['series'] = $appointments;
@@ -178,7 +179,7 @@ class SeriesController extends AbstractController
 
         
 
-        $res = AdminController::donneVariables($rates, $paginator, $request);
+        $res = AdminController::donneVariables($rates, $paginator, $request, 3);
 
         if ($this->getUser() != null) {
             $epi = $entityManager->getRepository(Episode::class)->createQueryBuilder('e')
@@ -295,7 +296,7 @@ class SeriesController extends AbstractController
 
         $requete = $this->requeteSQL($entityManager, $user, $stringWhere);
 
-        $res = self::requeteFiltred($requete, $entityManager, $request, $paginator);
+        $res = self::requeteFiltred($requete, $entityManager, $request, $paginator, 10);
 
         return $this->render('liked/like.html.twig', [
             'series' => $res['series'],
@@ -316,7 +317,7 @@ class SeriesController extends AbstractController
         
         $result = self::getEpisodeVu($entityManager, $stringWhere, $this->getUser());
 
-        $res = self::requeteFiltred($result['seriesView'], $entityManager, $request, $paginator);
+        $res = self::requeteFiltred($result['seriesView'], $entityManager, $request, $paginator, 10);
 
         return $this->render('liked/view.html.twig', [
             'seriesView' => $res['series'],
