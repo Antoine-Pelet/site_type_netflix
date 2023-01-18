@@ -279,6 +279,7 @@ class AdminController extends AbstractController
             'genres' => $result['genres'],
             'years' => $result['years'],
             'ratesFiltre' => $result['rates'],
+            'user' => $user
         ]);
     }
 

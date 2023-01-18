@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}User index
-{% endblock %}
+{% block title %}User index{% endblock %}
 
 {% block stylesheets %}
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -12,49 +11,68 @@
 {% endblock %}
 
 {% block body %}
-    <form method="GET" class="d-flex flex-wrap">
-		<input type="text" name='title' id='title' placeholder="Type to search..">
+	<div class="d-flex justify-content-between">
+		<form method="GET" class="d-flex flex-wrap" style="height: 100%">
+			<input type="text" name='title' id='title' placeholder="Type to search..">
 
-		<select name="genre" id="genre">
-			<option value="">--Choose a genre--</option>
-			{% for genre in genres %}
-				<option value="{{ genre.id }}">{{ genre.name }}</option>
-			{% endfor %}
-		</select>
+			<select name="genre" id="genre">
+				<option value="">--Choose a genre--</option>
+				{% for genre in genres %}
+					<option value="{{ genre.id }}">{{ genre.name }}</option>
+				{% endfor %}
+			</select>
 
-		<select name="debut" id="debut">
-			<option value="">--Choose a year--</option>
-			{% for year in years %}
-				<option value="{{ year }}">{{ year }}</option>
-			{% endfor %}
-		</select>
+			<select name="debut" id="debut">
+				<option value="">--Choose a year--</option>
+				{% for year in years %}
+					<option value="{{ year }}">{{ year }}</option>
+				{% endfor %}
+			</select>
 
-		<select name="fin" id="fin">
-			<option value="">--Choose a year--</option>
-			{% for year in years %}
-				<option value="{{ year }}">{{ year }}</option>
-			{% endfor %}
-		</select>
+			<select name="fin" id="fin">
+				<option value="">--Choose a year--</option>
+				{% for year in years %}
+					<option value="{{ year }}">{{ year }}</option>
+				{% endfor %}
+			</select>
 
-		<select name="rateMin" id="rateMin">
-			<option value="">--Choose a minimum rate--</option>
-			{% for rate in ratesFiltre %}
-				<option value="{{ rate }}">{{ rate }}</option>
-			{% endfor %}
-		</select>
-		<select name="rateMax" id="rateMax">
-			<option value="">--Choose a maximum rate--</option>
-			{% for rate in ratesFiltre %}
-				<option value="{{ rate }}">{{ rate }}</option>
-			{% endfor %}
-		</select>
+			<select name="rateMin" id="rateMin">
+				<option value="">--Choose a minimum rate--</option>
+				{% for rate in ratesFiltre %}
+					<option value="{{ rate }}">{{ rate }}</option>
+				{% endfor %}
+			</select>
+			<select name="rateMax" id="rateMax">
+				<option value="">--Choose a maximum rate--</option>
+				{% for rate in ratesFiltre %}
+					<option value="{{ rate }}">{{ rate }}</option>
+				{% endfor %}
+			</select>
 
-		<button type="submit" class="searchbtn">
-			<svg xmlns="http://www.w3.org/2000/svg" class="bi bi-search" viewbox="0 0 16 16">
-				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-			</svg>
-		</button>
-	</form>
+			<button type="submit" class="searchbtn">
+				<svg xmlns="http://www.w3.org/2000/svg" class="bi bi-search" viewbox="0 0 16 16">
+					<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+				</svg>
+			</button>
+		</form>
+		<div class="mx-4">
+			{% if app.user %}
+				{% if app.user.users.contains(user) %}
+					<a href="{{ path('app_user_dislike', {'id': user.id}) }}">
+						<svg xmlns="http://www.w3.org/2000/svg" width="18px" class="bi svgheart liked bi-heart" viewbox="0 0 16 16" transform="scale(1,1)">
+							<path d="M8,15C-7.333,4.868,3.279,-3.04,7.824,1.143c.06.055.119.112.176.171.056421-.058946.115133-.115657.176-.17C12.72,-3.042,23.333,4.867,8,15Z"></path>
+						</svg>
+					</a>
+				{% else %}
+					<a href="{{ path('app_user_like', {'id': user.id}) }}">
+						<svg xmlns="http://www.w3.org/2000/svg" width="18px" class="bi svgheart unliked bi-heart" viewbox="0 0 16 16" transform="scale(1,1)">
+							<path d="M8,2.748l-.717-.737C5.6,0.281,2.514,0.878,1.4,3.053c-.523,1.023-.641,2.5.314,4.385.92,1.815,2.834,3.989,6.286,6.357c3.452-2.368,5.365-4.542,6.286-6.357.955-1.886.838-3.362.314-4.385C13.486,0.878,10.4,0.28,8.717,2.01L8,2.748ZM8,15C-7.333,4.868,3.279,-3.04,7.824,1.143c.06.055.119.112.176.171.056421-.058946.115133-.115657.176-.17C12.72,-3.042,23.333,4.867,8,15Z" transform="matrix(.96626 0 0 0.96626 0.269915 0.253049)" stroke="#000" stroke-width="0.5"></path>
+						</svg>
+					</a>
+				{% endif %}
+			{% endif %}
+		</div>
+	</div>
 
     <div class="navigation d-flex justify-content-center">
 		<div class="container-fluid row d-flex justify-content-center">
