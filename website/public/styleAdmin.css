@@ -15,11 +15,8 @@ table{
     border-collapse: collapse;
     border: 1px solid;
 }        
-    
-th, td{padding:8px 0} tbody tr:nth-child(even) {
-    background-color: antiquewhite;
-    color: black;
-}
+
+td{padding:8px 0}
 
 @media only screen and (max-width: 800px) {
 		
@@ -50,5 +47,10 @@ th, td{padding:8px 0} tbody tr:nth-child(even) {
         white-space: nowrap;
         text-align:left;
         content: attr(data-title);
+    }
+
+    th, td{padding:8px 0} tbody tr:nth-child(even) {
+        background-color: antiquewhite;
+        color: black;
     }
 }
