@@ -89,6 +89,10 @@ label[for="registration_form_country"] {
   display: none;
 }
 
+.pwd div ul:first-of-type{
+  display: none;
+}
+
 @media (max-width: 1000px){
   .bg-image {
     display: none !important;
