@@ -21,7 +21,9 @@
 					<div class="d-flex flex-rox justify-content-between mb-1">
 						<div class="mb-1">
 							<h2>{{ series.title }}</h2>
-							<a href="{{ path('app_series_edit', {'id': series.id}) }}">edit</a>
+							{% if app.user and app.user.admin == 1 %}
+								<a href="{{ path('app_series_edit', {'id': series.id}) }}">edit</a>
+							{% endif %}
 							<p class="text-secondary">{{ series.yearStart }}
 								-
 								{{ series.yearEnd  }}</p>
