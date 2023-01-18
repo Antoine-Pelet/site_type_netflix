@@ -86,7 +86,7 @@
 									{% set realNote = (realNote / nbRates[cpt]|length)|round(1,'ceil') %}
 									{% set note = realNote %}
 									<p>
-										({{nbRates|length}}
+										({{nbRates[cpt]|length}}
 										évaluations)</p>
 									{% set cpt = cpt + 1 %}
 									{% if (realNote >= 1 ) %}
