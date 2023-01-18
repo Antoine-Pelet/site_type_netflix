@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block body %}
-    <form method="GET" style="width: 25%">
+    <form method="GET" class="d-flex flex-wrap">
 		<input type="text" name='title' id='title' placeholder="Type to search..">
 
 		<select name="genre" id="genre">
@@ -104,12 +104,9 @@
                 <p>This user don't have any liked series.</p>
             {% endfor %}
 		</div>
-		<div class="navigation d-flex justify-content-center">
-			{{ knp_pagination_render(series) }}
-		</div>
     </div>
     <h1>Comments</h1>
-	<form method="GET" style="width: 25%">
+	<form method="GET" class="d-flex flex-wrap">
 		<input type="text" name='serie' id='serie' placeholder="Type to search..">
 
 		<select name="date" id="date">
@@ -148,7 +145,7 @@
                 {% endif %} {{vardiff.h}} heures et {{vardiff.i}} minutes
             </P> 
             <div class="d-flex">
-                <p class="me-2">{{ note / 2 }}</p>
+                <p class="me-2">{{ note }}</p>
                 {% set cpt = note %}
                 {% for i in 1..5 %}
                     {% if (cpt >= 1 ) %}
@@ -164,7 +161,4 @@
             <p>{{ r.getComment() }}</p>
         </div>
     {% endfor %}
-	<div class="navigation d-flex justify-content-center">
-		{{ knp_pagination_render(rates) }}
-	</div>
 {% endblock %}
