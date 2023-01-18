@@ -36,6 +36,7 @@ class SeriesController extends AbstractController
         ->setMaxResults(25)
         ->join('s.genre', 'g')
         ->join('s.rate', 'r')
+        ->join('s.rating', 'ra')
         ->where('' . $stringWhere)
         ->orderBy('s.id', 'ASC')
         ->getQuery();
