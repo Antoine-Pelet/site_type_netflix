@@ -78,15 +78,10 @@
 								{% if s.rating|length < 1 %}
 									<p>N/A</p>
 								{% else %}
-
-									{% set realNote = 0 %}
-									{% for r in nbRates[cpt] %}
-										{% set realNote = realNote + r %}
-									{% endfor %}
-									{% set realNote = (realNote / nbRates[cpt]|length)|round(1,'ceil') %}
+									{% set realNote = nbRates[cpt].moyenne|round(1,'ceil') %}
 									{% set note = realNote %}
 									<p>
-										({{nbRates[cpt]|length}}
+										({{nbRates[cpt].nb}}
 										évaluations)</p>
 									{% set cpt = cpt + 1 %}
 									{% if (realNote >= 1 ) %}

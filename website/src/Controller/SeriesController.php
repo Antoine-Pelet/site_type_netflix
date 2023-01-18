@@ -42,7 +42,7 @@ class SeriesController extends AbstractController
         ->getQuery();
 
         $nbRates = $entityManager->getRepository(Rating::class)->createQueryBuilder('r')
-        ->select('AVG(r.value/2) as moyenne')
+        ->select('AVG(r.value/2) as moyenne, COUNT(r.value) as nb')
         ->join('r.series', 's')
         ->where('' . $stringWhere)
         ->groupby('s.id')
