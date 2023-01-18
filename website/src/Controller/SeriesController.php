@@ -19,6 +19,7 @@ use App\Entity\Appointments;
 // include de la pagination
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Validator\Constraints\Length;
 
 class SeriesController extends AbstractController
 {
@@ -163,6 +164,10 @@ class SeriesController extends AbstractController
             ->setParameter('series', $series->getId())
             ->getQuery();
 
+        $nbRes = $rates->getResult();
+
+        
+
         $res = AdminController::donneVariables($rates, $paginator, $request);
 
         if ($this->getUser() != null) {
@@ -197,6 +202,7 @@ class SeriesController extends AbstractController
             'ratesFiltre' => $res['ratesFiltre'],
             'years' => $res['years'],
             'rates' => $res['rates'],
+            'nbRates' => $nbRes
         ]);
     }
 
