@@ -40,9 +40,23 @@ class Rating
     #[ORM\JoinColumn(name:"series_id", referencedColumnName:"id")]
     private $series;
 
+    #[ORM\Column(name: "valide", type: "boolean", nullable: false)]
+    private $valide = '0';
+
     public function __construct()
     {
         $this->date = new \DateTime();
+    }
+
+    public function getValide(): ?bool
+    {
+        return $this->valide;
+    }
+
+    public function setValide($valide): self
+    {
+        $this->valide = $valide;
+        return $this;
     }
 
     public function getId(): ?int
