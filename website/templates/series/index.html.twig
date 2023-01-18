@@ -74,15 +74,15 @@
 					<div class="card-body d-flex flex-columns justify-content-between">
 						<div>
 							<h5 class="card-title">{{ s.title }}</h5>
-							<div class="d-flex">
+							<div class="d-flex align-items-center">
 								{% if s.rating|length < 1 %}
-									<p>N/A</p>
+									<p class="mb-0 mt-0">N/A</p>
 								{% else %}
 									{% set realNote = nbRates[cpt].moyenne|round(1,'ceil') %}
 									{% set note = realNote %}
-									<p>
+									<p class="mb-0 mt-0">
 										({{nbRates[cpt].nb}}
-										évaluations)</p>
+										évaluations) </p>
 									{% set cpt = cpt + 1 %}
 									{% for i in 1..5 %}
 										{% if (realNote >= 1 ) %}
@@ -115,7 +115,7 @@
 										{% endif %}
 										{% set realNote = realNote - 1 %}
 									{% endfor %}
-									<p>{{ note }}</p>
+									<p class="mb-0 mt-0"> {{ note }}</p>
 								{% endif %}
 							</div>
 						</div>
