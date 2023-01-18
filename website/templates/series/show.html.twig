@@ -12,8 +12,8 @@
 
 {% block body %}
 
-	<div class=" container d-flex flex-column">
-		<div class="d-flex">
+	<div class=" container d-flex flex-column" style="background-color: #22323a !important; padding: 4vh; border-radius: 30px;">
+			<div class="d-flex">
 			<div class="d-flex flex-row mt-3 avant">
 				<div class="poster">
 					<img src="{{ path('app_series_poster', {'id': series.id}) }}">
@@ -137,7 +137,7 @@
 							<h4>Genre</h4>
 							<div class="d-flex">
 								{% for g in genres %}
-									<p>{{ g.name }}</p>
+									<p style="background-color: #32414e; padding: 1vh; border-radius: 12px; margin-right: 1vh;">{{ g.name }}</p>
 								{% endfor %}
 							</div>
 						</div>
