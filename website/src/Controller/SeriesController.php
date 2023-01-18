@@ -27,13 +27,14 @@ class SeriesController extends AbstractController
     public function index(
         Request $request,
         PaginatorInterface $paginator,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        int $page = 1
     ): Response {
 
         $stringWhere = self::stringWhere($request);
 
         $appointmentsRepository = $entityManager->getRepository(Series::class)->createQueryBuilder('s')
-        ->setFirstResult(0 + 25 * ($request->query->getInt('page', 1) - 1))
+        ->setFirstResult(0 + 25 * ($page - 1))
         ->setMaxResults(25)
         ->join('s.genre', 'g')
         ->join('s.rate', 'r')
@@ -51,6 +52,8 @@ class SeriesController extends AbstractController
         ->getResult();
 
         $res = self::requeteFiltred($appointmentsRepository, $entityManager, $request, $paginator, 25);
+
+        $res['series']->setCurrentPageNumber($page);
 
         return $this->render('series/index.html.twig', [
             'series' => $res['series'],
@@ -103,7 +106,7 @@ class SeriesController extends AbstractController
         EntityManagerInterface $entityManager,
         Request $request,
         PaginatorInterface $paginator,
-        int $nb
+        int $nb,
     ): array {
         $years = array();
 
@@ -264,7 +267,9 @@ class SeriesController extends AbstractController
 
         $entityManager->flush();
 
-        return $this->redirectToRoute('app_series_index', [], Response::HTTP_SEE_OTHER);
+        $page = $request->query->get('page');
+
+        return $this->redirectToRoute('app_series_index', ['page' => $page], Response::HTTP_SEE_OTHER);
 
     }
 
@@ -280,7 +285,9 @@ class SeriesController extends AbstractController
 
         $entityManager->flush();
 
-        return $this->redirectToRoute('app_series_index', [], Response::HTTP_SEE_OTHER);
+        $page = $request->query->get('page');
+
+        return $this->redirectToRoute('app_series_index', ['page' => $page], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/series/like/list', name: 'app_liked_series', methods: ['GET'])]
