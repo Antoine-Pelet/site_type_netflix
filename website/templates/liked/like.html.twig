@@ -55,6 +55,10 @@
 			</svg>
 		</button>
 	</form>
+
+	<div class="navigation d-flex justify-content-center mt-5">
+		{{ knp_pagination_render(series) }}
+	</div>
 	<div class="container-fluid row d-flex justify-content-center">
 		{% for s in series %}
 			<div class="card col-md-1" style="width: 18rem;">
