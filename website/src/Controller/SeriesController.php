@@ -28,10 +28,11 @@ class SeriesController extends AbstractController
         Request $request,
         PaginatorInterface $paginator,
         EntityManagerInterface $entityManager,
-        int $page = 1
     ): Response {
 
         $stringWhere = self::stringWhere($request);
+
+        $page = $request->query->get('page');
 
         $appointmentsRepository = $entityManager->getRepository(Series::class)->createQueryBuilder('s')
         ->setFirstResult(0 + 25 * ($page - 1))
@@ -51,7 +52,7 @@ class SeriesController extends AbstractController
         ->getQuery()
         ->getResult();
 
-        $res = self::requeteFiltred($appointmentsRepository, $entityManager, $request, $paginator, 25);
+        $res = self::requeteFiltred($appointmentsRepository, $entityManager, $request, $paginator, 25, $page);
 
         $res['series']->setCurrentPageNumber($page);
 
@@ -107,6 +108,7 @@ class SeriesController extends AbstractController
         Request $request,
         PaginatorInterface $paginator,
         int $nb,
+        int $page = 1
     ): array {
         $years = array();
 
@@ -127,10 +129,11 @@ class SeriesController extends AbstractController
             // Doctrine Query, not results
             $appointmentsRepository,
             // Define the page parameter
-            $request->query->getInt('page', 1),
+            $page,
             // Items per page
             $nb
         );
+
         $res = array();
         $res['series'] = $appointments;
         $res['genres'] = $genres;
