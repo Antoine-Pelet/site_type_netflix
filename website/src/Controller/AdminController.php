@@ -444,14 +444,17 @@ class AdminController extends AbstractController
         $faker = Factory::create();
         $em = $entityManager;
 
+        $q = $em->createQuery("DELETE FROM App\Entity\Rating r WHERE r.user IN (SELECT u FROM App\Entity\User u WHERE u.email LIKE :email)");
+        $q->setParameter('email', '%@ratewatchlist.fr');
+        $q->execute();
+
+        $q = $em->createQuery("DELETE FROM App\Entity\User u WHERE u.email LIKE :email");
+        $q->setParameter('email', '%@ratewatchlist.fr');
+        $q->execute();
+
         $users = array();
         $batchSize = 1000; // adjust as needed
 
-        $q = $em->createQuery("DELETE FROM App\Entity\Rating r JOIN r.user u WHERE u.email LIKE '%@ratewatchlist.fr'");
-        $q->execute();
-
-        $q = $em->createQuery("DELETE FROM App\Entity\User u WHERE u.email LIKE '%@ratewatchlist.fr'");
-        $q->execute();
 
 
         for ($i = 0; $i < 100; $i++) {
@@ -486,7 +489,7 @@ class AdminController extends AbstractController
                 $rating = new Rating();
                 $rating->setSeries($series);
                 $rating->setUser($u);
-                $rating->setValue(rand(0, 10));
+                $rating->setValue(rand(rand(0, 5), 10));
                 $rating->setComment($faker->text(200));
                 $rating->setValide(1);
                 $series->addRating($rating);
@@ -519,7 +522,7 @@ class AdminController extends AbstractController
         return $this->redirectToRoute('app_comments_moderate');
     }
 
-#[Route('/comments/delete/{id}', name: 'app_comments_delete', methods: ['POST'])]
+    #[Route('/comments/delete/{id}', name: 'app_comments_delete', methods: ['POST'])]
     public function deleteComment(int $id, EntityManagerInterface $entityManager): Response
     {
         $rating = $entityManager->getRepository(Rating::class)->find($id);
