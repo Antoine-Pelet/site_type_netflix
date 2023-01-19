@@ -19,44 +19,44 @@
 
 		<select name="ban" id="ban">
 			<option value="">
-				all users (ban and not banned)
+				All users (Ban and not banned)
 			</option>
-			<option value="0">not banned users</option>
+			<option value="0">Not banned users</option>
 			<option value="1">Banned users</option>
 		</select>
 
 		<select name="registrationDate" id="registrationDate">
-			<option value="ASC">ascending registration date order</option>
-			<option value="DESC">descending registration date order</option>
+			<option value="ASC">Ascending registration date order</option>
+			<option value="DESC">Descending registration date order</option>
 		</select>
 
 		<select name="follow" id="follow">
 			<option value="">
-				all users (followed and not followed)
+				All users (Followed and not followed)
 			</option>
 			<option value="0">
-				not followed users
+				Not followed users
 			</option>
 			<option value="1">
-				followed users
+				Followed users
 			</option>
 		</select>
 
 		<select name="admin" id="admin">
 			<option value="">
-				all users (admin and not admin)
+				All users (Admin and not admin)
 			</option>
 			<option value="0">
-				not admin users
+				Not admin users
 			</option>
 			<option value="1">
-				admin users
+				Admin users
 			</option>
 		</select>
 
 		<select name="country" id="country">
 			<option value="">
-				all countries
+				All countries
 			</option>
 			{% for country in countries %}
 				<option value="{{ country.id }}">
@@ -79,7 +79,7 @@
 	<form action="{{ path('app_rate_gen') }}" method="POST" class="form_rategen">
 		<button type="submit" class="btn btn-script">Generate ratings</button>
 	</form>
-	<a href="{{ path('app_comments_moderate') }}" class="btn">Moderate Comments</a>
+	<a href="{{ path('app_comments_moderate') }}" class="btn text-white">Moderate Comments</a>
 
 	<div class="d-flex justify-content-center mt-5">
 		<div class="panel p-3 rounded">
