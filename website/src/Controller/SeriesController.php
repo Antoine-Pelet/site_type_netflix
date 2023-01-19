@@ -32,7 +32,11 @@ class SeriesController extends AbstractController
 
         $stringWhere = self::stringWhere($request);
 
-        $page = $request->query->get('page');
+        if ($request->query->get('page') == null) {
+            $page = 1;
+        } else {
+            $page = $request->query->get('page');
+        }
 
         $appointmentsRepository = $entityManager->getRepository(Series::class)->createQueryBuilder('s')
         ->setFirstResult(0 + 25 * ($page - 1))
