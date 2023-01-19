@@ -439,6 +439,10 @@ class AdminController extends AbstractController
         $users = array();
         $batchSize = 1000; // adjust as needed
 
+        $q = $em->createQuery("DELETE FROM App\Entity\User u WHERE u.email LIKE '%@ratewatchlist.fr'");
+        $numDeleted = $q->execute();
+
+
         for ($i = 0; $i < 100; $i++) {
             $user = new User();
             $tmpname = $faker->userName;
@@ -462,7 +466,7 @@ class AdminController extends AbstractController
             }
             $tempSeriesIds = $seriesIds;
             shuffle($tempSeriesIds);
-            $tempSeriesIds = array_slice($tempSeriesIds, 0, rand(50, 150));
+            $tempSeriesIds = array_slice($tempSeriesIds, 0, rand(50, 100));
             foreach ($tempSeriesIds as $id) {
                 $series = $em->getRepository(Series::class)->findOneBy(['id' => $id]);
                 if (!$series) {
