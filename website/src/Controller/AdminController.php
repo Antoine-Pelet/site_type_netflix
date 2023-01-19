@@ -439,8 +439,11 @@ class AdminController extends AbstractController
         $users = array();
         $batchSize = 1000; // adjust as needed
 
+        $q = $em->createQuery("DELETE FROM App\Entity\Rating r JOIN r.user u WHERE u.email LIKE '%@ratewatchlist.fr'");
+        $q->execute();
+
         $q = $em->createQuery("DELETE FROM App\Entity\User u WHERE u.email LIKE '%@ratewatchlist.fr'");
-        $numDeleted = $q->execute();
+        $q->execute();
 
 
         for ($i = 0; $i < 100; $i++) {
