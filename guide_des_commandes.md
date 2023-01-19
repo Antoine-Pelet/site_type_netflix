@@ -7,7 +7,7 @@ Ce guide à pour but de renseigner les futurs développeurs sur les standards de
 Pour vérifier si votre code PHP respecte les règles PSR-1 et PSR-12, vous pouvez utiliser l'outil de vérification de code PHP "PHP_CodeSniffer". Vous pouvez l'installer en utilisant Composer avec la commande suivante:
 
 ```bash
-# Dans le projet synfony
+# Dans le projet symfony
 composer require --dev "squizlabs/php_codesniffer=*"
 ```
 
