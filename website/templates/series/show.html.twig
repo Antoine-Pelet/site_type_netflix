@@ -213,112 +213,110 @@
 			</div>
 		</div>
 	</div>
-	{% if app.user %}
-		<div class="panel_comment">
-			<div>
-				<form method="GET" style="width: 25%" class="d-flex">
-					<input type="text" name='serie' id='serie' placeholder="Type to search..">
-					<select name="date" id="date">
-						<option value="">--Choose a year--</option>
-						{% for year in years %}
-							<option value="{{ year }}">{{ year }}</option>
-						{% endfor %}
-					</select>
-					<select name="rateMin" id="rateMin">
-						<option value="">--Choose a minimum rate--</option>
-						{% for rate in ratesFiltre %}
-							<option value="{{ rate }}">{{ rate }}</option>
-						{% endfor %}
-					</select>
-					<select name="rateMax" id="rateMax">
-						<option value="">--Choose a maximum rate--</option>
-						{% for rate in ratesFiltre %}
-							<option value="{{ rate }}">{{ rate }}</option>
-						{% endfor %}
-					</select>
-					<button type="submit" class="searchbtn">
-						<svg xmlns="http://www.w3.org/2000/svg" class="bi bi-search" viewbox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg>
-					</button>
-				</form>
-			</div>
-			<div class="d-flex">
-				<div class="all_comment">
-					{% for r in rates %}
-						<div class="comm">
-							<h4>@{{ r.getUser().name }}</h4>
-							{% set vardiff = date("now" | date()).diff(date(r.getDate()))%}
-							{% set note = r.getValue() / 2 %}
-							<p class="fs-5 mb-0 mt-1">{{ r.getSeries().title }}</p>
-							<p class="mb-0 text-secondary">
-								Il y a
-								{% if vardiff.days !=0 %}
-									{{vardiff.days}}
-									jours
-								{% endif %}
-								{{vardiff.h}}
-								heures et
-								{{vardiff.i}}
-								minutes
-							</P>
-							<div class="d-flex">
-								<p class="me-2">{{ note }}</p>
-								{% set cpt = note %}
-								{% for i in 1..5 %}
-									{% if (cpt >= 1 ) %}
-										<svg fill="#ffc800" width="18px" height="18px" viewbox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" stroke="#ffc800">
-											<g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-											<g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-											<g id="SVGRepo_iconCarrier">
-												<title>star-filled</title>
-												<path d="M30.859 12.545c-0.168-0.506-0.637-0.864-1.189-0.864h-9.535l-2.946-9.067c-0.208-0.459-0.662-0.772-1.188-0.772s-0.981 0.313-1.185 0.764l-0.003 0.008-2.946 9.067h-9.534c-0.69 0-1.25 0.56-1.25 1.25 0 0.414 0.202 0.782 0.512 1.009l0.004 0.002 7.713 5.603-2.946 9.068c-0.039 0.116-0.061 0.249-0.061 0.387 0 0.69 0.56 1.25 1.25 1.25 0.276 0 0.531-0.089 0.738-0.241l-0.004 0.002 7.714-5.605 7.713 5.605c0.203 0.149 0.458 0.238 0.734 0.238 0.691 0 1.251-0.56 1.251-1.251 0-0.138-0.022-0.271-0.064-0.395l0.003 0.009-2.947-9.066 7.715-5.604c0.314-0.231 0.515-0.598 0.515-1.013 0-0.137-0.022-0.27-0.063-0.393l0.003 0.009z"></path>
-											</g>
-										</svg>
-									{% elseif (cpt < 1 and cpt > 0) %}
-										<svg fill="#ffc800" width="18px" height="18px" viewbox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
-											<g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-											<g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-											<g id="SVGRepo_iconCarrier">
-												<title>star-half-stroke-filled</title>
-												<path d="M30.859 12.545c-0.168-0.506-0.637-0.864-1.189-0.864h-9.535l-2.946-9.067c-0.168-0.505-0.636-0.863-1.188-0.863-0.138 0-0.272 0.023-0.396 0.064l0.009-0.003c-0.376 0.13-0.664 0.427-0.779 0.8l-0.002 0.009-0.021-0.007-2.946 9.067h-9.534c-0.69 0-1.25 0.56-1.25 1.25 0 0.414 0.202 0.782 0.512 1.009l0.004 0.002 7.713 5.603-2.946 9.068c-0.039 0.116-0.061 0.249-0.061 0.387 0 0.69 0.56 1.25 1.25 1.25 0.276 0 0.531-0.089 0.738-0.241l-0.004 0.002 7.714-5.605 7.713 5.605c0.203 0.149 0.458 0.238 0.734 0.238 0.691 0 1.251-0.56 1.251-1.251 0-0.138-0.022-0.271-0.064-0.395l0.003 0.009-2.947-9.066 7.715-5.604c0.314-0.231 0.515-0.598 0.515-1.013 0-0.137-0.022-0.27-0.063-0.393l0.003 0.009zM20.486 18.057c-0.314 0.231-0.515 0.599-0.515 1.014 0 0.137 0.022 0.27 0.063 0.394l-0.003-0.009 2.039 6.271-5.336-3.877c-0.194-0.135-0.435-0.215-0.694-0.215-0.014 0-0.028 0-0.042 0.001l0.002-0v-14.589l2.037 6.272c0.169 0.505 0.637 0.863 1.189 0.863h6.596z"></path>
-											</g>
-										</svg>
-									{% else %}
-										<svg fill="#ffc800" width="18px" height="18px" viewbox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
-											<g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-											<g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-											<g id="SVGRepo_iconCarrier">
-												<title>star</title>
-												<path d="M30.859 12.545c-0.168-0.506-0.637-0.864-1.189-0.864h-9.535l-2.946-9.067c-0.208-0.459-0.662-0.772-1.188-0.772s-0.981 0.313-1.185 0.764l-0.003 0.008-2.946 9.067h-9.534c-0.69 0-1.25 0.56-1.25 1.25 0 0.414 0.202 0.782 0.512 1.009l0.004 0.002 7.713 5.603-2.946 9.068c-0.039 0.116-0.061 0.249-0.061 0.387 0 0.69 0.56 1.25 1.25 1.25 0.276 0 0.531-0.089 0.738-0.241l-0.004 0.002 7.714-5.605 7.713 5.605c0.203 0.149 0.458 0.238 0.734 0.238 0.691 0 1.251-0.56 1.251-1.251 0-0.138-0.022-0.271-0.064-0.395l0.003 0.009-2.947-9.066 7.715-5.604c0.314-0.231 0.515-0.598 0.515-1.013 0-0.137-0.022-0.27-0.063-0.393l0.003 0.009zM20.486 18.057c-0.314 0.231-0.515 0.599-0.515 1.014 0 0.137 0.022 0.27 0.063 0.394l-0.003-0.009 2.039 6.271-5.336-3.877c-0.203-0.149-0.458-0.238-0.734-0.238s-0.531 0.089-0.738 0.241l0.004-0.002-5.336 3.877 2.038-6.271c0.039-0.116 0.062-0.249 0.062-0.387 0-0.414-0.202-0.781-0.512-1.009l-0.004-0.002-5.335-3.876h6.595c0 0 0 0 0.001 0 0.552 0 1.020-0.358 1.185-0.854l0.003-0.009 2.038-6.272 2.037 6.272c0.169 0.505 0.637 0.863 1.189 0.863h6.596z"></path>
-											</g>
-										</svg>
-									{% endif %}
-									{% set cpt = cpt - 1 %}
-								{% endfor %}
-							</div>
-							<p>{{ r.getComment() }}</p>
-						</div>
+	
+	<div class="panel_comment">
+		<div>
+			<form method="GET" style="width: 25%" class="d-flex">
+				<input type="text" name='serie' id='serie' placeholder="Type to search..">
+				<select name="date" id="date">
+					<option value="">--Choose a year--</option>
+					{% for year in years %}
+						<option value="{{ year }}">{{ year }}</option>
 					{% endfor %}
-					<div class="navigation d-flex justify-content-center mt-5">
-						{{ knp_pagination_render(rates) }}
-					</div>
-				</div>
-
-				<form action="{{ path('app_series_rate', {'id': series.id}) }}" method="post" class="form_comment">
-					<h2>Comments</h2>
-					<div class="form-group">
-						<label for="rate">Note</label>
-						<input type="number" class="form-control" id="rate" name="rate" min="0" max="5" step="0.5">
-					</div>
-					<div class="form-group">
-						<label for="comment">Commentaire</label>
-						<textarea class="form-control" id="comment" name="comment" rows="3"></textarea>
-					</div>
-					<button type="submit" class="btn btn-primary">Envoyer</button><br>
-				</form>
-			</div>
+				</select>
+				<select name="rateMin" id="rateMin">
+					<option value="">--Choose a minimum rate--</option>
+					{% for rate in ratesFiltre %}
+						<option value="{{ rate }}">{{ rate }}</option>
+					{% endfor %}
+				</select>
+				<select name="rateMax" id="rateMax">
+					<option value="">--Choose a maximum rate--</option>
+					{% for rate in ratesFiltre %}
+						<option value="{{ rate }}">{{ rate }}</option>
+					{% endfor %}
+				</select>
+				<button type="submit" class="searchbtn">
+					<svg xmlns="http://www.w3.org/2000/svg" class="bi bi-search" viewbox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg>
+				</button>
+			</form>
 		</div>
-
-
-	{% endif %}
+		<div class="d-flex">
+			<div class="all_comment">
+				{% for r in rates %}
+					<div class="comm">
+						<h4>@{{ r.getUser().name }}</h4>
+						{% set vardiff = date("now" | date()).diff(date(r.getDate()))%}
+						{% set note = r.getValue() / 2 %}
+						<p class="fs-5 mb-0 mt-1">{{ r.getSeries().title }}</p>
+						<p class="mb-0 text-secondary">
+							Il y a
+							{% if vardiff.days !=0 %}
+								{{vardiff.days}}
+								jours
+							{% endif %}
+							{{vardiff.h}}
+							heures et
+							{{vardiff.i}}
+							minutes
+						</P>
+						<div class="d-flex">
+							<p class="me-2">{{ note }}</p>
+							{% set cpt = note %}
+							{% for i in 1..5 %}
+								{% if (cpt >= 1 ) %}
+									<svg fill="#ffc800" width="18px" height="18px" viewbox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" stroke="#ffc800">
+										<g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+										<g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+										<g id="SVGRepo_iconCarrier">
+											<title>star-filled</title>
+											<path d="M30.859 12.545c-0.168-0.506-0.637-0.864-1.189-0.864h-9.535l-2.946-9.067c-0.208-0.459-0.662-0.772-1.188-0.772s-0.981 0.313-1.185 0.764l-0.003 0.008-2.946 9.067h-9.534c-0.69 0-1.25 0.56-1.25 1.25 0 0.414 0.202 0.782 0.512 1.009l0.004 0.002 7.713 5.603-2.946 9.068c-0.039 0.116-0.061 0.249-0.061 0.387 0 0.69 0.56 1.25 1.25 1.25 0.276 0 0.531-0.089 0.738-0.241l-0.004 0.002 7.714-5.605 7.713 5.605c0.203 0.149 0.458 0.238 0.734 0.238 0.691 0 1.251-0.56 1.251-1.251 0-0.138-0.022-0.271-0.064-0.395l0.003 0.009-2.947-9.066 7.715-5.604c0.314-0.231 0.515-0.598 0.515-1.013 0-0.137-0.022-0.27-0.063-0.393l0.003 0.009z"></path>
+										</g>
+									</svg>
+								{% elseif (cpt < 1 and cpt > 0) %}
+									<svg fill="#ffc800" width="18px" height="18px" viewbox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
+										<g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+										<g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+										<g id="SVGRepo_iconCarrier">
+											<title>star-half-stroke-filled</title>
+											<path d="M30.859 12.545c-0.168-0.506-0.637-0.864-1.189-0.864h-9.535l-2.946-9.067c-0.168-0.505-0.636-0.863-1.188-0.863-0.138 0-0.272 0.023-0.396 0.064l0.009-0.003c-0.376 0.13-0.664 0.427-0.779 0.8l-0.002 0.009-0.021-0.007-2.946 9.067h-9.534c-0.69 0-1.25 0.56-1.25 1.25 0 0.414 0.202 0.782 0.512 1.009l0.004 0.002 7.713 5.603-2.946 9.068c-0.039 0.116-0.061 0.249-0.061 0.387 0 0.69 0.56 1.25 1.25 1.25 0.276 0 0.531-0.089 0.738-0.241l-0.004 0.002 7.714-5.605 7.713 5.605c0.203 0.149 0.458 0.238 0.734 0.238 0.691 0 1.251-0.56 1.251-1.251 0-0.138-0.022-0.271-0.064-0.395l0.003 0.009-2.947-9.066 7.715-5.604c0.314-0.231 0.515-0.598 0.515-1.013 0-0.137-0.022-0.27-0.063-0.393l0.003 0.009zM20.486 18.057c-0.314 0.231-0.515 0.599-0.515 1.014 0 0.137 0.022 0.27 0.063 0.394l-0.003-0.009 2.039 6.271-5.336-3.877c-0.194-0.135-0.435-0.215-0.694-0.215-0.014 0-0.028 0-0.042 0.001l0.002-0v-14.589l2.037 6.272c0.169 0.505 0.637 0.863 1.189 0.863h6.596z"></path>
+										</g>
+									</svg>
+								{% else %}
+									<svg fill="#ffc800" width="18px" height="18px" viewbox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
+										<g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+										<g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+										<g id="SVGRepo_iconCarrier">
+											<title>star</title>
+											<path d="M30.859 12.545c-0.168-0.506-0.637-0.864-1.189-0.864h-9.535l-2.946-9.067c-0.208-0.459-0.662-0.772-1.188-0.772s-0.981 0.313-1.185 0.764l-0.003 0.008-2.946 9.067h-9.534c-0.69 0-1.25 0.56-1.25 1.25 0 0.414 0.202 0.782 0.512 1.009l0.004 0.002 7.713 5.603-2.946 9.068c-0.039 0.116-0.061 0.249-0.061 0.387 0 0.69 0.56 1.25 1.25 1.25 0.276 0 0.531-0.089 0.738-0.241l-0.004 0.002 7.714-5.605 7.713 5.605c0.203 0.149 0.458 0.238 0.734 0.238 0.691 0 1.251-0.56 1.251-1.251 0-0.138-0.022-0.271-0.064-0.395l0.003 0.009-2.947-9.066 7.715-5.604c0.314-0.231 0.515-0.598 0.515-1.013 0-0.137-0.022-0.27-0.063-0.393l0.003 0.009zM20.486 18.057c-0.314 0.231-0.515 0.599-0.515 1.014 0 0.137 0.022 0.27 0.063 0.394l-0.003-0.009 2.039 6.271-5.336-3.877c-0.203-0.149-0.458-0.238-0.734-0.238s-0.531 0.089-0.738 0.241l0.004-0.002-5.336 3.877 2.038-6.271c0.039-0.116 0.062-0.249 0.062-0.387 0-0.414-0.202-0.781-0.512-1.009l-0.004-0.002-5.335-3.876h6.595c0 0 0 0 0.001 0 0.552 0 1.020-0.358 1.185-0.854l0.003-0.009 2.038-6.272 2.037 6.272c0.169 0.505 0.637 0.863 1.189 0.863h6.596z"></path>
+										</g>
+									</svg>
+								{% endif %}
+								{% set cpt = cpt - 1 %}
+							{% endfor %}
+						</div>
+						<p>{{ r.getComment() }}</p>
+					</div>
+				{% endfor %}
+				<div class="navigation d-flex justify-content-center mt-5">
+					{{ knp_pagination_render(rates) }}
+				</div>
+			</div>
+			{% if app.user %}
+			<form action="{{ path('app_series_rate', {'id': series.id}) }}" method="post" class="form_comment">
+				<h2>Comments</h2>
+				<div class="form-group">
+					<label for="rate">Note</label>
+					<input type="number" class="form-control" id="rate" name="rate" min="0" max="5" step="0.5">
+				</div>
+				<div class="form-group">
+					<label for="comment">Commentaire</label>
+					<textarea class="form-control" id="comment" name="comment" rows="3"></textarea>
+				</div>
+				<button type="submit" class="btn btn-primary">Envoyer</button><br>
+			</form>
+			{% endif %}
+		</div>
+	</div>
 
 {% endblock %}
