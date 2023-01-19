@@ -115,6 +115,27 @@
 								</a>
 							{% endif %}
 						{% endif %}
+
+						{% set epi = 0 %}
+						{% for seas in s.getSeasons() %}
+							{% set epi = epi + seas.getEpisodes()|length %}
+						{% endfor %}
+
+						{% set epiVu = 0 %}
+						{% for e in episodes %}
+							{% if e.getSeason().getSeries().getId() == s.id %}
+								{% set epiVu = epiVu + 1 %}
+							{% endif %}
+						{% endfor %}
+
+						{% if epiVu == 0 %}
+							{% set progress =  0 %}
+						{% elseif epiVu == epi %}
+							{% set progress =  100 %}
+						{% else %}
+							{% set progress =  ((epiVu / epi) * 100)|round(0, 'floor')  %}
+						{% endif %}
+						<p> {{progress}} % </p>
 					</div>
 				</div>
 			</div>

@@ -281,15 +281,18 @@ class SeriesController extends AbstractController
 
         $res = self::requeteFiltred($requete, $entityManager, $request, $paginator);
 
+        $viewedEpisode = $user->getEpisode();
+
         return $this->render('liked/like.html.twig', [
             'series' => $res['series'],
             'genres' => $res['genres'],
             'years' => $res['years'],
             'rates' => $res['rates'],
+            'episodes' => $viewedEpisode
         ]);
     }
 
-    #[Route('/series/episode/list/{id}', name: 'app_view_episodes', methods: ['GET'])]
+    #[Route('/series/episode/list/', name: 'app_view_episodes', methods: ['GET'])]
     public function viewed(
         EntityManagerInterface $entityManager,
         Request $request,
