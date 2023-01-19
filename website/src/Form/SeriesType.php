@@ -22,6 +22,7 @@ class SeriesType extends AbstractType
             ->add('genre')
             ->add('actor')
             ->add('country')
+            ->add('seasons')
         ;
     }
 
