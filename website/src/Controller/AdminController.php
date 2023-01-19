@@ -213,44 +213,52 @@ class AdminController extends AbstractController
     }
 
     #[Route('/admin/promouvoir/{id}', name: 'app_admin_promouvoir', methods: ['GET', 'POST'])]
-    public function promouvoirUser(User $user, EntityManagerInterface $entityManager): Response
+    public function promouvoirUser(User $user, EntityManagerInterface $entityManager, Request $request): Response
     {
         $user->setAdmin(1);
 
         $entityManager->flush();
 
-        return $this->redirectToRoute('app_admin_index', [], Response::HTTP_SEE_OTHER);
+        $page = $request->query->get('page');
+
+        return $this->redirectToRoute('app_admin_index', ['page' => $page], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/admin/destituer/{id}', name: 'app_admin_destituer', methods: ['GET', 'POST'])]
-    public function destituerUser(User $user, EntityManagerInterface $entityManager): Response
+    public function destituerUser(User $user, EntityManagerInterface $entityManager, Request $request): Response
     {
         $user->setAdmin(0);
 
         $entityManager->flush();
 
-        return $this->redirectToRoute('app_admin_index', [], Response::HTTP_SEE_OTHER);
+        $page = $request->query->get('page');
+
+        return $this->redirectToRoute('app_admin_index', ['page' => $page], Response::HTTP_SEE_OTHER);
     }
 
 
     #[Route('/admin/ban/{id}', name: 'app_admin_ban', methods: ['GET', 'POST'])]
-    public function banUser(User $user, EntityManagerInterface $entityManager): Response
+    public function banUser(User $user, EntityManagerInterface $entityManager, Request $request): Response
     {
         $user->setBan(1);
 
         $entityManager->flush();
 
-        return $this->redirectToRoute('app_admin_index', [], Response::HTTP_SEE_OTHER);
+        $page = $request->query->get('page');
+
+        return $this->redirectToRoute('app_admin_index', ['page' => $page], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/admin/unban/{id}', name: 'app_admin_unban', methods: ['GET', 'POST'])]
-    public function unbanUser(User $user, EntityManagerInterface $entityManager): Response
+    public function unbanUser(User $user, EntityManagerInterface $entityManager, Request $request): Response
     {
         $user->setBan(0);
 
         $entityManager->flush();
 
-        return $this->redirectToRoute('app_admin_index', [], Response::HTTP_SEE_OTHER);
+        $page = $request->query->get('page');
+
+        return $this->redirectToRoute('app_admin_index', ['page' => $page], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/user/profile/{id}', name: 'app_show_user_profile', methods: ['GET', 'POST'])]
@@ -329,8 +337,6 @@ class AdminController extends AbstractController
 
     public static function filtreRates(Request $request, EntityManagerInterface $entityManager, PaginatorInterface $paginator, User $user, string $stringWhere)
     {
-        $series = $user->getSeries();
-
         $stringWhere .= ' r.user = :user';
 
         $stringWhere .= self::donneStringWhere($request, $stringWhere);
@@ -356,7 +362,9 @@ class AdminController extends AbstractController
 
         $entityManager->flush();
 
-        return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+        $page = $request->query->get('page');
+
+        return $this->redirectToRoute('app_user_index', ['page' => $page], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/user/unfollow/{id}', name: 'app_user_dislike', methods: ['GET'])]

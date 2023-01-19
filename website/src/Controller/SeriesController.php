@@ -38,9 +38,11 @@ class SeriesController extends AbstractController
             $page = $request->query->get('page');
         }
 
+        $nb = 25;
+
         $appointmentsRepository = $entityManager->getRepository(Series::class)->createQueryBuilder('s')
-        ->setFirstResult(0 + 25 * ($page - 1))
-        ->setMaxResults(25)
+        ->setFirstResult(0 + $nb * ($page - 1))
+        ->setMaxResults($nb)
         ->join('s.genre', 'g')
         ->join('s.rate', 'r')
         ->where('' . $stringWhere)
@@ -57,7 +59,7 @@ class SeriesController extends AbstractController
         ->getQuery()
         ->getResult();
 
-        $res = self::requeteFiltred($appointmentsRepository, $entityManager, $request, $paginator, 25, $page);
+        $res = self::requeteFiltred($appointmentsRepository, $entityManager, $request, $paginator, $nb, $page);
 
         $res['series']->setCurrentPageNumber($page);
 
@@ -269,7 +271,9 @@ class SeriesController extends AbstractController
         /** @var \App\Entity\User */
         $user = $this->getUser();
 
-        $series = $entityManager->getRepository(Series::class)->find($request->get('id'));
+        $id = $request->get('id');
+
+        $series = $entityManager->getRepository(Series::class)->find($id);
 
         $user->addSeries($series);
 
@@ -277,8 +281,12 @@ class SeriesController extends AbstractController
 
         $page = $request->query->get('page');
 
-        return $this->redirectToRoute('app_series_index', ['page' => $page], Response::HTTP_SEE_OTHER);
-
+        if ($request->get('serie')){
+            return $this->redirectToRoute('app_series_show', ['id' => $id], Response::HTTP_SEE_OTHER);
+        }
+        else{
+            return $this->redirectToRoute('app_series_index', ['page' => $page], Response::HTTP_SEE_OTHER);
+        }
     }
 
     #[Route('/series/{id}/dislike', name: 'app_series_dislike', methods: ['GET'])]
@@ -287,7 +295,9 @@ class SeriesController extends AbstractController
         /** @var \App\Entity\User */
         $user = $this->getUser();
 
-        $series = $entityManager->getRepository(Series::class)->find($request->get('id'));
+        $id = $request->get('id');
+
+        $series = $entityManager->getRepository(Series::class)->find($id);
 
         $user->removeSeries($series);
 
@@ -295,6 +305,12 @@ class SeriesController extends AbstractController
 
         $page = $request->query->get('page');
 
+        if ($request->get('serie')){
+            return $this->redirectToRoute('app_series_show', ['id' => $id], Response::HTTP_SEE_OTHER);
+        }
+        if($request->get('likeList')){
+            return $this->redirectToRoute('app_liked_series', [], Response::HTTP_SEE_OTHER);
+        }
         return $this->redirectToRoute('app_series_index', ['page' => $page], Response::HTTP_SEE_OTHER);
     }
 
@@ -383,7 +399,9 @@ class SeriesController extends AbstractController
     {
         $rating = new Rating();
 
-        $series = $entityManager->getRepository(Series::class)->find($request->get('id'));
+        $id = $request->get('id');
+
+        $series = $entityManager->getRepository(Series::class)->find($id);
 
         $rating->setSeries($series);
         $rating->setUser($this->getUser());
@@ -394,7 +412,7 @@ class SeriesController extends AbstractController
         $entityManager->persist($rating);
 
         $entityManager->flush();
-        return $this->redirectToRoute('app_series_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_series_show', ['id' => $id], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/{id}/vu', name: 'app_series_vu', methods: ['GET'])]

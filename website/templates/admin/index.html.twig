@@ -12,7 +12,10 @@
 {% endblock %}
 
 {% block body %}
-
+{% set page = 1 %}
+	{% if app.request.get('page') %}
+		{% set page = app.request.get('page') %}
+	{% endif %}
 	<form method="GET" class="d-flex flex-wrap">
 		<input type="text" name='nom' id='nom' placeholder="Type to search a name..">
 		<input type="text" name="mail" id="mail" placeholder="Type to search an email..">
@@ -114,10 +117,10 @@
 						{% if app.user %}
 							<td data-title="Actions">
 								{% if user.admin == '0' %}
-									<a href="{{ path('app_admin_promouvoir', {'id': user.id}) }}" class="text-success text-decoration-none">Promouvoir</a>
+									<a href="{{ path('app_admin_promouvoir', {'id': user.id, 'page': page}) }}" class="text-success text-decoration-none">Promouvoir</a>
 									|
 								{% else %}
-									<a href="{{ path('app_admin_destituer', {'id': user.id}) }}" class="text-danger text-decoration-none">Destituer</a>
+									<a href="{{ path('app_admin_destituer', {'id': user.id, 'page': page}) }}" class="text-danger text-decoration-none">Destituer</a>
 									|
 								{% endif %}
 								<a href="?_switch_user={{user.email}}" class="text-decoration-none">Embody</a>
@@ -125,9 +128,9 @@
 								<a href="{{ path('app_user_change_mdp', {'id': user.id}) }}" class="text-decoration-none">Edit</a>
 								|
 								{% if user.ban == '0' %}
-									<a href="{{ path('app_admin_ban', {'id': user.id}) }}" class="text-success text-decoration-none">Bannir</a>
+									<a href="{{ path('app_admin_ban', {'id': user.id, 'page': page}) }}" class="text-success text-decoration-none">Bannir</a>
 								{% else %}
-									<a href="{{ path('app_admin_unban', {'id': user.id}) }}" class="text-danger text-decoration-none">Débannir</a>
+									<a href="{{ path('app_admin_unban', {'id': user.id, 'page': page}) }}" class="text-danger text-decoration-none">Débannir</a>
 								{% endif %}
 							</td>
 						{% endif %}
