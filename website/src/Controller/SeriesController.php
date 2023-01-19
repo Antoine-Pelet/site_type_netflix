@@ -151,12 +151,16 @@ class SeriesController extends AbstractController
     }
 
     #[Route('/API', name: 'app_API', methods: ['GET'])]
-    public function search(Request $request, EntityManagerInterface $entityManager, ManagerRegistry $doctrine, HttpClientInterface $client): Response
-    {
+    public function search(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        ManagerRegistry $doctrine,
+        HttpClientInterface $client
+    ): Response {
         $t = $request->query->get('t');
         $response = $client->request(
             'GET',
-            'http://www.omdbapi.com/?apikey=3b3d08d2&t='.$t
+            'http://www.omdbapi.com/?apikey=3b3d08d2&t=' . $t
         );
 
         return $this->render('series/API.html.twig', [
@@ -166,8 +170,12 @@ class SeriesController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_series_show', methods: ['GET'])]
-    public function show(Series $series, EntityManagerInterface $entityManager, Request $request, PaginatorInterface $paginator): Response
-    {
+    public function show(
+        Series $series,
+        EntityManagerInterface $entityManager,
+        Request $request,
+        PaginatorInterface $paginator
+    ): Response {
         $serie = $entityManager->getRepository(Series::class)->find($request->get('id'));
 
         $seasons = $serie->getSeasons();
@@ -181,7 +189,7 @@ class SeriesController extends AbstractController
         $user = $this->getUser();
 
         $stringWhere = AdminController::donneStringWhere($request, "r.series = :series");
-        
+
         $rates = $entityManager->getRepository(Rating::class)->createQueryBuilder('r')
             ->join('r.series', 's')
             ->where('' . $stringWhere)
@@ -281,10 +289,9 @@ class SeriesController extends AbstractController
 
         $page = $request->query->get('page');
 
-        if ($request->get('serie')){
+        if ($request->get('serie')) {
             return $this->redirectToRoute('app_series_show', ['id' => $id], Response::HTTP_SEE_OTHER);
-        }
-        else{
+        } else {
             return $this->redirectToRoute('app_series_index', ['page' => $page], Response::HTTP_SEE_OTHER);
         }
     }
@@ -305,10 +312,10 @@ class SeriesController extends AbstractController
 
         $page = $request->query->get('page');
 
-        if ($request->get('serie')){
+        if ($request->get('serie')) {
             return $this->redirectToRoute('app_series_show', ['id' => $id], Response::HTTP_SEE_OTHER);
         }
-        if($request->get('likeList')){
+        if ($request->get('likeList')) {
             return $this->redirectToRoute('app_liked_series', [], Response::HTTP_SEE_OTHER);
         }
         return $this->redirectToRoute('app_series_index', ['page' => $page], Response::HTTP_SEE_OTHER);
@@ -348,7 +355,7 @@ class SeriesController extends AbstractController
     ): Response {
 
         $stringWhere = self::stringWhere($request);
-        
+
         $result = self::getEpisodeVu($entityManager, $stringWhere, $this->getUser());
 
         $res = self::requeteFiltred($result['seriesView'], $entityManager, $request, $paginator, 10);
