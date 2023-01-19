@@ -21,14 +21,14 @@
 
 		<div>
 			<select name="debut" id="debut">
-				<option value="">--Choose a year--</option>
+				<option value="">--Choose a minimum year--</option>
 				{% for year in years %}
 					<option value="{{ year }}">{{ year }}</option>
 				{% endfor %}
 			</select>
 
 			<select name="fin" id="fin">
-				<option value="">--Choose a year--</option>
+				<option value="">--Choose a maximum year--</option>
 				{% for year in years %}
 					<option value="{{ year }}">{{ year }}</option>
 				{% endfor %}
@@ -118,6 +118,8 @@
 					</div>
 				</div>
 			</div>
+		{% else %}
+			<p class="text-white">Aucune série liké</p>
 		{% endfor %}
 	</div>
 
