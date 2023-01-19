@@ -32,6 +32,11 @@ git clone git@gitlab-ce.iut.u-bordeaux.fr:lecopeaux/e7-dev-app.git
 git clone https://gitlab-ce.iut.u-bordeaux.fr/lecopeaux/e7-dev-app.git
 ```
 
+Installer en plus Faker avec cette commande:
+```bash
+composer require fakerphp/faker
+```
+
 ## 5. Installer les dépendances 
 
 Utilisez __Composer__ pour installer les dépendances de votre application dans le répertoire de votre application en utilisant la commande: 

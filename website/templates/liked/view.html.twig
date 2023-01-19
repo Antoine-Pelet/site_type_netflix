@@ -68,6 +68,27 @@
 					<div class="listeseries">
 						<a href="{{ path('app_series_show', {'id': s.id}) }}"><img src="{{ path('app_series_poster', {'id': s.id}) }}" height="400px"></a>
 						<p>{{ s.title }}</p>
+						{% set epi = 0 %}
+						{% for seas in s.getSeasons() %}
+							{% set epi = epi + seas.getEpisodes()|length %}
+						{% endfor %}
+
+						{% set epiVu = 0 %}
+						{% for e in episodes %}
+							{% if e.getSeason().getSeries().getId() == s.id %}
+								{% set epiVu = epiVu + 1 %}
+							{% endif %}
+						{% endfor %}
+
+						{% if epiVu == 0 %}
+							{% set progress =  0 %}
+						{% elseif epiVu == epi %}
+							{% set progress =  100 %}
+						{% else %}
+							{% set progress =  ((epiVu / epi) * 100)|round(0, 'floor')  %}
+						{% endif %}
+						<p> {{progress}} % </p>
+
 						{% set cpt = 1 %}
 						{% for seas in seasons|sort((a, b) => a.number <=> b.number) %}
 							{% if seas.series.id == s.id %}
