@@ -11,41 +11,62 @@
 {% endblock %}
 
 {% block body %}
-
+	{% set page = 1 %}
+	{% if app.request.get('page') %}
+		{% set page = app.request.get('page') %}
+	{% endif %}
 	<form method="GET" class="d-flex flex-wrap">
 		<input type="text" name='nom' id='nom' placeholder="Type to search a name..">
 		<input type="text" name="mail" id="mail" placeholder="Type to search an email..">
 
 		<select name="ban" id="ban">
-			<option value=""> all users (ban and not banned) </option>
-			<option value="0">not banned users</option>
+			<option value="">
+				All users (Ban and not banned)
+			</option>
+			<option value="0">Not banned users</option>
 			<option value="1">Banned users</option>
 		</select>
 
 		<select name="registrationDate" id="registrationDate">
-			<option value="ASC">ascending registration date order</option>
-			<option value="DESC">descending registration date order</option>
+			<option value="ASC">Ascending registration date order</option>
+			<option value="DESC">Descending registration date order</option>
 		</select>
 
 		<select name="follow" id="follow">
-			<option value=""> all users (followed and not followed) </option>
-			<option value="0"> not followed users </option>
-			<option value="1"> followed users </option>
+			<option value="">
+				All users (Followed and not followed)
+			</option>
+			<option value="0">
+				Not followed users
+			</option>
+			<option value="1">
+				Followed users
+			</option>
 		</select>
 
 		<select name="admin" id="admin">
-			<option value=""> all users (admin and not admin) </option>
-			<option value="0"> not admin users </option>
-			<option value="1"> admin users </option>
+			<option value="">
+				All users (Admin and not admin)
+			</option>
+			<option value="0">
+				Not admin users
+			</option>
+			<option value="1">
+				Admin users
+			</option>
 		</select>
 
 		<select name="country" id="country">
-			<option value=""> all countries </option>
+			<option value="">
+				All countries
+			</option>
 			{% for country in countries %}
-				<option value="{{ country.id }}"> {{ country.name }} </option>
+				<option value="{{ country.id }}">
+					{{ country.name }}
+				</option>
 			{% endfor %}
 		</select>
-		
+
 		<button type="submit" class="searchbtn">
 			<svg xmlns="http://www.w3.org/2000/svg" class="bi bi-search" viewbox="0 0 16 16">
 				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
@@ -72,13 +93,13 @@
 							<a href="{{ path('app_show_user_profile', {'id': user.id}) }}">Show his profile</a>
 							{% if app.user %}
 								{% if app.user.users.contains(user) %}
-									<a href="{{ path('app_user_dislike', {'id': user.id}) }}">
+									<a href="{{ path('app_user_dislike', {'id': user.id, 'page': page}) }}">
 										<svg xmlns="http://www.w3.org/2000/svg" width="18px" class="bi svgheart liked bi-heart" viewbox="0 0 16 16" transform="scale(1,1)">
 											<path d="M8,15C-7.333,4.868,3.279,-3.04,7.824,1.143c.06.055.119.112.176.171.056421-.058946.115133-.115657.176-.17C12.72,-3.042,23.333,4.867,8,15Z"></path>
 										</svg>
 									</a>
 								{% else %}
-									<a href="{{ path('app_user_like', {'id': user.id}) }}">
+									<a href="{{ path('app_user_like', {'id': user.id, 'page': page}) }}">
 										<svg xmlns="http://www.w3.org/2000/svg" width="18px" class="bi svgheart unliked bi-heart" viewbox="0 0 16 16" transform="scale(1,1)">
 											<path d="M8,2.748l-.717-.737C5.6,0.281,2.514,0.878,1.4,3.053c-.523,1.023-.641,2.5.314,4.385.92,1.815,2.834,3.989,6.286,6.357c3.452-2.368,5.365-4.542,6.286-6.357.955-1.886.838-3.362.314-4.385C13.486,0.878,10.4,0.28,8.717,2.01L8,2.748ZM8,15C-7.333,4.868,3.279,-3.04,7.824,1.143c.06.055.119.112.176.171.056421-.058946.115133-.115657.176-.17C12.72,-3.042,23.333,4.867,8,15Z" transform="matrix(.96626 0 0 0.96626 0.269915 0.253049)" stroke="#000" stroke-width="0.5"></path>
 										</svg>

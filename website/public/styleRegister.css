@@ -35,6 +35,7 @@ button:hover {
 
 .formu {
   width: 100%;
+  margin-right: 2vh;
 }
 
 #registration_form_name, #registration_form_email, #registration_form_plainPassword, select {
@@ -86,6 +87,10 @@ label, .cont{
 }
 
 label[for="registration_form_country"] {
+  display: none;
+}
+
+.pwd div ul:first-of-type{
   display: none;
 }
 

@@ -6,17 +6,16 @@
 {% block stylesheets %}
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
 	<link href="{{ asset('style.css') }}" rel="stylesheet"/>
+	<link href="{{ asset('styleSeries.css') }}" rel="stylesheet"/>
 	<link href="{{ asset('stylePageShow.css') }}" rel="stylesheet"/>
 {% endblock %}
 
 {% block body %}
 
-	<div class=" container d-flex flex-column">
+	<div class=" container d-flex flex-column" style="background-color: #22323a !important; padding: 4vh; border-radius: 30px;">
 		<div class="d-flex">
 			<div class="d-flex flex-row mt-3 avant">
-				<div class="poster">
-					<img src="{{ path('app_series_poster', {'id': series.id}) }}">
-				</div>
+				<div class="poster"><img src="{{ path('app_series_poster', {'id': series.id}) }}"></div>
 				<div class="ms-4 d-flex flex-column justify-content-around">
 					<div class="d-flex flex-rox justify-content-between mb-1">
 						<div class="mb-1">
@@ -24,7 +23,9 @@
 							{% if app.user and app.user.admin == 1 %}
 								<a href="{{ path('app_series_edit', {'id': series.id}) }}">edit</a>
 							{% endif %}
-							<p class="text-secondary">{{ series.yearStart }} - {{ series.yearEnd  }}</p>
+							<p class="text-secondary">{{ series.yearStart }}
+								-
+								{{ series.yearEnd  }}</p>
 						</div>
 						<div class="mb-1">
 							<h4>External Rating</h4>
@@ -62,20 +63,208 @@
 								{% endif %}
 								{% set cpt = cpt - 1 %}
 							{% endfor %}
-							<p>{{ rate / 2 }}</p>
-
-
+							<p>{{ rate / 2 }} (1 évaluation)</p>
 
 							<h4>Users Rating</h4>
-							{% set realNote = 0 %}
-							{% for r in rates %}
-								{% set note = r.getValue() / 2 %}
-								{% set realNote = realNote + note %}
+
+							{% if nbRates|length != 0 %}
+
+								{% set realNote = 0 %}
+								{% for r in nbRates %}
+									{% set note = r.getValue() / 2 %}
+									{% set realNote = realNote + note %}
+								{% endfor %}
+								{% set realNote = (realNote / nbRates|length)|round(1,'ceil') %}
+								<p>{{ realNote }}
+									({{nbRates|length}}
+									évaluations)</p>
+								{% for i in 1..5 %}
+									{% if (realNote >= 1 ) %}
+										<svg fill="#ffc800" width="18px" height="18px" viewbox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" stroke="#ffc800">
+											<g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+											<g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+											<g id="SVGRepo_iconCarrier">
+												<title>star-filled</title>
+												<path d="M30.859 12.545c-0.168-0.506-0.637-0.864-1.189-0.864h-9.535l-2.946-9.067c-0.208-0.459-0.662-0.772-1.188-0.772s-0.981 0.313-1.185 0.764l-0.003 0.008-2.946 9.067h-9.534c-0.69 0-1.25 0.56-1.25 1.25 0 0.414 0.202 0.782 0.512 1.009l0.004 0.002 7.713 5.603-2.946 9.068c-0.039 0.116-0.061 0.249-0.061 0.387 0 0.69 0.56 1.25 1.25 1.25 0.276 0 0.531-0.089 0.738-0.241l-0.004 0.002 7.714-5.605 7.713 5.605c0.203 0.149 0.458 0.238 0.734 0.238 0.691 0 1.251-0.56 1.251-1.251 0-0.138-0.022-0.271-0.064-0.395l0.003 0.009-2.947-9.066 7.715-5.604c0.314-0.231 0.515-0.598 0.515-1.013 0-0.137-0.022-0.27-0.063-0.393l0.003 0.009z"></path>
+											</g>
+										</svg>
+									{% elseif (realNote < 1 and realNote > 0) %}
+										<svg fill="#ffc800" width="18px" height="18px" viewbox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
+											<g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+											<g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+											<g id="SVGRepo_iconCarrier">
+												<title>star-half-stroke-filled</title>
+												<path d="M30.859 12.545c-0.168-0.506-0.637-0.864-1.189-0.864h-9.535l-2.946-9.067c-0.168-0.505-0.636-0.863-1.188-0.863-0.138 0-0.272 0.023-0.396 0.064l0.009-0.003c-0.376 0.13-0.664 0.427-0.779 0.8l-0.002 0.009-0.021-0.007-2.946 9.067h-9.534c-0.69 0-1.25 0.56-1.25 1.25 0 0.414 0.202 0.782 0.512 1.009l0.004 0.002 7.713 5.603-2.946 9.068c-0.039 0.116-0.061 0.249-0.061 0.387 0 0.69 0.56 1.25 1.25 1.25 0.276 0 0.531-0.089 0.738-0.241l-0.004 0.002 7.714-5.605 7.713 5.605c0.203 0.149 0.458 0.238 0.734 0.238 0.691 0 1.251-0.56 1.251-1.251 0-0.138-0.022-0.271-0.064-0.395l0.003 0.009-2.947-9.066 7.715-5.604c0.314-0.231 0.515-0.598 0.515-1.013 0-0.137-0.022-0.27-0.063-0.393l0.003 0.009zM20.486 18.057c-0.314 0.231-0.515 0.599-0.515 1.014 0 0.137 0.022 0.27 0.063 0.394l-0.003-0.009 2.039 6.271-5.336-3.877c-0.194-0.135-0.435-0.215-0.694-0.215-0.014 0-0.028 0-0.042 0.001l0.002-0v-14.589l2.037 6.272c0.169 0.505 0.637 0.863 1.189 0.863h6.596z"></path>
+											</g>
+										</svg>
+									{% else %}
+										<svg fill="#ffc800" width="18px" height="18px" viewbox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
+											<g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+											<g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+											<g id="SVGRepo_iconCarrier">
+												<title>star</title>
+												<path d="M30.859 12.545c-0.168-0.506-0.637-0.864-1.189-0.864h-9.535l-2.946-9.067c-0.208-0.459-0.662-0.772-1.188-0.772s-0.981 0.313-1.185 0.764l-0.003 0.008-2.946 9.067h-9.534c-0.69 0-1.25 0.56-1.25 1.25 0 0.414 0.202 0.782 0.512 1.009l0.004 0.002 7.713 5.603-2.946 9.068c-0.039 0.116-0.061 0.249-0.061 0.387 0 0.69 0.56 1.25 1.25 1.25 0.276 0 0.531-0.089 0.738-0.241l-0.004 0.002 7.714-5.605 7.713 5.605c0.203 0.149 0.458 0.238 0.734 0.238 0.691 0 1.251-0.56 1.251-1.251 0-0.138-0.022-0.271-0.064-0.395l0.003 0.009-2.947-9.066 7.715-5.604c0.314-0.231 0.515-0.598 0.515-1.013 0-0.137-0.022-0.27-0.063-0.393l0.003 0.009zM20.486 18.057c-0.314 0.231-0.515 0.599-0.515 1.014 0 0.137 0.022 0.27 0.063 0.394l-0.003-0.009 2.039 6.271-5.336-3.877c-0.203-0.149-0.458-0.238-0.734-0.238s-0.531 0.089-0.738 0.241l0.004-0.002-5.336 3.877 2.038-6.271c0.039-0.116 0.062-0.249 0.062-0.387 0-0.414-0.202-0.781-0.512-1.009l-0.004-0.002-5.335-3.876h6.595c0 0 0 0 0.001 0 0.552 0 1.020-0.358 1.185-0.854l0.003-0.009 2.038-6.272 2.037 6.272c0.169 0.505 0.637 0.863 1.189 0.863h6.596z"></path>
+											</g>
+										</svg>
+									{% endif %}
+									{% set realNote = realNote - 1 %}
+								{% endfor %}
+							{% else %}
+
+								<p>
+									Aucune critique pour cette série pour le moment
+								</p>
+
+							{% endif %}
+						</div>
+						{% if app.user %}
+							<div class="mb-1">
+								<h4>Avancement</h4>
+								{% if episodesVues|length == 0 %}
+									{% set progress =  0 %}
+								{% elseif episodesVues|length == totalEpisode %}
+									{% set progress =  100 %}
+								{% else %}
+									{% set progress =  ((episodesVues|length / totalEpisode) * 100)|round(0, 'floor')  %}
+								{% endif %}
+								<p>{{progress}}
+									%</p>
+							</div>
+							{% if app.user.series.contains(series) %}
+								<a href="{{ path('app_series_dislike', {'id': series.id, 'serie': true }) }}">
+									<svg xmlns="http://www.w3.org/2000/svg" class="bi svgheart liked bi-heart" viewbox="0 0 16 16" transform="scale(1,1)">
+										<path d="M8,15C-7.333,4.868,3.279,-3.04,7.824,1.143c.06.055.119.112.176.171.056421-.058946.115133-.115657.176-.17C12.72,-3.042,23.333,4.867,8,15Z"></path>
+									</svg>
+								</a>
+							{% else %}
+								<a href="{{ path('app_series_like', {'id': series.id, 'serie': true }) }}">
+									<svg xmlns="http://www.w3.org/2000/svg" class="bi svgheart unliked bi-heart" viewbox="0 0 16 16" transform="scale(1,1)">
+										<path d="M8,2.748l-.717-.737C5.6,0.281,2.514,0.878,1.4,3.053c-.523,1.023-.641,2.5.314,4.385.92,1.815,2.834,3.989,6.286,6.357c3.452-2.368,5.365-4.542,6.286-6.357.955-1.886.838-3.362.314-4.385C13.486,0.878,10.4,0.28,8.717,2.01L8,2.748ZM8,15C-7.333,4.868,3.279,-3.04,7.824,1.143c.06.055.119.112.176.171.056421-.058946.115133-.115657.176-.17C12.72,-3.042,23.333,4.867,8,15Z" transform="matrix(.96626 0 0 0.96626 0.269915 0.253049)" stroke="#000" stroke-width="0.5"></path>
+									</svg>
+								</a>
+							{% endif %}
+						{% endif %}
+					</div>
+					<div>
+						<h4>Genre</h4>
+						<div class="d-flex">
+							{% for g in genres %}
+								<p style="background-color: #32414e; padding: 1vh; border-radius: 12px; margin-right: 1vh;">{{ g.name }}</p>
 							{% endfor %}
-							{% set realNote = (realNote / rates|length)|round(1,'ceil') %}
-							<p>{{ realNote }}</p>
+						</div>
+					</div>
+					<div class="mb-1">
+						<h4>Description</h4>
+						<p>{{ series.plot }}</p>
+					</div>
+					<div class="mb-1">
+						<h4>Awards</h4>
+						<p>{{ series.awards }}</p>
+					</div>
+					<div class="mb-1">
+						<h4>IMBD</h4>
+						{% set debut = "https://www.imdb.com/title/" %}
+						{% set link = "%s%s" | format(debut, series.imdb) %}
+						<a href="{{link}}" class="text-white text-decoration-none">{{ series.imdb }}</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="container d-flex flex-row mt-5">
+			<div class="me-3">
+				{% set debut = "https://www.youtube.com/embed/" %}
+				{% set id = series.youtubeTrailer|split('=') %}
+				{% set video = "%s%s" | format(debut, id[1]) %}
+				<iframe width="560" height="315" src="{{video}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+			</div>
+			<div>
+				<div class="row">
+					{% set cpt = 1 %}
+					{% for s in series.seasons %}
+						<div id="accordion">
+							<div class="card border">
+								<div class="card-header">
+									<a class="card-link" data-toggle="collapse" href="#collapse{{cpt}}">Saison{{cpt}}</a>
+								</div>
+								{% for epi in s.episodes %}
+									<div id="collapse{{cpt}}" class="collapse" data-parent="#accordion">
+										<div class="card-body border">
+											<p>{{ epi.title }}
+												(Episode :
+												{{ epi.number }})
+												{% if app.user %}
+													{% if app.user.episode.contains(epi) %}
+														<div style="color: blue">Visionné</div>
+													{% else %}
+														<a href="{{ path('app_series_vu', {'id': epi.id, 'season_number': s.number, 'epi_number': epi.number}) }}">
+															<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewbox="0 0 16 16"><path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/><path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/></svg>
+														</a>
+													{% endif %}
+												{% endif %}
+											</p>
+										</div>
+									</div>
+								{% endfor %}
+								{% set cpt = cpt + 1 %}
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="panel_comment">
+		<div>
+			<form method="GET" style="width: 25%" class="d-flex">
+				<input type="text" name='serie' id='serie' placeholder="Type to search..">
+				<select name="date" id="date">
+					<option value="">--Choose a year--</option>
+					{% for year in years %}
+						<option value="{{ year }}">{{ year }}</option>
+					{% endfor %}
+				</select>
+				<select name="rateMin" id="rateMin">
+					<option value="">--Choose a minimum rate--</option>
+					{% for rate in ratesFiltre %}
+						<option value="{{ rate }}">{{ rate }}</option>
+					{% endfor %}
+				</select>
+				<select name="rateMax" id="rateMax">
+					<option value="">--Choose a maximum rate--</option>
+					{% for rate in ratesFiltre %}
+						<option value="{{ rate }}">{{ rate }}</option>
+					{% endfor %}
+				</select>
+				<button type="submit" class="searchbtn">
+					<svg xmlns="http://www.w3.org/2000/svg" class="bi bi-search" viewbox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg>
+				</button>
+			</form>
+		</div>
+		<div class="d-flex">
+			<div class="all_comment">
+				{% for r in rates %}
+					<div class="comm">
+						<h4>@{{ r.getUser().name }}</h4>
+						{% set vardiff = date("now" | date()).diff(date(r.getDate()))%}
+						{% set note = r.getValue() / 2 %}
+						<p class="fs-5 mb-0 mt-1">{{ r.getSeries().title }}</p>
+						<p class="mb-0 text-secondary">
+							Il y a
+							{% if vardiff.days !=0 %}
+								{{vardiff.days}}
+								jours
+							{% endif %}
+							{{vardiff.h}}
+							heures et
+							{{vardiff.i}}
+							minutes
+						</P>
+						<div class="d-flex">
+							<p class="me-2">{{ note }}</p>
+							{% set cpt = note %}
 							{% for i in 1..5 %}
-								{% if (realNote >= 1 ) %}
+								{% if (cpt >= 1 ) %}
 									<svg fill="#ffc800" width="18px" height="18px" viewbox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" stroke="#ffc800">
 										<g id="SVGRepo_bgCarrier" stroke-width="0"></g>
 										<g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -84,7 +273,7 @@
 											<path d="M30.859 12.545c-0.168-0.506-0.637-0.864-1.189-0.864h-9.535l-2.946-9.067c-0.208-0.459-0.662-0.772-1.188-0.772s-0.981 0.313-1.185 0.764l-0.003 0.008-2.946 9.067h-9.534c-0.69 0-1.25 0.56-1.25 1.25 0 0.414 0.202 0.782 0.512 1.009l0.004 0.002 7.713 5.603-2.946 9.068c-0.039 0.116-0.061 0.249-0.061 0.387 0 0.69 0.56 1.25 1.25 1.25 0.276 0 0.531-0.089 0.738-0.241l-0.004 0.002 7.714-5.605 7.713 5.605c0.203 0.149 0.458 0.238 0.734 0.238 0.691 0 1.251-0.56 1.251-1.251 0-0.138-0.022-0.271-0.064-0.395l0.003 0.009-2.947-9.066 7.715-5.604c0.314-0.231 0.515-0.598 0.515-1.013 0-0.137-0.022-0.27-0.063-0.393l0.003 0.009z"></path>
 										</g>
 									</svg>
-								{% elseif (realNote < 1 and realNote > 0) %}
+								{% elseif (cpt < 1 and cpt > 0) %}
 									<svg fill="#ffc800" width="18px" height="18px" viewbox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
 										<g id="SVGRepo_bgCarrier" stroke-width="0"></g>
 										<g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -103,116 +292,17 @@
 										</g>
 									</svg>
 								{% endif %}
-								{% set realNote = realNote - 1 %}
+								{% set cpt = cpt - 1 %}
 							{% endfor %}
 						</div>
-						{% if app.user %}
-							<div class="mb-1">
-								<h4>Avancement</h4>
-								{% if episodesVues|length == 0 %}
-									{% set progress =  0 %}
-								{% elseif episodesVues|length == totalEpisode %}
-									{% set progress =  100 %}
-								{% else %}
-									{% set progress =  ((episodesVues|length / totalEpisode) * 100)|round(0, 'floor')  %} 
-								{% endif %}
-								<p> {{progress}} % </p>
-							</div>
-							{% if app.user.series.contains(series) %}
-								<a href="{{ path('app_series_dislike', {'id': series.id}) }}">
-									<svg xmlns="http://www.w3.org/2000/svg" class="bi svgheart liked bi-heart" viewbox="0 0 16 16" transform="scale(1,1)">
-										<path d="M8,15C-7.333,4.868,3.279,-3.04,7.824,1.143c.06.055.119.112.176.171.056421-.058946.115133-.115657.176-.17C12.72,-3.042,23.333,4.867,8,15Z"></path>
-									</svg>
-								</a>
-							{% else %}
-								<a href="{{ path('app_series_like', {'id': series.id}) }}">
-									<svg xmlns="http://www.w3.org/2000/svg" class="bi svgheart unliked bi-heart" viewbox="0 0 16 16" transform="scale(1,1)">
-										<path d="M8,2.748l-.717-.737C5.6,0.281,2.514,0.878,1.4,3.053c-.523,1.023-.641,2.5.314,4.385.92,1.815,2.834,3.989,6.286,6.357c3.452-2.368,5.365-4.542,6.286-6.357.955-1.886.838-3.362.314-4.385C13.486,0.878,10.4,0.28,8.717,2.01L8,2.748ZM8,15C-7.333,4.868,3.279,-3.04,7.824,1.143c.06.055.119.112.176.171.056421-.058946.115133-.115657.176-.17C12.72,-3.042,23.333,4.867,8,15Z" transform="matrix(.96626 0 0 0.96626 0.269915 0.253049)" stroke="#000" stroke-width="0.5"></path>
-									</svg>
-								</a>
-							{% endif %}
-						{% endif %}
-						</div>
-						<div>
-							<h4>Genre</h4>
-							<div class="genre">
-								{% for g in genres%}
-									<p>{{ g.name }}</p>
-								{% endfor %}
-							</div>
-						</div>
-						<div class="mb-1">
-							<h4>Description</h4>
-							<p>{{ series.plot }}</p>
-						</div>
-
-						<div class="mb-1">
-							<h4>Awards</h4>
-							<p>{{ series.awards }}</p>
-						</div>
-
-						<div class="mb-1">
-							<h4>IMBD</h4>
-							{% set debut = "https://www.imdb.com/title/" %}
-							{% set link = "%s%s" | format(debut, series.imdb) %}
-							<a href="{{link}}" class="text-white text-decoration-none">{{ series.imdb }}</a>
-						</div>
+						<p>{{ r.getComment() }}</p>
 					</div>
+				{% endfor %}
+				<div class="navigation d-flex justify-content-center mt-5">
+					{{ knp_pagination_render(rates) }}
 				</div>
 			</div>
-		
-			<div class="container d-flex flex-row mt-5">
-				<div class="me-3">
-					{% set debut = "https://www.youtube.com/embed/" %}
-					{% set id = series.youtubeTrailer|split('=') %}
-					{% set video = "%s%s" | format(debut, id[1]) %}
-					<iframe width="560" height="315" src="{{video}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-				</div>
-				<div>
-					<div class="row">
-						{% set cpt = 1 %}
-						{% for s in series.seasons %}
-							<div id="accordion">
-								<div class="card border">
-									<div class="card-header">
-										<a class="card-link" data-toggle="collapse" href="#collapse{{cpt}}">Saison{{cpt}}</a>
-									</div>
-									{% for epi in s.episodes %}
-										<div id="collapse{{cpt}}" class="collapse" data-parent="#accordion">
-											<div class="card-body border">
-												<p>{{ epi.title }}
-													(Episode :
-													{{ epi.number }})
-													{% if app.user %}
-														{% if app.user.episode.contains(epi) %}
-															<div style="color: blue">Visionné</div>
-														{% else %}
-														<a href="{{ path('app_series_vu', {'id': epi.id, 'season_number': s.number, 'epi_number': epi.number}) }}">
-															<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewbox="0 0 16 16">
-																<path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
-																<path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
-															</svg>
-														</a>
-														{% endif %}
-													{% endif %}
-												</p>
-											</div>
-										</div>
-									{% endfor %}
-									{% set cpt = cpt + 1 %}
-								</div>
-							</div>
-						{% endfor %}
-					</div>
-				</div>
-			</div>
-		</div>
-	
-		{% if app.user %}
-		<div class="panel_comment">
-			<div class="all_comment">
-
-			</div>
+			{% if app.user %}
 			<form action="{{ path('app_series_rate', {'id': series.id}) }}" method="post" class="form_comment">
 				<h2>Comments</h2>
 				<div class="form-group">
@@ -225,50 +315,8 @@
 				</div>
 				<button type="submit" class="btn btn-primary">Envoyer</button><br>
 			</form>
+			{% endif %}
 		</div>
-		{% endif %}
-
-		<form method="GET" style="width: 25%">
-			<input type="text" name='serie' id='serie' placeholder="Type to search..">
-
-			<select name="date" id="date">
-				<option value="">--Choose a year--</option>
-				{% for year in years %}
-					<option value="{{ year }}">{{ year }}</option>
-				{% endfor %}
-			</select>
-
-			<select name="rateMin" id="rateMin">
-				<option value="">--Choose a minimum rate--</option>
-				{% for rate in ratesFiltre %}
-					<option value="{{ rate }}">{{ rate }}</option>
-				{% endfor %}
-			</select>
-			<select name="rateMax" id="rateMax">
-				<option value="">--Choose a maximum rate--</option>
-				{% for rate in ratesFiltre %}
-					<option value="{{ rate }}">{{ rate }}</option>
-				{% endfor %}
-			</select>
-			<button type="submit" class="searchbtn">
-				<svg xmlns="http://www.w3.org/2000/svg" class="bi bi-search" viewbox="0 0 16 16">
-					<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-				</svg>
-			</button>
-		</form>
 	</div>
-	{% for r in rates %}
-		<div class="comm">
-			{% set vardiff = date("now" | date()).diff(date(r.getDate()))%}
-			{% set note = r.getValue() / 2 %}
-            <p>{{ r.getUser().name }} - il y a {% if vardiff.days !=0 %} {{vardiff.days}} jours 
-                {% endif %} {{vardiff.h}} heures et {{vardiff.i}} minutes  - la notes est de {{note}}/5</p>
-            <p>{{ r.getComment() }}</p>
-		</div>		
-	{% endfor %}
 
-	<div class="navigation d-flex justify-content-center">
-		{{ knp_pagination_render(rates) }}
-	</div>
-	
 {% endblock %}

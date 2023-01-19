@@ -19,12 +19,12 @@
 				<span class="text-white fs-1">#1 Best Streaming Website</span>
 				<p class="text-white">
 					WatchList est le site idéal pour tous les amateurs de séries ! 
-					Avec WatchList, vous pouvez explorer une liste complète de séries, 
-					marquer celles que vous avez déjà vues et celles qui vous intéressent. 
-					Grâce à notre interface intuitive, vous pouvez facilement suivre votre progression et découvrir de nouvelles séries passionnantes. 
-					Alors qu'attendez-vous ? Inscrivez-vous dès maintenant sur WatchList et commencez votre voyage dans le monde passionnant des séries !
+										Avec WatchList, vous pouvez explorer une liste complète de séries, 
+										marquer celles que vous avez déjà vues et celles qui vous intéressent. 
+										Grâce à notre interface intuitive, vous pouvez facilement suivre votre progression et découvrir de nouvelles séries passionnantes. 
+										Alors qu'attendez-vous ? Inscrivez-vous dès maintenant sur WatchList et commencez votre voyage dans le monde passionnant des séries !
 				</p>
-			
+
 				{% if app.user %}
 					<button class="button" onclick="location.href='{{ path('app_series_index') }}'">Voir les séries</button>
 				{% else %}
@@ -40,13 +40,14 @@
 				{% for s in series %}
 					{% if cpt < 3%}
 						<span class="title_youtube_trailer">
-							<a class="text-white fs-4" href="{{ path('app_series_show', {'id': s.id}) }}">-> {{s.title}}</a>
+							<a class="text-white fs-4" href="{{ path('app_series_show', {'id': s.id}) }}">->
+								{{s.title}}</a>
 						</span>
-                        {% set debut = "https://www.youtube.com/embed/" %}
+						{% set debut = "https://www.youtube.com/embed/" %}
 						{% set id = s.youtubeTrailer |split('=') %}
 						{% set video = "%s%s" | format(debut, id[1]) %}
 
-						<iframe width="375" height="375" src="{{video}}" title="YouTube video player"  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+						<iframe width="575" height="575" src="{{video}}" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 						{% set cpt = cpt + 1 %}
 					{% endif %}
 				{% endfor %}

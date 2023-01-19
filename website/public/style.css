@@ -43,6 +43,10 @@ nav a:hover {
   border-color: white !important;
 }
 
+.dropdown-menu {
+  background-color: #162832;
+}
+
 .decale {
   margin-right: 1vh;
   display: flex;

@@ -80,4 +80,13 @@ body {
   body {
     background-attachment: fixed;
   }
+
+  iframe {
+    width: 100%;
+  }
+
+  .example-wrapper2 {
+    width: 100%;
+    height: 100%;
+  }
 }

@@ -58,14 +58,18 @@ body {
 }
 
 .comm {
-    background-color: white;
-    color: black;
+    background-color: #1d2a31;
+    color: white;
+    padding: 1.5vh;
+    border-radius: 12px;
+    margin-bottom: 2vh;
 }
 
 .panel_comment {
     padding: 4vh;
     display: flex;
-    background-color: #10171b;
+    background-color:#22323a;
+    flex-direction: column;
 }
 
 .all_comment {
@@ -76,10 +80,6 @@ body {
     border-radius: 12px;
     padding: 5vh;
     flex: 1;
-}
-
-.genre {
-    display: flex;
 }
 
 .genre p {

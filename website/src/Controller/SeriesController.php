@@ -19,6 +19,7 @@ use App\Entity\Appointments;
 // include de la pagination
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Validator\Constraints\Length;
 
 class SeriesController extends AbstractController
 {
@@ -26,27 +27,48 @@ class SeriesController extends AbstractController
     public function index(
         Request $request,
         PaginatorInterface $paginator,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
     ): Response {
 
         $stringWhere = self::stringWhere($request);
 
+        if ($request->query->get('page') == null) {
+            $page = 1;
+        } else {
+            $page = $request->query->get('page');
+        }
+
+        $nb = 25;
+
         $appointmentsRepository = $entityManager->getRepository(Series::class)->createQueryBuilder('s')
-        ->setFirstResult(0 + 25 * ($request->query->getInt('page', 1) - 1))
-        ->setMaxResults(25)
+        ->setFirstResult(0 + $nb * ($page - 1))
+        ->setMaxResults($nb)
         ->join('s.genre', 'g')
         ->join('s.rate', 'r')
         ->where('' . $stringWhere)
         ->orderBy('s.id', 'ASC')
         ->getQuery();
 
-        $res = self::requeteFiltred($appointmentsRepository, $entityManager, $request, $paginator);
+        $nbRates = $entityManager->getRepository(Rating::class)->createQueryBuilder('r')
+        ->select('AVG(r.value/2) as moyenne, COUNT(r.value) as nb')
+        ->join('r.series', 's')
+        ->join('s.genre', 'g')
+        ->where('' . $stringWhere)
+        ->groupby('s.id')
+        ->orderby('s.id', 'ASC')
+        ->getQuery()
+        ->getResult();
+
+        $res = self::requeteFiltred($appointmentsRepository, $entityManager, $request, $paginator, $nb, $page);
+
+        $res['series']->setCurrentPageNumber($page);
 
         return $this->render('series/index.html.twig', [
             'series' => $res['series'],
             'genres' => $res['genres'],
             'years' => $res['years'],
             'rates' => $res['rates'],
+            'nbRates' => $nbRates,
         ]);
     }
 
@@ -91,7 +113,9 @@ class SeriesController extends AbstractController
         $appointmentsRepository,
         EntityManagerInterface $entityManager,
         Request $request,
-        PaginatorInterface $paginator
+        PaginatorInterface $paginator,
+        int $nb,
+        int $page = 1
     ): array {
         $years = array();
 
@@ -112,10 +136,11 @@ class SeriesController extends AbstractController
             // Doctrine Query, not results
             $appointmentsRepository,
             // Define the page parameter
-            $request->query->getInt('page', 1),
+            $page,
             // Items per page
-            25
+            $nb
         );
+
         $res = array();
         $res['series'] = $appointments;
         $res['genres'] = $genres;
@@ -163,7 +188,9 @@ class SeriesController extends AbstractController
             ->setParameter('series', $series->getId())
             ->getQuery();
 
-        $res = AdminController::donneVariables($rates, $paginator, $request);
+        $nbRes = $rates->getResult();
+
+        $res = AdminController::donneVariables($rates, $paginator, $request, 3);
 
         if ($this->getUser() != null) {
             $epi = $entityManager->getRepository(Episode::class)->createQueryBuilder('e')
@@ -187,6 +214,8 @@ class SeriesController extends AbstractController
             ->getResult();
         }
 
+        $res['rates']->setTotalItemCount(sizeof($nbRes));
+
         $genre = $series->getGenre();
 
         return $this->render('series/show.html.twig', [
@@ -197,6 +226,7 @@ class SeriesController extends AbstractController
             'ratesFiltre' => $res['ratesFiltre'],
             'years' => $res['years'],
             'rates' => $res['rates'],
+            'nbRates' => $nbRes
         ]);
     }
 
@@ -241,14 +271,22 @@ class SeriesController extends AbstractController
         /** @var \App\Entity\User */
         $user = $this->getUser();
 
-        $series = $entityManager->getRepository(Series::class)->find($request->get('id'));
+        $id = $request->get('id');
+
+        $series = $entityManager->getRepository(Series::class)->find($id);
 
         $user->addSeries($series);
 
         $entityManager->flush();
 
-        return $this->redirectToRoute('app_series_index', [], Response::HTTP_SEE_OTHER);
+        $page = $request->query->get('page');
 
+        if ($request->get('serie')){
+            return $this->redirectToRoute('app_series_show', ['id' => $id], Response::HTTP_SEE_OTHER);
+        }
+        else{
+            return $this->redirectToRoute('app_series_index', ['page' => $page], Response::HTTP_SEE_OTHER);
+        }
     }
 
     #[Route('/series/{id}/dislike', name: 'app_series_dislike', methods: ['GET'])]
@@ -257,13 +295,23 @@ class SeriesController extends AbstractController
         /** @var \App\Entity\User */
         $user = $this->getUser();
 
-        $series = $entityManager->getRepository(Series::class)->find($request->get('id'));
+        $id = $request->get('id');
+
+        $series = $entityManager->getRepository(Series::class)->find($id);
 
         $user->removeSeries($series);
 
         $entityManager->flush();
 
-        return $this->redirectToRoute('app_series_index', [], Response::HTTP_SEE_OTHER);
+        $page = $request->query->get('page');
+
+        if ($request->get('serie')){
+            return $this->redirectToRoute('app_series_show', ['id' => $id], Response::HTTP_SEE_OTHER);
+        }
+        if($request->get('likeList')){
+            return $this->redirectToRoute('app_liked_series', [], Response::HTTP_SEE_OTHER);
+        }
+        return $this->redirectToRoute('app_series_index', ['page' => $page], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/series/like/list', name: 'app_liked_series', methods: ['GET'])]
@@ -279,7 +327,7 @@ class SeriesController extends AbstractController
 
         $requete = $this->requeteSQL($entityManager, $user, $stringWhere);
 
-        $res = self::requeteFiltred($requete, $entityManager, $request, $paginator);
+        $res = self::requeteFiltred($requete, $entityManager, $request, $paginator, 10);
 
         $viewedEpisode = $user->getEpisode();
 
@@ -297,40 +345,21 @@ class SeriesController extends AbstractController
         EntityManagerInterface $entityManager,
         Request $request,
         PaginatorInterface $paginator
-    ): Response {        
+    ): Response {
 
         $stringWhere = self::stringWhere($request);
         
         $result = self::getEpisodeVu($entityManager, $stringWhere, $this->getUser());
 
-        $res = self::requeteFiltred($result['seriesView'], $entityManager, $request, $paginator);
-
-        /** @var \App\Entity\User */
-        $user = $this->getUser();
-
-        $viewedEpisode = $user->getEpisode();
-
-        $seasons = array();
-        for ($i = 0; $i < sizeof($viewedEpisode); $i++) {
-            if (!in_array($viewedEpisode[$i]->getSeason(), $seasons)) {
-                $seasons[] = $viewedEpisode[$i]->getSeason();
-            }
-        }
-        $series = array();
-        for ($i = 0; $i < sizeof($seasons); $i++) {
-            if (!in_array($seasons[$i]->getSeries(), $series)) {
-                $series[] = $seasons[$i]->getSeries();
-            }
-        }
+        $res = self::requeteFiltred($result['seriesView'], $entityManager, $request, $paginator, 10);
 
         return $this->render('liked/view.html.twig', [
-            'series' => $res['series'],
+            'seriesView' => $res['series'],
             'genres' => $res['genres'],
             'years' => $res['years'],
             'rates' => $res['rates'],
-            'episodes' => $viewedEpisode,
-            'seriesView' => $series,
-            'seasons' => $seasons
+            'episodes' => $result['episodes'],
+            'seasons' => $result['seasons'],
             ]);
     }
 
@@ -340,6 +369,7 @@ class SeriesController extends AbstractController
         User $user
     ) {
         $viewedEpisode = $user->getEpisode();
+
         $seasons = array();
         for ($i = 0; $i < sizeof($viewedEpisode); $i++) {
             if (!in_array($viewedEpisode[$i]->getSeason(), $seasons)) {
@@ -353,16 +383,15 @@ class SeriesController extends AbstractController
             }
         }
 
-        $series = $entityManager->getRepository(Series::class)->createQueryBuilder('s')
+        $seriesView = $entityManager->getRepository(Series::class)->createQueryBuilder('s')
             ->join('s.user', 'u')
             ->join('s.genre', 'g')
             ->join('s.rate', 'r')
-            ->where('u.id = :user AND s.id IN (:series) AND ' . $stringWhere)
-            ->setParameter('user', $user->getId())
+            ->where('s.id IN (:series) AND ' . $stringWhere)
             ->setParameter('series', $series)
             ->getQuery();
 
-        $res['seriesView'] = $series;
+        $res['seriesView'] = $seriesView;
         $res['episodes'] = $viewedEpisode;
         $res['seasons'] = $seasons;
         return $res;
@@ -373,7 +402,9 @@ class SeriesController extends AbstractController
     {
         $rating = new Rating();
 
-        $series = $entityManager->getRepository(Series::class)->find($request->get('id'));
+        $id = $request->get('id');
+
+        $series = $entityManager->getRepository(Series::class)->find($id);
 
         $rating->setSeries($series);
         $rating->setUser($this->getUser());
@@ -384,7 +415,7 @@ class SeriesController extends AbstractController
         $entityManager->persist($rating);
 
         $entityManager->flush();
-        return $this->redirectToRoute('app_series_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_series_show', ['id' => $id], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/{id}/vu', name: 'app_series_vu', methods: ['GET'])]
