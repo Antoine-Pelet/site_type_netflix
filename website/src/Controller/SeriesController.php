@@ -184,7 +184,7 @@ class SeriesController extends AbstractController
         
         $rates = $entityManager->getRepository(Rating::class)->createQueryBuilder('r')
             ->join('r.series', 's')
-            ->where('' . $stringWhere)
+            ->where('r.valide = 1 AND ' . $stringWhere)
             ->setParameter('series', $series->getId())
             ->getQuery();
 
