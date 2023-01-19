@@ -186,6 +186,7 @@ class SeriesController extends AbstractController
             ->join('r.series', 's')
             ->where('r.valide = 1 AND ' . $stringWhere)
             ->setParameter('series', $series->getId())
+            ->orderby('r.id', 'DESC')
             ->getQuery();
 
         $nbRes = $rates->getResult();
